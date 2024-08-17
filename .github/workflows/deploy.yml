@@ -21,7 +21,7 @@ jobs:
     - name: Install backend dependencies
       working-directory: ./server
       env:
-        NPM_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       run: |
         echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc
         yarn install
@@ -29,8 +29,8 @@ jobs:
     - name: Publish core package with semantic-release
       working-directory: ./server/packages/core
       env:
-        NPM_TOKEN: ${{ secrets.GHCR_TOKEN }}
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: npx semantic-release
 
   build-docker-images:
@@ -50,10 +50,10 @@ jobs:
 
     - name: Build and push Docker image for ${{ matrix.service }}
       env:
-        GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        docker login --username ${{ github.actor }} --password ${{ secrets.GHCR_TOKEN }} ghcr.io
-        docker build . --file ./server/packages/${{ matrix.service }}/Dockerfile --tag ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest --build-arg NPM_TOKEN=${{ secrets.GHCR_TOKEN }}
+        docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
+        docker build . --file ./server/packages/${{ matrix.service }}/Dockerfile --tag ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest --build-arg NPM_TOKEN=${{ secrets.NPM_TOKEN }}
         docker push ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest
 
   flutter:
