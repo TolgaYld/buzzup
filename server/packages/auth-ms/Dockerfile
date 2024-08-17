@@ -1,25 +1,19 @@
 FROM node:lts-alpine
 
-# Installiere Yarn
-RUN apk add --no-cache yarn
-
-# Setze das Arbeitsverzeichnis auf den Microservice-Ordner
 WORKDIR /app
 
-# Kopiere die zentrale package.json und yarn.lock aus dem Root des Workspaces
-COPY ../../package.json ../../yarn.lock ./
+ARG NPM_TOKEN
+ENV NPM_TOKEN=${NPM_TOKEN}
 
-# Installiere globale Abhängigkeiten
-RUN yarn install --production --frozen-lockfile --ignore-workspace-root-check
-
-# Kopiere die spezifische package.json des Microservices und den gesamten Code
 COPY ./package.json ./
-COPY . .
+COPY ./yarn.lock ./
 
-# Installiere spezifische Abhängigkeiten für den Microservice
-RUN yarn install --production --frozen-lockfile
+RUN if [ -n "$NPM_TOKEN" ]; then echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc; fi && yarn install --production --frozen-lockfile
+
+RUN if [ -n "$NPM_TOKEN" ]; then rm .npmrc; fi
+
+COPY . .
 
 EXPOSE 8001
 
-# Starte den Service
 CMD ["yarn", "start"]
