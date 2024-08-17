@@ -1,0 +1,13 @@
+{
+  "name": "core-buzzup",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:TolgaYld/buzzup.git",
+  "author": {
+    "name": "Tolga Yildirim",
+    "email": "tolga@ty-software.dev"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  }
+}

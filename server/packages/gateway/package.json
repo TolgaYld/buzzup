@@ -1,0 +1,50 @@
+{
+  "name": "gateway",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:TolgaYld/buzzup.git",
+  "author": {
+    "name": "Tolga Yildirim",
+    "email": "tolga@ty-software.dev"
+  },
+  "scripts": {
+    "start": "NODE_ENV=production node ./index.js",
+    "dev": "npm run start-redis && NODE_ENV=test nodemon ./index.js",
+    "start-redis": "docker rm -f redis-buzzup || true && docker run --name redis-buzzup -p 6379:6379 -d redis",
+    "lint": "eslint ./src/"
+  },
+  "dependencies": {
+    "@fastify/cors": "^9.0.1",
+    "@graphql-tools/graphql-file-loader": "^8.0.1",
+    "@graphql-tools/load": "^8.0.2",
+    "graphql": "^16.8.1",
+    "graphql-subscriptions": "^2.0.0",
+    "graphql-tools": "^9.0.1",
+    "mercurius": "^14.1.0",
+    "redis": "^4.7.0"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": "latest"
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "env": {
+      "node": true,
+      "es6": true,
+      "mocha": true
+    },
+    "rules": {
+      "prettier/prettier": "warn",
+      "no-unused-vars": "off"
+    }
+  },
+  "prettier": {
+    "singleQuote": false
+  }
+}

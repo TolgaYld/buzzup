@@ -1,0 +1,44 @@
+# import User from "./user.graphql"
+# import Post from "./post.graphql"
+# import Story from "./story.graphql"
+# import Report from "./report.graphql"
+
+type Query {
+    channel(id: ID!): Channel!
+    channels: [Channel!]
+}
+
+type Channel {
+  _id: ID!
+  name: String!
+  users: [User]
+  posts: [Post]
+  storys: [Story]
+  created_by: User
+  is_active: Boolean!
+  is_deleted: Boolean!
+  created_at: String
+  last_update_from_user: ID
+}
+
+type Mutation{
+    createChannel(data: CreateChannelInput!): Channel!
+    entryOrLeaveChannel(id: ID!): Channel!
+    updateChannel(id: ID, data: UpdateChannelInput!): Channel!
+    deleteChannelFromDb(id: ID!): Channel!
+}
+
+input CreateChannelInput{
+  name: String!
+}
+
+input UpdateChannelInput{
+  name: String!
+  is_active: Boolean
+  is_deleted: Boolean
+}
+
+
+type Subscription {
+    channel(device_id: ID): Channel!
+}

@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "buzzup_dev",
+            "request": "launch",
+            "type": "dart",
+            "cwd": "app",
+            "args": [
+                "--dart-define=SECRET_KEY=",
+                "--dart-define=SECRET_KEY_REFRESH="
+            ]
+        }
+    ]
+}

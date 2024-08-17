@@ -1,0 +1,12 @@
+{
+    "story-not-created": "Story could not created",
+    "storys-not-found": "Storys not found",
+    "story-not-found": "Story not found",
+    "update-failed": "Update failed",
+    "user-password-update-failed": "Update password failed",
+    "email-in-use": "E-Mail is already in use",
+    "authentication-failed": "Wrong e-mail or password",
+    "user-is-banned": "User has been banned. Write an email for more information",
+    "story-delete-failed": "Couldn't delete story",
+    "unauthorized": "Unauthorized access"
+}

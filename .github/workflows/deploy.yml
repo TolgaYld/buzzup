@@ -1,0 +1,68 @@
+name: Deploy Backend to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-core:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+
+    - name: Install backend dependencies
+      working-directory: ./server
+      env:
+        NPM_TOKEN: ${{ secrets.GHCR_TOKEN }}
+      run: |
+        echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc
+        yarn install
+
+    - name: Publish core package with semantic-release
+      working-directory: ./server/core
+      env:
+        NPM_TOKEN: ${{ secrets.GHCR_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: npx semantic-release
+
+  build-docker-images:
+    runs-on: ubuntu-latest
+    needs: build-core
+    strategy:
+      matrix:
+        service: [gateway, auth-ms, channel-ms, post-ms, story-ms, report-ms, comment-ms]
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+
+    - name: Build and push Docker image for ${{ matrix.service }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
+      run: |
+        docker login --username ${{ github.actor }} --password ${{ secrets.GHCR_TOKEN }} ghcr.io
+        docker build . --file ./server/${{ matrix.service }}/Dockerfile --tag ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest --build-arg NPM_TOKEN=${{ secrets.GHCR_TOKEN }}
+        docker push ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest
+
+  flutter:
+    runs-on: ubuntu-latest
+    needs: build-docker-images
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Flutter steps
+      run: echo "No steps for Flutter yet"

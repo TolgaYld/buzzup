@@ -1,0 +1,55 @@
+# import User from "./user.graphql"
+# import Post from "./post.graphql"
+# import Comment from "./comment.graphql"
+# import Channel from "./channel.graphql"
+# import Story from "./story.graphql"
+
+type Query {
+    report(id: ID!): Report!
+    reports: [Report]!
+}
+
+type Report {
+  _id: ID!,
+  reason: String!
+  reported_by_user: User! 
+  reported_user: User!
+  post: Post
+  comment: Comment
+  channel: Channel
+  story: Story
+  is_done: Boolean!
+  notes_from_us: String
+  last_update_from_user: ID
+}
+
+type Mutation{
+    createReport(data: CreateReportInput!): Report!
+    updateReport(id: ID!, data: UpdateReportInput): Report!
+}
+
+input CreateReportInput {
+  reason: String!
+  reported_user: ID!
+  channel: ID
+  post: ID
+  comment: ID
+}
+input UpdateReportInput {
+  reason: String
+  reported_by_user: ID 
+  reported_user: ID
+  channel: ID
+  post: ID
+  comment: ID
+  story: ID
+  is_done: Boolean!
+  notes_from_us: String
+  is_deleted: Boolean
+}
+
+type Subscription {
+    reportedUser(device_id: ID): Report!
+    reportedFrom(device_id: ID): Report!
+    report: Report!
+}

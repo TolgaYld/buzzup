@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Tolga Yildirim on 29.07.24.
+  
+*/
+"NSLocationWhenInUseUsageDescription" = "Buzzup'ı kullanmak için konum servislerini etkinleştirmen gerekiyor.";
+"NSLocationAlwaysUsageDescription" = "Buzzup'ı kullanmak için konum servislerini etkinleştirmen gerekiyor.";

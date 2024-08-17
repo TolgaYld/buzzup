@@ -1,0 +1,9 @@
+/* 
+  InfoPlist.strings
+  Runner
+
+  Created by Tolga Yildirim on 29.07.24.
+  
+*/
+"NSLocationWhenInUseUsageDescription" = "You need to enable location services to use Buzzup.";
+"NSLocationAlwaysUsageDescription" = "You need to enable location services to use Buzzup.";

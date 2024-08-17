@@ -1,0 +1,16 @@
+{
+    "user-not-created": "Benutzer konnte nicht erstellt werden",
+    "users-not-found": "Benutzer wurden nicht gefunden",
+    "user-not-found": "Benutzer wurde nicht gefunden",
+    "user-update-failed": "Update fehlgeschlagen",
+    "user-password-update-failed": "Passwort update fehlgeschlagen",
+    "email-in-use": "E-Mail ist schon vergeben",
+    "username-in-use": "Benutzername ist schon vergeben",
+    "authentication-failed": "E-Mail/Benutzername oder Passwort ist falsch",
+    "user-is-banned": "User wurde gebannt. Schreibe eine E-Mail für weitere Informationen",
+    "user-delete-failed": "User konnte nicht gelöscht werden",
+    "not-valid-email": "Keine gültige E-Mail-Adresse",
+    "pw-at-least-characters": "Dein Passwort muss aus mindestens 9 Zeichen bestehen",
+    "pw-not-match": "Passwörter stimmen nicht überein",
+    "unauthorized": "Unautorisierter Zugriff"
+}

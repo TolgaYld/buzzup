@@ -1,0 +1,12 @@
+{
+    "story-not-created": "Story oluşturulamadı",
+    "storys-not-found": "Storyler bulunamadı",
+    "story-not-found": "Story bulunamadı",
+    "update-failed": "Güncellemede hata oluştu",
+    "user-password-update-failed": "Şifrenin güncellenmesinde hata oluştu",
+    "email-in-use": "E-Posta adresi kullanılmaktadır",
+    "authentication-failed": "E-Posta adresi yada parola yanlış",
+    "user-is-banned": "Hesabınız erişime engellendi. Daha fazla bilgi için bir e-storya yazın",
+    "story-delete-failed": "Story silinemedi",
+    "unauthorized": "İzinsiz erişim"
+}
