@@ -18,18 +18,19 @@ jobs:
       with:
         node-version: 'lts/*'
 
-    - name: Set up .npmrc
+    - name: Set up .npmrc and install dependencies
       working-directory: ./server
-      run: echo "@TolgaYld:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > .npmrc
-
-    - name: Install backend dependencies
-      working-directory: ./server
-      run: yarn install
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        echo "@TolgaYld:registry=https://npm.pkg.github.com/" > .npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
+        yarn install
 
     - name: Publish core package with semantic-release
       working-directory: ./server/packages/core
       env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: npx semantic-release
 
   build-docker-images:
