@@ -22,9 +22,7 @@ jobs:
       working-directory: ./server
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
-        npm config set @TolgaYld:registry https://npm.pkg.github.com/
-        yarn install
+      run: yarn install
 
     - name: Publish core package with semantic-release
       working-directory: ./server/packages/core
