@@ -1,4 +1,4 @@
-const { MONGODBCONNECTIONSTRING } = require("core-buzzup");
+const { MONGODBCONNECTIONSTRING } = require("@TolgaYld/core-buzzup");
 const { createLogger, transports, format } = require("winston");
 require("winston-mongodb");
 

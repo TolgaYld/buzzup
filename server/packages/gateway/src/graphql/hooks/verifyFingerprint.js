@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const client = require("../../db/redis/connection");
 const errorHandler = require("../../errors/errorHandler");
-const { SECRET_KEY_PERMISSION } = require("core-buzzup");
+const { SECRET_KEY_PERMISSION } = require("@TolgaYld/core-buzzup");
 
 const SECRET_KEY = SECRET_KEY_PERMISSION;
 

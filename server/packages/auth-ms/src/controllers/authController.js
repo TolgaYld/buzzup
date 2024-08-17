@@ -1,4 +1,4 @@
-const { User, Post, Comment, Report } = require("core-buzzup");
+const { User, Post, Comment, Report } = require("@TolgaYld/core-buzzup");
 const errorHandler = require("../errors/errorHandler");
 // const pushToQ = require("../queue/pushToQueueHandler");
 const { token, refreshToken } = require("../helpers/token");

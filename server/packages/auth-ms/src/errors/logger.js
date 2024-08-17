@@ -1,6 +1,6 @@
 const { createLogger, transports, format } = require("winston");
 require("winston-mongodb");
-const { MONGODBCONNECTIONSTRING } = require("core-buzzup");
+const { MONGODBCONNECTIONSTRING } = require("@TolgaYld/core-buzzup");
 
 let service = process.env.CURRENTSERVICE;
 service = service.toLowerCase();

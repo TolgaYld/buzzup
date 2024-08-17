@@ -1,5 +1,5 @@
 const fastify = require("./src/app");
-const { log } = require("core-buzzup");
+const { log } = require("@TolgaYld/core-buzzup");
 const port = parseInt(process.env.PORT) || 8002;
 
 // Run the server!

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { SECRET_KEY, SECRET_KEY_REFRESH } = require("core-buzzup")
+const { SECRET_KEY, SECRET_KEY_REFRESH } = require("@TolgaYld/core-buzzup")
 
 const token = {
   generate: ({ id }, expiresIn) => {

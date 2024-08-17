@@ -1,7 +1,7 @@
 const createError = require("http-errors");
 const errorHandler = require("../../../errors/errorHandler");
 const axios = require("axios");
-const { getUserId } = require("core-buzzup");
+const { getUserId } = require("@TolgaYld/core-buzzup");
 
 const Post = {
   user: async (parent, args, { req }) => {

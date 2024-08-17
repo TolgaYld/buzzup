@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { log, MONGODBCONNECTIONSTRING } = require("core-buzzup");
+const { log, MONGODBCONNECTIONSTRING } = require("@TolgaYld/core-buzzup");
 mongoose.set("strictQuery", false);
 
 mongoose

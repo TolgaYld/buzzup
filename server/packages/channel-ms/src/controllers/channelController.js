@@ -1,4 +1,4 @@
-const { Channel, User } = require("core-buzzup")
+const { Channel, User } = require("@TolgaYld/core-buzzup")
 const errorHandler = require("../errors/errorHandler");
 
 const findAll = async (request, reply) => {

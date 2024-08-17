@@ -1,4 +1,4 @@
-const { Story, User } = require("core-buzzup");
+const { Story, User } = require("@TolgaYld/core-buzzup");
 const errorHandler = require("../errors/errorHandler");
 
 const findAll = async (request, reply) => {

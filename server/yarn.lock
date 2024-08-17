@@ -5,6 +5,12 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
+"@TolgaYld/core-buzzup@workspace:^, @TolgaYld/core-buzzup@workspace:packages/core":
+  version: 0.0.0-use.local
+  resolution: "@TolgaYld/core-buzzup@workspace:packages/core"
+  languageName: unknown
+  linkType: soft
+
 "@ampproject/remapping@npm:^2.2.0":
   version: 2.3.0
   resolution: "@ampproject/remapping@npm:2.3.0"
@@ -1252,6 +1258,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "auth-ms@workspace:packages/auth-ms"
   dependencies:
+    "@TolgaYld/core-buzzup": "workspace:^"
     bcrypt: "npm:^5.1.1"
     rewire: "npm:^7.0.0"
     validator: "npm:^13.12.0"
@@ -1762,12 +1769,6 @@ __metadata:
   checksum: 10c0/2dae55611c6e1678f34d93984cbd4bda58f4fe3e5247cc4993f4a305cd19c913bbaf325086ed952e892108115073a747596453d3dc1c34947f47f731818b8ad1
   languageName: node
   linkType: hard
-
-"core-buzzup@workspace:packages/core":
-  version: 0.0.0-use.local
-  resolution: "core-buzzup@workspace:packages/core"
-  languageName: unknown
-  linkType: soft
 
 "core-util-is@npm:~1.0.0":
   version: 1.0.3
@@ -2743,7 +2744,7 @@ __metadata:
     "@fastify/cors": "npm:^9.0.1"
     "@graphql-tools/graphql-file-loader": "npm:^8.0.1"
     "@graphql-tools/load": "npm:^8.0.2"
-    graphql: "npm:^16.9.0"
+    graphql: "npm:^16.8.1"
     graphql-subscriptions: "npm:^2.0.0"
     graphql-tools: "npm:^9.0.1"
     mercurius: "npm:^14.1.0"
@@ -3007,7 +3008,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^16.9.0":
+"graphql@npm:^16.8.1":
   version: 16.9.0
   resolution: "graphql@npm:16.9.0"
   checksum: 10c0/a8850f077ff767377237d1f8b1da2ec70aeb7623cdf1dfc9e1c7ae93accc0c8149c85abe68923be9871a2934b1bce5a2496f846d4d56e1cfb03eaaa7ddba9b6a
@@ -5255,7 +5256,7 @@ __metadata:
     prettier: "npm:^3.3.1"
     rewire: "npm:^7.0.0"
     sinon: "npm:^18.0.0"
-    sinon-chai: "npm:^3.7.0"
+    sinon-chai: "npm:^4.0.0"
     supertest: "npm:^7.0.0"
     winston: "npm:^3.13.0"
     winston-mongodb: "npm:^5.1.1"
@@ -5462,13 +5463,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sinon-chai@npm:^3.7.0":
-  version: 3.7.0
-  resolution: "sinon-chai@npm:3.7.0"
+"sinon-chai@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "sinon-chai@npm:4.0.0"
   peerDependencies:
-    chai: ^4.0.0
+    chai: ^5.0.0
     sinon: ">=4.0.0"
-  checksum: 10c0/9bbb0494be89c313f5287c2a0c9890104e3070ad6bf06c359b0c3cd776ea6273f7846ee1ab01fa2e0328e741f8717348669ee232e83b94b193676a56f48d2c63
+  checksum: 10c0/c2be6f7d964fd05dcd0870807a1447bc180703aca0cdf5ba7ed21bf2a8a2e0c8d1d2e464b2289982870dfe1b58ae797000cc742e23eeac8dd2f6339dea7d717b
   languageName: node
   linkType: hard
 

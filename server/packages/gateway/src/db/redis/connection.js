@@ -1,5 +1,5 @@
 const redis = require("redis");
-const { log, REDISURL, REDISPASSWORD } = require("core-buzzup")
+const { log, REDISURL, REDISPASSWORD } = require("@TolgaYld/core-buzzup")
 
 const client = redis.createClient({
     url: REDISURL,
