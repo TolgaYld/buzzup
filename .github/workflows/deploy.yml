@@ -27,7 +27,7 @@ jobs:
         yarn install
 
     - name: Publish core package with semantic-release
-      working-directory: ./server/core
+      working-directory: ./server/packages/core
       env:
         NPM_TOKEN: ${{ secrets.GHCR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,7 +53,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GHCR_TOKEN }}
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GHCR_TOKEN }} ghcr.io
-        docker build . --file ./server/${{ matrix.service }}/Dockerfile --tag ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest --build-arg NPM_TOKEN=${{ secrets.GHCR_TOKEN }}
+        docker build . --file ./server/packages/${{ matrix.service }}/Dockerfile --tag ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest --build-arg NPM_TOKEN=${{ secrets.GHCR_TOKEN }}
         docker push ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest
 
   flutter:
