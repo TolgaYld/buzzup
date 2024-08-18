@@ -27,25 +27,6 @@ jobs:
         echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
         yarn install
 
-    - name: Publish core package with semantic-release
-      working-directory: ./server/packages/core
-      env:
-        GH_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: npx semantic-release
-
-    - name: Update package versions in microservices
-      working-directory: ./server/packages
-      run: |
-        git config --global user.email "tolga@ty-software.dev"
-        git config --global user.name "Tolga Yildirim"
-        NEW_VERSION=$(npm view @TolgaYld/core-buzzup version)
-        for service in gateway auth-ms channel-ms post-ms story-ms report-ms comment-ms; do
-          jq --arg version "$NEW_VERSION" '.dependencies["@TolgaYld/core-buzzup"] = $version' $service/package.json > tmp.$$.json && mv tmp.$$.json $service/package.json
-        done
-        git add .
-        git commit -m "chore: update @TolgaYld/core-buzzup to version $NEW_VERSION"
-        git push origin main
-
   build-docker-images:
     runs-on: ubuntu-latest
     needs: build-core
@@ -66,8 +47,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
-        docker build . --file ./server/packages/${{ matrix.service }}/Dockerfile --tag ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }}
-        docker push ghcr.io/tolgayld/buzzup//${{ matrix.service }}:latest
+        docker build . --file ./server/packages/${{ matrix.service }}/Dockerfile --tag ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }}
+        docker push ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest
 
   flutter:
     runs-on: ubuntu-latest
