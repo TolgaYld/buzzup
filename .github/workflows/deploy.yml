@@ -33,9 +33,11 @@ jobs:
         GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: npx semantic-release
 
-    - name: Update @TolgaYld/core-buzzup version in microservices and gateway
+    - name: Update package versions in microservices
       working-directory: ./server/packages
       run: |
+        git config --global user.email "tolga@ty-software.dev"
+        git config --global user.name "Tolga Yildirim"
         NEW_VERSION=$(npm view @TolgaYld/core-buzzup version)
         for service in gateway auth-ms channel-ms post-ms story-ms report-ms comment-ms; do
           jq --arg version "$NEW_VERSION" '.dependencies["@TolgaYld/core-buzzup"] = $version' $service/package.json > tmp.$$.json && mv tmp.$$.json $service/package.json
