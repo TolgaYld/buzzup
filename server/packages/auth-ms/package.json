@@ -16,7 +16,6 @@
     "coverage_lcov": "nyc --reporter=lcov --reporter=text npm run test"
   },
   "dependencies": {
-    "@tolgayld/core-buzzup": "1.0.2",
     "bcrypt": "^5.1.1",
     "validator": "^13.12.0"
   },
