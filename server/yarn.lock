@@ -5,7 +5,7 @@ __metadata:
   version: 8
   cacheKey: 10c0
 
-"@TolgaYld/core-buzzup@workspace:^, @TolgaYld/core-buzzup@workspace:packages/core":
+"@TolgaYld/core-buzzup@npm:*, @TolgaYld/core-buzzup@workspace:packages/core":
   version: 0.0.0-use.local
   resolution: "@TolgaYld/core-buzzup@workspace:packages/core"
   languageName: unknown
@@ -1258,7 +1258,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "auth-ms@workspace:packages/auth-ms"
   dependencies:
-    "@TolgaYld/core-buzzup": "workspace:^"
+    "@TolgaYld/core-buzzup": "npm:*"
     bcrypt: "npm:^5.1.1"
     rewire: "npm:^7.0.0"
     validator: "npm:^13.12.0"
@@ -1544,6 +1544,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "channel-ms@workspace:packages/channel-ms"
   dependencies:
+    "@TolgaYld/core-buzzup": "npm:*"
     bcrypt: "npm:^5.1.1"
     rewire: "npm:^7.0.0"
     validator: "npm:^13.12.0"
@@ -1702,6 +1703,8 @@ __metadata:
 "comment-ms@workspace:packages/comment-ms":
   version: 0.0.0-use.local
   resolution: "comment-ms@workspace:packages/comment-ms"
+  dependencies:
+    "@TolgaYld/core-buzzup": "npm:*"
   languageName: unknown
   linkType: soft
 
@@ -1986,9 +1989,9 @@ __metadata:
   linkType: hard
 
 "electron-to-chromium@npm:^1.5.4":
-  version: 1.5.10
-  resolution: "electron-to-chromium@npm:1.5.10"
-  checksum: 10c0/f28f28be7e0e50e5ea2b6e26750c1ab3456b03aa2a8262f85ac6a1cd2cbc1f6e05e21bae65b08c6031ddf798f785463bf2f6cbca181d31e9deb675c12a999ef4
+  version: 1.5.11
+  resolution: "electron-to-chromium@npm:1.5.11"
+  checksum: 10c0/87b4c0c959009d3fa1120c73eb277c3fced527e4348c798384daf044b15cfb30bbaa5004e772ef016c5b2a70ee06bb8f756fb85fe3986d66c12d9f702c1fc5bc
   languageName: node
   linkType: hard
 
@@ -2741,6 +2744,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "gateway@workspace:packages/gateway"
   dependencies:
+    "@TolgaYld/core-buzzup": "npm:*"
     "@fastify/cors": "npm:^9.0.1"
     "@graphql-tools/graphql-file-loader": "npm:^8.0.1"
     "@graphql-tools/load": "npm:^8.0.2"
@@ -4830,6 +4834,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "post-ms@workspace:packages/post-ms"
   dependencies:
+    "@TolgaYld/core-buzzup": "npm:*"
     bull: "npm:^4.12.9"
     rewire: "npm:^7.0.0"
   languageName: unknown
@@ -5131,6 +5136,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "report-ms@workspace:packages/report-ms"
   dependencies:
+    "@TolgaYld/core-buzzup": "npm:*"
     rewire: "npm:^7.0.0"
   languageName: unknown
   linkType: soft
@@ -5616,6 +5622,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "story-ms@workspace:packages/story-ms"
   dependencies:
+    "@TolgaYld/core-buzzup": "npm:*"
     rewire: "npm:^7.0.0"
   languageName: unknown
   linkType: soft

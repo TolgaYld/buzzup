@@ -1,16 +1,24 @@
+# Build-Stage
+FROM node:lts-alpine as build-stage
+
+WORKDIR /app
+
+ARG GITHUB_TOKEN
+
+COPY ../../package.json ./
+COPY ../../.yarnrc.yml ./
+
+RUN yarn install --production --frozen-lockfile --ignore-workspace-root-check
+
+COPY ./package.json ./
+
+RUN yarn install --production --frozen-lockfile --ignore-workspace-root-check
+
 FROM node:lts-alpine
 
 WORKDIR /app
 
-ARG NPM_TOKEN
-ENV NPM_TOKEN=${NPM_TOKEN}
-
-COPY ./package.json ./
-COPY ./yarn.lock ./
-
-RUN if [ -n "$NPM_TOKEN" ]; then echo "//npm.pkg.github.com/:_authToken=${NPM_TOKEN}" > .npmrc; fi && yarn install --production --frozen-lockfile
-
-RUN if [ -n "$NPM_TOKEN" ]; then rm .npmrc; fi
+COPY --from=build-stage /app /app
 
 COPY . .
 

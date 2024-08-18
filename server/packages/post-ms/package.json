@@ -16,8 +16,8 @@
     "coverage_lcov": "nyc --reporter=lcov --reporter=text npm run test"
   },
   "dependencies": {
-    "bull": "^4.12.9",
-    "@TolgaYld/core-buzzup": "1.0.4"
+    "@TolgaYld/core-buzzup": "*",
+    "bull": "^4.12.9"
   },
   "devDependencies": {
     "rewire": "^7.0.0"

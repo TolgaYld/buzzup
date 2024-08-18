@@ -18,13 +18,11 @@ jobs:
       with:
         node-version: 'lts/*'
 
-    - name: Set up .npmrc and install dependencies
+    - name: Install dependencies
       working-directory: ./server
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        echo "@TolgaYld:registry=https://npm.pkg.github.com/" > .npmrc
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> .npmrc
         yarn install
 
   build-docker-images:
@@ -47,7 +45,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
-        docker build . --file ./server/packages/${{ matrix.service }}/Dockerfile --tag ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }}
+        docker build -f ./server/packages/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} .
         docker push ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest
 
   flutter:

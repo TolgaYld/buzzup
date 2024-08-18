@@ -1,20 +1,32 @@
+# Build-Stage
+FROM node:lts-alpine as build-stage
+
+WORKDIR /app
+
+ARG GITHUB_TOKEN
+
+# Kopiere die zentrale package.json und yarn.lock aus dem Root des Workspaces
+COPY ../../package.json ./
+COPY ../../.yarnrc.yml ./
+
+# Installiere die globalen Abhängigkeiten
+RUN yarn install --production --frozen-lockfile --ignore-workspace-root-check
+
+# Kopiere die spezifische package.json des auth-ms Projekts
+COPY ./package.json ./
+
+# Installiere die projektspezifischen Abhängigkeiten
+RUN yarn install --production --frozen-lockfile --ignore-workspace-root-check
+
+# Production-Stage
 FROM node:lts-alpine
 
 WORKDIR /app
 
-# Kopiere die `package.json` und `yarn.lock` aus dem `server`-Verzeichnis, um alle Abhängigkeiten des Workspaces zu berücksichtigen.
-COPY ../../package.json  ./
+# Kopiere das Ergebnis aus der Build-Stage in das aktuelle Image
+COPY --from=build-stage /app /app
 
-# Kopiere die spezifische `package.json` und `yarn.lock` von `auth-ms`, um sicherzustellen, dass die spezifischen Abhängigkeiten korrekt installiert werden.
-COPY ./package.json ./
-
-# Installiere die Abhängigkeiten. 
-# `--ignore-workspace-root-check` ignoriert die Warnung über das Root-Verzeichnis eines Workspaces.
-RUN echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > .npmrc && yarn install --production --frozen-lockfile --ignore-workspace-root-check
-
-# Entferne die `.npmrc`-Datei aus Sicherheitsgründen.
-RUN rm .npmrc
-
+# Kopiere den restlichen Quellcode des auth-ms Projekts
 COPY . .
 
 EXPOSE 8001
