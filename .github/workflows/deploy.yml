@@ -67,7 +67,7 @@ jobs:
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
         docker build . --file ./server/packages/${{ matrix.service }}/Dockerfile --tag ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }}
-        docker push ghcr.io/${{ github.repository }}/${{ matrix.service }}:latest
+        docker push ghcr.io/tolgayld/buzzup//${{ matrix.service }}:latest
 
   flutter:
     runs-on: ubuntu-latest
