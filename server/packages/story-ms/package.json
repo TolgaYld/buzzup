@@ -17,5 +17,8 @@
   },
   "devDependencies": {
     "rewire": "^7.0.0"
+  },
+  "dependencies": {
+    "@TolgaYld/core-buzzup": "1.0.4"
   }
 }

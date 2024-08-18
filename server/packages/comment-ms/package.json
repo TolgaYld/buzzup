@@ -14,5 +14,8 @@
     "lint": "eslint ./src/",
     "coverage": "nyc --reporter=text npm run test",
     "coverage_lcov": "nyc --reporter=lcov --reporter=text npm run test"
+  },
+  "dependencies": {
+    "@TolgaYld/core-buzzup": "1.0.4"
   }
 }

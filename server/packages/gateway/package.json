@@ -21,7 +21,8 @@
     "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^9.0.1",
     "mercurius": "^14.1.0",
-    "redis": "^4.7.0"
+    "redis": "^4.7.0",
+    "@TolgaYld/core-buzzup": "1.0.4"
   },
   "eslintConfig": {
     "parserOptions": {
