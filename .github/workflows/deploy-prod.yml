@@ -18,6 +18,11 @@ jobs:
       with:
         node-version: 'lts/*'
 
+    - name: Modify package.json for production environment
+      run: |
+        jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@latest"' package.json > temp.json && mv temp.json package.json
+      shell: bash
+
     - name: Install dependencies
       working-directory: ./server
       env:
