@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - develop
-
 jobs:
   build-core:
     runs-on: ubuntu-latest
@@ -19,20 +18,20 @@ jobs:
         node-version: 'lts/*'
 
     - name: Modify package.json for dev environment
-      working-directory: ./packages/core
+      working-directory: packages/core
       run: |
         jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' package.json > temp.json && mv temp.json package.json
       shell: bash
 
     - name: Install dependencies
-      working-directory: ./server
+      working-directory: server 
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         yarn install
 
     - name: Build and publish Core NPM Package with dev tag
-      working-directory: ./packages/core
+      working-directory: packages/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
         MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
