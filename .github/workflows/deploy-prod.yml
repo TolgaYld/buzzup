@@ -64,7 +64,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
-        docker build -f ./server/packages/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} --build-arg SECRET_KEY=${{ secrets.PROD_SECRET_KEY }} ./server
+        docker build -f ./server/packages/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} ./server
         docker push ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest
 
   flutter:
