@@ -18,10 +18,13 @@ jobs:
       with:
         node-version: 'lts/*'
 
-    - name: Modify package.json for production environment
-      working-directory: ./packages/core
+    - name: Modify package.json for production environment in all services except core
       run: |
-        jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@latest"' package.json > temp.json && mv temp.json package.json
+        for dir in ./server/packages/*; do
+          if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
+            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@latest"' $dir/package.json > temp.json && mv temp.json $dir/package.json
+          fi
+        done
       shell: bash
 
     - name: Install dependencies
