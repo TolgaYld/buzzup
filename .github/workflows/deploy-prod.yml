@@ -18,22 +18,6 @@ jobs:
       with:
         node-version: 'lts/*'
 
-    - name: Modify package.json for production environment in all services except core
-      run: |
-        for dir in ./server/packages/*; do
-          if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
-            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@latest"' $dir/package.json > temp.json && mv temp.json $dir/package.json
-          fi
-        done
-      shell: bash
-
-    - name: Install dependencies
-      working-directory: ./server
-      env:
-        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-      run: |
-        yarn install
-
     - name: Build and publish Core NPM Package
       working-directory: ./packages/core
       env:
@@ -52,6 +36,22 @@ jobs:
       run: |
         npm version patch
         npm publish --tag latest
+
+    - name: Modify package.json for production environment in all services except core
+      run: |
+        for dir in ./server/packages/*; do
+          if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
+            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@latest"' $dir/package.json > temp.json && mv temp.json $dir/package.json
+          fi
+        done
+      shell: bash
+
+    - name: Install dependencies
+      working-directory: ./server
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        yarn install
 
   build-docker-images:
     runs-on: ubuntu-latest
