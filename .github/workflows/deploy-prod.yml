@@ -3,7 +3,7 @@ name: Deploy Backend to Production
 on:
   push:
     branches:
-      - main
+      - main  # This workflow is triggered for the main branch
 
 jobs:
   build-core:
@@ -25,6 +25,25 @@ jobs:
       run: |
         yarn install
 
+    - name: Build and publish Core NPM Package
+      working-directory: ./server/packages/core
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+        MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        SECRET_KEY_REFRESH: ${{ secrets.SECRET_KEY_REFRESH }}
+        REDISURL: ${{ secrets.REDISURL }}
+        REDISPASSWORD: ${{ secrets.REDISPASSWORD }}
+        AUTHSERVICE: ${{ secrets.AUTHSERVICE }}
+        CHANNELSERVICE: ${{ secrets.CHANNELSERVICE }}
+        POSTSERVICE: ${{ secrets.POSTSERVICE }}
+        COMMENTSERVICE: ${{ secrets.COMMENTSERVICE }}
+        STORYSERVICE: ${{ secrets.STORYSERVICE }}
+        REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
+      run: |
+        npm version patch
+        npm publish --tag latest
+
   build-docker-images:
     runs-on: ubuntu-latest
     needs: build-core
@@ -45,7 +64,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
-        docker build -f ./server/packages/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} ./server
+        docker build -f ./server/packages/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} --build-arg SECRET_KEY=${{ secrets.PROD_SECRET_KEY }} ./server
         docker push ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest
 
   flutter:
