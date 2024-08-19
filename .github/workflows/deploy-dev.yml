@@ -3,7 +3,7 @@ name: Deploy Backend to Development
 on:
   push:
     branches:
-      - develop 
+      - develop
 
 jobs:
   build-core:
@@ -14,15 +14,19 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Display current directory
-      run: pwd 
+      run: pwd
       shell: bash
 
-    - name: List all directory contents
-      run: ls -alR
+    - name: List directory contents
+      run: ls -al
+      shell: bash
+
+    - name: List core package directory contents
+      run: ls -al ./server/packages/core
       shell: bash
 
     - name: Modify package.json for dev environment
-      working-directory: packages/core
+      working-directory: ./server/packages/core
       run: |
         jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' package.json > temp.json && mv temp.json package.json
       shell: bash
