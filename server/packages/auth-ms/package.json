@@ -19,8 +19,5 @@
     "@TolgaYld/core-buzzup": "*",
     "bcrypt": "^5.1.1",
     "validator": "^13.12.0"
-  },
-  "devDependencies": {
-    "rewire": "^7.0.0"
   }
 }
