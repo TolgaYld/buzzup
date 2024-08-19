@@ -13,26 +13,33 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 'lts/*'
+    - name: Display current directory
+      run: pwd
+      shell: bash
+
+    - name: List directory contents
+      run: ls -al
+      shell: bash
+
+    - name: List core package directory contents
+      run: ls -al ./packages/core
+      shell: bash
 
     - name: Modify package.json for dev environment
-      working-directory: ./packages/core
+      working-directory: packages/core
       run: |
         jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' package.json > temp.json && mv temp.json package.json
       shell: bash
 
     - name: Install dependencies
-      working-directory: ./server
+      working-directory: server
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         yarn install
 
     - name: Build and publish Core NPM Package with dev tag
-      working-directory: ./packages/core  # Korrekte Angabe des Arbeitsverzeichnisses für den Build
+      working-directory: packages/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
         MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
