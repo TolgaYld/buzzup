@@ -2,7 +2,6 @@ import 'package:buzzup/core/common/widgets/custom_text_form_field_widget.dart';
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
-import 'package:buzzup/src/application/auth/provider/auth_mode.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

@@ -21,6 +21,6 @@ WORKDIR /app
 
 COPY --from=build-stage /app /app
 
-EXPOSE 8002
+EXPOSE 8001
 
-CMD ["yarn", "workspace", "channel-ms", "start"]
+CMD ["yarn", "workspace", "auth-ms", "dev"]

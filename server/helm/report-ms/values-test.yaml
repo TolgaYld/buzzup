@@ -1,0 +1,11 @@
+replicaCount: 1
+
+image:
+  repository: report-ms
+  pullPolicy: Never
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8005
+  targetPort: 8005

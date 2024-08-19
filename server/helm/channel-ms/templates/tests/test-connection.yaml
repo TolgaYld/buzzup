@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "channel-ms.fullname" . }}-test-connection"
+  labels:
+    {{- include "channel-ms.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "channel-ms.fullname" . }}:{{ .Values.service.port }}']
+  restartPolicy: Never

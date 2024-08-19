@@ -1,0 +1,11 @@
+replicaCount: 1
+
+image:
+  repository: post-ms
+  pullPolicy: Never
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8004
+  targetPort: 8004

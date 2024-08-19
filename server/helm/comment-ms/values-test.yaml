@@ -1,0 +1,11 @@
+replicaCount: 1
+
+image:
+  repository: comment-ms
+  pullPolicy: Never
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8003
+  targetPort: 8003

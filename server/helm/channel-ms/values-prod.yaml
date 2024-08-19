@@ -1,0 +1,14 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/tolgayld/buzzup/channel-ms
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8002
+  targetPort: 8002
+
+imagePullSecrets:
+  - name: github-registry-secret

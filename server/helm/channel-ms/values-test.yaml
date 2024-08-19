@@ -1,0 +1,11 @@
+replicaCount: 1
+
+image:
+  repository: channel-ms
+  pullPolicy: Never
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 8002
+  targetPort: 8002
