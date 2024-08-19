@@ -19,7 +19,7 @@ jobs:
         node-version: 'lts/*'
 
     - name: Build and publish Core NPM Package
-      working-directory: ./packages/core
+      working-directory: ./server/packages/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
         MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
