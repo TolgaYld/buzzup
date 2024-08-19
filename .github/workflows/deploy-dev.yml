@@ -3,7 +3,8 @@ name: Deploy Backend to Development
 on:
   push:
     branches:
-      - develop
+      - develop 
+
 jobs:
   build-core:
     runs-on: ubuntu-latest
@@ -24,7 +25,7 @@ jobs:
       shell: bash
 
     - name: Install dependencies
-      working-directory: server 
+      working-directory: server
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
