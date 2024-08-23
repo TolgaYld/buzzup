@@ -20,10 +20,9 @@ jobs:
         node-version: 'lts/*'
     
     - name: Set up .npmrc for authentication
-      run: |
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
+      run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
-    - name: Increment version and publish Core NPM Package
+    - name: Increment version and publish Core NPM Package with dev tag
       working-directory: ./server/services/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -39,8 +38,10 @@ jobs:
         STORYSERVICE: ${{ secrets.STORYSERVICE }}
         REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
       run: |
-        # Inkrementiere die Prerelease-Version
-        npm version prerelease --preid=dev
+        # Hole die aktuelle Version aus package.json
+        current_version=$(node -p "require('./package.json').version")
+        # Erhöhe die Prerelease-Version (z.B. von 1.0.5-dev.0 auf 1.0.5-dev.1)
+        npm version --no-git-tag-version prerelease --preid=dev
         # Veröffentliche das Paket
         npm publish --tag dev
 
