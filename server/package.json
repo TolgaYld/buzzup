@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "services/*"
   ],
   "dependencies": {
     "axios": "^1.7.2",
