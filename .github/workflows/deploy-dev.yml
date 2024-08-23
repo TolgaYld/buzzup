@@ -22,7 +22,7 @@ jobs:
     - name: Set up .npmrc for authentication
       run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
-    - name: Increment version and publish Core NPM Package with dev tag
+    - name: Build and publish Core NPM Package with dev tag
       working-directory: ./server/services/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -30,6 +30,7 @@ jobs:
         SECRET_KEY: ${{ secrets.SECRET_KEY }}
         SECRET_KEY_REFRESH: ${{ secrets.SECRET_KEY_REFRESH }}
         REDISURL: ${{ secrets.REDISURL }}
+        REDISPASSWORD: ${{ secrets.REDISPASSWORD }}
         AUTHSERVICE: ${{ secrets.AUTHSERVICE }}
         CHANNELSERVICE: ${{ secrets.CHANNELSERVICE }}
         POSTSERVICE: ${{ secrets.POSTSERVICE }}
@@ -44,7 +45,7 @@ jobs:
       run: |
         for dir in ./server/services/*; do
           if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
-            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' $dir/package.json > $dir/temp.json && mv $dir/temp.json $dir/package.json
+            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' $dir/package.json > temp.json && mv temp.json $dir/package.json
           fi
         done
       shell: bash
