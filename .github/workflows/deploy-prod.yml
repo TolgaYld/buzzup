@@ -23,7 +23,7 @@ jobs:
       run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
     - name: Build and publish Core NPM Package
-      working-directory: ./server/packages/core
+      working-directory: ./server/services/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
         MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
@@ -43,7 +43,7 @@ jobs:
 
     - name: Modify package.json for production environment in all services except core
       run: |
-        for dir in ./server/packages/*; do
+        for dir in ./server/services/*; do
           if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
             jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@latest"' $dir/package.json > temp.json && mv temp.json $dir/package.json
           fi
@@ -78,7 +78,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
-        docker build -f ./server/packages/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} ./server
+        docker build -f ./server/services/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} ./server
         docker push ghcr.io/tolgayld/buzzup/${{ matrix.service }}:latest
 
   flutter:
