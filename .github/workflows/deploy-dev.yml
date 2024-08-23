@@ -45,7 +45,7 @@ jobs:
       run: |
         for dir in ./server/services/*; do
           if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
-            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' $dir/package.json > temp.json && mv temp.json $dir/package.json
+            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' $dir/package.json > $dir/temp.json && mv $dir/temp.json $dir/package.json
           fi
         done
       shell: bash
