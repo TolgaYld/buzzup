@@ -24,17 +24,15 @@ jobs:
           echo "@TolgaYld:registry=https://npm.pkg.github.com/" > ~/.npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> ~/.npmrc
 
-      - name: Get latest version from GitHub Packages using yarn
+      - name: Get latest dev version from GitHub Packages using yarn
         id: get-latest-version
         working-directory: ./server/services/core
         run: |
-          latest_version=$(yarn info @TolgaYld/core-buzzup --json --registry=https://npm.pkg.github.com/ | jq -r '.data.version')
-          echo "Latest version from registry: $latest_version"
-          # Split version and increment
+          latest_version=$(yarn info @TolgaYld/core-buzzup --json --registry=https://npm.pkg.github.com/ | jq -r '.data["dist-tags"].dev')
+          echo "Latest dev version from registry: $latest_version"
+          # Split version and increment the minor version
           base_version=$(echo $latest_version | cut -d'-' -f1)
-          dev_number=$(echo $latest_version | grep -oE '[0-9]+$')
-          new_dev_number=$((dev_number + 1))
-          new_version="${base_version}-dev.${new_dev_number}"
+          new_version=$(node -p "let v='$base_version'.split('.'); v[2]++; v.join('.')")-dev
           echo "New version: $new_version"
           echo "new_version=$new_version" >> $GITHUB_ENV
 
@@ -46,7 +44,6 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SECRET_KEY_REFRESH: ${{ secrets.SECRET_KEY_REFRESH }}
           REDISURL: ${{ secrets.REDISURL }}
-          REDISPASSWORD: ${{ secrets.REDISPASSWORD }}
           AUTHSERVICE: ${{ secrets.AUTHSERVICE }}
           CHANNELSERVICE: ${{ secrets.CHANNELSERVICE }}
           POSTSERVICE: ${{ secrets.POSTSERVICE }}
