@@ -30,7 +30,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     needs: check-changes
-    if: needs.check-changes.outputs.publish_core == 'true'
 
     steps:
     - name: Checkout repository
@@ -44,7 +43,7 @@ jobs:
     - name: Set up .npmrc for authentication
       run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
-    - name: Build and publish Core NPM Package with dev tag
+    - name: Build Core NPM Package
       working-directory: ./server/services/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -61,6 +60,13 @@ jobs:
         REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
       run: |
         npm version prerelease --preid=dev
+
+    - name: Publish Core NPM Package with dev tag
+      if: needs.check-changes.outputs.publish_core == 'true'
+      working-directory: ./server/services/core
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
         npm publish --tag dev
 
     - name: Modify package.json for dev environment in all services except core
