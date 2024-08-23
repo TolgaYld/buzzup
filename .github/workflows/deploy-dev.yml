@@ -36,36 +36,28 @@ jobs:
           echo "New version: $new_version"
           echo "new_version=$new_version" >> $GITHUB_ENV
 
+      - name: Create .env file with environment variables
+        working-directory: ./server/services/core
+        run: |
+          echo "MONGODBCONNECTIONSTRING=${{ secrets.MONGODBCONNECTIONSTRING }}" > .env
+          echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> .env
+          echo "SECRET_KEY_REFRESH=${{ secrets.SECRET_KEY_REFRESH }}" >> .env
+          echo "REDISURL=${{ secrets.REDISURL }}" >> .env
+          echo "REDISPASSWORD=${{ secrets.REDISPASSWORD }}" >> .env
+          echo "AUTHSERVICE=${{ secrets.AUTHSERVICE }}" >> .env
+          echo "CHANNELSERVICE=${{ secrets.CHANNELSERVICE }}" >> .env
+          echo "POSTSERVICE=${{ secrets.POSTSERVICE }}" >> .env
+          echo "COMMENTSERVICE=${{ secrets.COMMENTSERVICE }}" >> .env
+          echo "STORYSERVICE=${{ secrets.STORYSERVICE }}" >> .env
+          echo "REPORTSERVICE=${{ secrets.REPORTSERVICE }}" >> .env
+
       - name: Set new version and publish Core NPM Package with dev tag
         working-directory: ./server/services/core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-          MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          SECRET_KEY_REFRESH: ${{ secrets.SECRET_KEY_REFRESH }}
-          REDISURL: ${{ secrets.REDISURL }}
-          REDISPASSWORD: ${{ secrets.REDISPASSWORD }}
-          AUTHSERVICE: ${{ secrets.AUTHSERVICE }}
-          CHANNELSERVICE: ${{ secrets.CHANNELSERVICE }}
-          POSTSERVICE: ${{ secrets.POSTSERVICE }}
-          COMMENTSERVICE: ${{ secrets.COMMENTSERVICE }}
-          STORYSERVICE: ${{ secrets.STORYSERVICE }}
-          REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
         run: |
           # Erhöhe die Version
           npm version $new_version --no-git-tag-version
-          # Überprüfe, ob alle Umgebungsvariablen gesetzt sind
-          echo "MONGODBCONNECTIONSTRING: $MONGODBCONNECTIONSTRING"
-          echo "SECRET_KEY: $SECRET_KEY"
-          echo "SECRET_KEY_REFRESH: $SECRET_KEY_REFRESH"
-          echo "REDISURL: $REDISURL"
-          echo "REDISPASSWORD: $REDISPASSWORD"
-          echo "AUTHSERVICE: $AUTHSERVICE"
-          echo "CHANNELSERVICE: $CHANNELSERVICE"
-          echo "POSTSERVICE: $POSTSERVICE"
-          echo "COMMENTSERVICE: $COMMENTSERVICE"
-          echo "STORYSERVICE: $STORYSERVICE"
-          echo "REPORTSERVICE: $REPORTSERVICE"
           # Veröffentliche das Paket
           npm publish --tag dev
 
