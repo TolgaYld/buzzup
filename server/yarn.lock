@@ -2,6 +2,11 @@
 # yarn lockfile v1
 
 
+"@TolgaYld/core-buzzup@^1.0.5-dev.0":
+  version "1.0.5-dev.0"
+  resolved "https://npm.pkg.github.com/download/@tolgayld/core-buzzup/1.0.5-dev.0/9a23644716a0d2b362df72471441f9b325f2f19e#9a23644716a0d2b362df72471441f9b325f2f19e"
+  integrity sha512-l5qToVuBshJ+fYOQxycRB2RQrKpRf3z3V+wU8JDY08vt4BN0WGBetf8mk2cIHbun79AS75nvz783kcpfIFkR4A==
+
 "@ampproject/remapping@^2.2.0":
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/@ampproject/remapping/-/remapping-2.3.0.tgz#ed441b6fa600072520ce18b43d2c8cc8caecc7f4"
