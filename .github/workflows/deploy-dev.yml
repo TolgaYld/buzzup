@@ -44,6 +44,7 @@ jobs:
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
           SECRET_KEY_REFRESH: ${{ secrets.SECRET_KEY_REFRESH }}
           REDISURL: ${{ secrets.REDISURL }}
+          REDISPASSWORD: ${{ secrets.REDISPASSWORD }}
           AUTHSERVICE: ${{ secrets.AUTHSERVICE }}
           CHANNELSERVICE: ${{ secrets.CHANNELSERVICE }}
           POSTSERVICE: ${{ secrets.POSTSERVICE }}
@@ -51,7 +52,21 @@ jobs:
           STORYSERVICE: ${{ secrets.STORYSERVICE }}
           REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
         run: |
+          # Erhöhe die Version
           npm version $new_version --no-git-tag-version
+          # Überprüfe, ob alle Umgebungsvariablen gesetzt sind
+          echo "MONGODBCONNECTIONSTRING: $MONGODBCONNECTIONSTRING"
+          echo "SECRET_KEY: $SECRET_KEY"
+          echo "SECRET_KEY_REFRESH: $SECRET_KEY_REFRESH"
+          echo "REDISURL: $REDISURL"
+          echo "REDISPASSWORD: $REDISPASSWORD"
+          echo "AUTHSERVICE: $AUTHSERVICE"
+          echo "CHANNELSERVICE: $CHANNELSERVICE"
+          echo "POSTSERVICE: $POSTSERVICE"
+          echo "COMMENTSERVICE: $COMMENTSERVICE"
+          echo "STORYSERVICE: $STORYSERVICE"
+          echo "REPORTSERVICE: $REPORTSERVICE"
+          # Veröffentliche das Paket
           npm publish --tag dev
 
       - name: Modify package.json for dev environment in all services except core
@@ -68,6 +83,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
+          yarn config set @TolgaYld:registry https://npm.pkg.github.com/
           yarn install
 
   build-docker-images:
