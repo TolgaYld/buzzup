@@ -21,17 +21,18 @@ jobs:
       
       - name: Set up .npmrc for authentication
         run: |
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
+          echo "@TolgaYld:registry=https://npm.pkg.github.com/" > ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> ~/.npmrc
 
-      - name: Get latest version from GitHub Packages
+      - name: Get latest version from GitHub Packages using yarn
         id: get-latest-version
         working-directory: ./server/services/core
         run: |
-          latest_version=$(npm show @TolgaYld/core-buzzup@dev version)
+          latest_version=$(yarn info @TolgaYld/core-buzzup --json --registry=https://npm.pkg.github.com/ | jq -r '.data.version')
           echo "Latest version from registry: $latest_version"
           # Split version and increment
           base_version=$(echo $latest_version | cut -d'-' -f1)
-          dev_number=$(echo $latest_version | cut -d'.' -f4)
+          dev_number=$(echo $latest_version | grep -oE '[0-9]+$')
           new_dev_number=$((dev_number + 1))
           new_version="${base_version}-dev.${new_dev_number}"
           echo "New version: $new_version"
