@@ -6,9 +6,31 @@ on:
       - develop
 
 jobs:
+  check-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      publish_core: ${{ steps.check.outputs.publish_core }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Check for changes in core folder
+      id: check
+      run: |
+        git fetch origin develop
+        if git diff --quiet origin/develop -- ./server/services/core; then
+          echo "publish_core=false" >> $GITHUB_ENV
+          echo "::set-output name=publish_core::false"
+        else
+          echo "publish_core=true" >> $GITHUB_ENV
+          echo "::set-output name=publish_core::true"
+        fi
+
   build-core:
     runs-on: ubuntu-latest
     environment: dev
+    needs: check-changes
+    if: needs.check-changes.outputs.publish_core == 'true'
 
     steps:
     - name: Checkout repository
@@ -45,7 +67,7 @@ jobs:
       run: |
         for dir in ./server/services/*; do
           if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
-            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' $dir/package.json > $dir/temp.json && mv $dir/temp.json $dir/package.json
+            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' $dir/package.json > temp.json && mv temp.json $dir/package.json
           fi
         done
       shell: bash
