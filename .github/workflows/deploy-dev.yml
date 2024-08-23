@@ -36,7 +36,7 @@ jobs:
           echo "New version: $new_version"
           echo "new_version=$new_version" >> $GITHUB_ENV
 
-      - name: Create .env file with environment variables
+      - name: Create .env file for core package
         working-directory: ./server/services/core
         run: |
           echo "MONGODBCONNECTIONSTRING=${{ secrets.MONGODBCONNECTIONSTRING }}" > .env
@@ -58,6 +58,18 @@ jobs:
         run: |
           # Erhöhe die Version
           npm version $new_version --no-git-tag-version
+          # Überprüfe, ob alle Umgebungsvariablen gesetzt sind
+          echo "MONGODBCONNECTIONSTRING: $MONGODBCONNECTIONSTRING"
+          echo "SECRET_KEY: $SECRET_KEY"
+          echo "SECRET_KEY_REFRESH: $SECRET_KEY_REFRESH"
+          echo "REDISURL: $REDISURL"
+          echo "REDISPASSWORD: $REDISPASSWORD"
+          echo "AUTHSERVICE: $AUTHSERVICE"
+          echo "CHANNELSERVICE: $CHANNELSERVICE"
+          echo "POSTSERVICE: $POSTSERVICE"
+          echo "COMMENTSERVICE: $COMMENTSERVICE"
+          echo "STORYSERVICE: $STORYSERVICE"
+          echo "REPORTSERVICE: $REPORTSERVICE"
           # Veröffentliche das Paket
           npm publish --tag dev
 

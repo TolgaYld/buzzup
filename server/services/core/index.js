@@ -2,7 +2,7 @@
 if (process.env.NODE_ENV === "test")
     require("dotenv").config({ path: __dirname + "/.env.test" });
 if (process.env.NODE_ENV !== "test")
-    require("dotenv").config({ path: __dirname + "/.env" });
+    require("dotenv").config({ path: __dirname + "/.env", debug: true });
 // MODELS
 const User = require("./src/models/userModel");
 const Channel = require("./src/models/channelModel");
