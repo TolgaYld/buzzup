@@ -1,10 +1,5 @@
-log(process.env.NODE_ENV);
-log(process.env.MONGODBCONNECTIONSTRING);
 
-
-
-if (process.env.NODE_ENV === "test")
-    require("dotenv").config({ path: __dirname + "/.env.test" });
+require("dotenv").config();
 // MODELS
 const User = require("./src/models/userModel");
 const Channel = require("./src/models/channelModel");
