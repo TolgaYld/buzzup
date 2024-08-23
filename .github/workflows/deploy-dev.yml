@@ -23,7 +23,21 @@ jobs:
         run: |
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
-      - name: Increment version and publish Core NPM Package with dev tag
+      - name: Get latest version from GitHub Packages
+        id: get-latest-version
+        working-directory: ./server/services/core
+        run: |
+          latest_version=$(npm show @TolgaYld/core-buzzup@dev version)
+          echo "Latest version from registry: $latest_version"
+          # Split version and increment
+          base_version=$(echo $latest_version | cut -d'-' -f1)
+          dev_number=$(echo $latest_version | cut -d'.' -f4)
+          new_dev_number=$((dev_number + 1))
+          new_version="${base_version}-dev.${new_dev_number}"
+          echo "New version: $new_version"
+          echo "new_version=$new_version" >> $GITHUB_ENV
+
+      - name: Set new version and publish Core NPM Package with dev tag
         working-directory: ./server/services/core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -39,17 +53,7 @@ jobs:
           STORYSERVICE: ${{ secrets.STORYSERVICE }}
           REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
         run: |
-          # Hole die aktuelle Version aus package.json
-          current_version=$(node -p "require('./package.json').version")
-          # Überprüfen, ob die nächste Version existiert
-          if npm show @TolgaYld/core-buzzup@$current_version-dev.0 > /dev/null 2>&1; then
-            echo "Konflikt: Version $current_version-dev.0 existiert bereits. Erhöhe die Patch-Version."
-            npm version patch --no-git-tag-version
-          fi
-          # Erhöhe die Prerelease-Version (z.B. von 1.0.5-dev.0 auf 1.0.5-dev.1)
-          npm version prerelease --preid=dev --no-git-tag-version
-          echo "Veröffentlichte Version: $(node -p "require('./package.json').version")"
-          # Veröffentliche das Paket
+          npm version $new_version --no-git-tag-version
           npm publish --tag dev
 
       - name: Modify package.json for dev environment in all services except core
