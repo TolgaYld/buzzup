@@ -11,53 +11,50 @@ jobs:
     environment: dev
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
-      
-      - name: Set up .npmrc for authentication
-        run: |
-          echo "@TolgaYld:registry=https://npm.pkg.github.com/" > ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> ~/.npmrc
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
+    
+    - name: Set up .npmrc for authentication
+      run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
-      - name: Build and publish Core NPM Package with dev tag
-        working-directory: ./server/services/core
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
-          MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
-          SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          SECRET_KEY_REFRESH: ${{ secrets.SECRET_KEY_REFRESH }}
-          REDISURL: ${{ secrets.REDISURL }}
-          AUTHSERVICE: ${{ secrets.AUTHSERVICE }}
-          CHANNELSERVICE: ${{ secrets.CHANNELSERVICE }}
-          POSTSERVICE: ${{ secrets.POSTSERVICE }}
-          COMMENTSERVICE: ${{ secrets.COMMENTSERVICE }}
-          STORYSERVICE: ${{ secrets.STORYSERVICE }}
-          REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
-        run: |
-          npm version prerelease --preid=dev
-          npm publish --tag dev
+    - name: Increment version and publish Core NPM Package with dev tag
+      working-directory: ./server/services/core
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
+        MONGODBCONNECTIONSTRING: ${{ secrets.MONGODBCONNECTIONSTRING }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        SECRET_KEY_REFRESH: ${{ secrets.SECRET_KEY_REFRESH }}
+        REDISURL: ${{ secrets.REDISURL }}
+        AUTHSERVICE: ${{ secrets.AUTHSERVICE }}
+        CHANNELSERVICE: ${{ secrets.CHANNELSERVICE }}
+        POSTSERVICE: ${{ secrets.POSTSERVICE }}
+        COMMENTSERVICE: ${{ secrets.COMMENTSERVICE }}
+        STORYSERVICE: ${{ secrets.STORYSERVICE }}
+        REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
+      run: |
+        npm version prerelease --preid=dev
+        npm publish --tag dev
 
-      - name: Modify package.json for dev environment in all services except core
-        run: |
-          for dir in ./server/services/*; do
-            if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
-              jq '.dependencies."@tolgayld/core-buzzup" = "dev"' $dir/package.json > temp.json && mv temp.json $dir/package.json
-            fi
-          done
-        shell: bash
+    - name: Modify package.json for dev environment in all services except core
+      run: |
+        for dir in ./server/services/*; do
+          if [ -d "$dir" ] && [ -f "$dir/package.json" ] && [[ "$dir" != *"/core" ]]; then
+            jq '.dependencies."@tolgayld/core-buzzup" = "@tolgayld/core-buzzup@dev"' $dir/package.json > $dir/temp.json && mv $dir/temp.json $dir/package.json
+          fi
+        done
+      shell: bash
 
-      - name: Install dependencies with GitHub registry
-        working-directory: ./server
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          yarn config set @TolgaYld:registry https://npm.pkg.github.com/
-          yarn install
+    - name: Install dependencies
+      working-directory: ./server
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        yarn install
 
   build-docker-images:
     runs-on: ubuntu-latest
@@ -67,21 +64,21 @@ jobs:
       matrix:
         service: [gateway, auth-ms, channel-ms, post-ms, story-ms, report-ms, comment-ms]
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 'lts/*'
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 'lts/*'
 
-      - name: Build and push Docker image for ${{ matrix.service }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |
-          docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
-          docker build -f ./server/services/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:develop --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} ./server
-          docker push ghcr.io/tolgayld/buzzup/${{ matrix.service }}:develop
+    - name: Build and push Docker image for ${{ matrix.service }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+      run: |
+        docker login --username ${{ github.actor }} --password ${{ secrets.GH_TOKEN }} ghcr.io
+        docker build -f ./server/services/${{ matrix.service }}/Dockerfile -t ghcr.io/tolgayld/buzzup/${{ matrix.service }}:develop --build-arg GITHUB_TOKEN=${{ secrets.GH_TOKEN }} ./server
+        docker push ghcr.io/tolgayld/buzzup/${{ matrix.service }}:develop
 
   flutter:
     runs-on: ubuntu-latest
@@ -89,8 +86,8 @@ jobs:
     environment: dev
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Flutter steps
-        run: echo "No steps for Flutter yet"
+    - name: Flutter steps
+      run: echo "No steps for Flutter yet"
