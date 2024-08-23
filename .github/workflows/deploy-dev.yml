@@ -21,10 +21,9 @@ jobs:
     
     - name: Set up .npmrc for authentication
       run: |
-        echo "@TolgaYld:registry=https://npm.pkg.github.com/" > ~/.npmrc
-        echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" >> ~/.npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
-    - name: Build and publish Core NPM Package with dev tag
+    - name: Increment version and publish Core NPM Package
       working-directory: ./server/services/core
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -40,7 +39,9 @@ jobs:
         STORYSERVICE: ${{ secrets.STORYSERVICE }}
         REPORTSERVICE: ${{ secrets.REPORTSERVICE }}
       run: |
+        # Inkrementiere die Prerelease-Version
         npm version prerelease --preid=dev
+        # Veröffentliche das Paket
         npm publish --tag dev
 
     - name: Modify package.json for dev environment in all services except core
@@ -52,13 +53,11 @@ jobs:
         done
       shell: bash
 
-    - name: Install dependencies with GitHub registry
+    - name: Install dependencies
       working-directory: ./server
       env:
         GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        yarn config set @TolgaYld:registry https://npm.pkg.github.com/
-        yarn config set registry https://registry.yarnpkg.com/
         yarn install
 
   build-docker-images:
