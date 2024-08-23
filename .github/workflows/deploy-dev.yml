@@ -17,6 +17,9 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 'lts/*'
+    
+    - name: Set up .npmrc for authentication
+      run: echo "//npm.pkg.github.com/:_authToken=${{ secrets.GH_TOKEN }}" > ~/.npmrc
 
     - name: Build and publish Core NPM Package with dev tag
       working-directory: ./server/packages/core
