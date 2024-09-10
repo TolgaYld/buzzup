@@ -34,7 +34,7 @@ type User {
 }
 
 type Mutation{
-    signUpUser(data: CreateUserInput!): AuthUser!
+    signUpUser(data: SignUpUserInput!): AuthUser!
     signInUser(data: SignInUserInput!): AuthUser!
     updateUser(data: UpdateUserInput): AuthUser!
     updateUserPassword(data: updatePasswordInput!): AuthUser!
@@ -42,7 +42,7 @@ type Mutation{
     deleteUserFromDb(id: ID! ): String!
 }
 
-input CreateUserInput{
+input SignUpUserInput{
     username: String!
     email: String!
     password: String!
