@@ -29,7 +29,14 @@ const server = Fastify({
   cors: true,
 });
 
-server.addHook("onRequest", verifyFingerprint);
+if (process.env.NODE_ENV === "production") {
+  server.register(require("fastify-helmet"));
+  server.register(require("fastify-rate-limit"), {
+    max: 100,
+    timeWindow: "1 minute",
+  });
+  server.addHook("onRequest", verifyFingerprint);
+}
 
 const schema = loadSchemaSync(
   path.join(__dirname, "./graphql/schema.graphql"),
