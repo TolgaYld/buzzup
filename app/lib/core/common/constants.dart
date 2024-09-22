@@ -10,3 +10,5 @@ const kCachedTokenKey = 'TOKEN';
 const kCachedRefreshTokenKey = 'REFRESHTOKEN';
 
 const kGeneralFailureMessage = 'Something went wrong. Try again. :(';
+
+const kGraphqlHiveBoxName = 'graphqlCacheBox';

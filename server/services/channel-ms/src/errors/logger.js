@@ -1,5 +1,6 @@
 const { createLogger, transports, format } = require("winston");
 require("winston-mongodb");
+const { MONGODBCONNECTIONSTRING } = require("@TolgaYld/core-buzzup");
 
 let service = process.env.CURRENTSERVICE;
 service = service.toLowerCase();
@@ -7,7 +8,7 @@ service = service.toLowerCase();
 const customerLogger = createLogger({
   transports: [
     new transports.MongoDB({
-      db: process.env.MONGODBCONNECTIONSTRING,
+      db: MONGODBCONNECTIONSTRING,
       filename: `${service.toLowerCase()}-error.log`,
       level: "error",
       collection: "error_logs",

@@ -1,131 +1,107 @@
 const { User, Report } = require("@TolgaYld/core-buzzup");
 const errorHandler = require("../errors/errorHandler");
 
-const findAll = async (request, reply) => {
+const findAll = async (req, res) => {
   try {
-    const id = request.headers.authorization;
+    const id = req.headers.authorization;
     if (id == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(id).exec();
 
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         const findAllReports = await Report.find().exec();
         if (!findAllReports) {
-          return await errorHandler(
-            404,
-            "reports-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "reports-not-found", true, req, res);
         }
 
-        await reply.code(200).send({
+        await res.status(200).json({
           success: true,
           data: findAllReports,
         });
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findOne = async (request, reply) => {
+const findOne = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findOneReport = await Report.findById(id).exec();
 
         if (!findOneReport) {
-          return await errorHandler(
-            404,
-            "report-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "report-not-found", true, req, res);
         }
-        await reply.code(200).send({
+        await res.status(200).json({
           success: true,
           data: findOneReport,
         });
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findAllReportsFromUser = async (request, reply) => {
+const findAllReportsFromUser = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findAllReports = await Report.find({
-          reported_by_user: id,
+          created_by: id,
         }).exec();
 
         if (!findAllReports) {
-          return await errorHandler(
-            404,
-            "reports-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "reports-not-found", true, req, res);
         }
-        await reply.code(200).send({
+        await res.status(200).json({
           success: true,
           data: findAllReports,
         });
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findAllReportedsFromUser = async (request, reply) => {
+const findAllReportedsFromUser = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findAllReports = await Report.find({
           reported_user: id,
         }).exec();
         if (!findAllReports) {
-          return await errorHandler(
-            404,
-            "reports-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "reports-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findAllReports,
           });
@@ -133,36 +109,30 @@ const findAllReportedsFromUser = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const createReport = async (request, reply) => {
+const createReport = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
 
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         const createdReport = await Report.create({
-          ...request.body.data,
-          reported_by_user: userId,
+          ...req.body.data,
+          created_by: userId,
         });
 
         if (!createdReport) {
-          return await errorHandler(
-            400,
-            "report-not-created",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(400, "report-not-created", true, req, res);
         } else {
-          await reply.code(201).send({
+          await res.status(201).json({
             success: true,
             data: createdReport,
           });
@@ -170,36 +140,30 @@ const createReport = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(400, error, false, request, reply);
+    return await errorHandler(400, error, false, req, res);
   }
 };
 
-const updateReport = async (request, reply) => {
+const updateReport = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findReport = await Report.findById(id).exec();
 
         if (!findReport) {
-          return await errorHandler(
-            404,
-            "report-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "report-not-found", true, req, res);
         } else {
           const updatedReport = await Report.findByIdAndUpdate(
             findReport._id,
             {
-              ...request.body,
+              ...req.body,
             },
             { new: true },
           ).exec();
@@ -209,11 +173,11 @@ const updateReport = async (request, reply) => {
               400,
               "report-update-failed",
               true,
-              request,
-              reply,
+              req,
+              res,
             );
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: updatedReport,
             });
@@ -222,7 +186,7 @@ const updateReport = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 

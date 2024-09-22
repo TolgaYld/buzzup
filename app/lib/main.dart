@@ -9,11 +9,16 @@ import 'package:buzzup/src/presentation/pages/gps_status/location_service_disabl
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:path_provider/path_provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Geolocator.requestPermission();
+  final appDocumentDir = await getApplicationDocumentsDirectory();
+
+  HiveStore.init(onPath: appDocumentDir.path);
   runApp(
     const ProviderScope(
       child: MyApp(),

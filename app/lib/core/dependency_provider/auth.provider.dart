@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:buzzup/core/utils/fingerprint_manager.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -38,13 +40,20 @@ final fingerprintProvider = FutureProvider<Map<String, String>>((ref) async {
 
 // GraphQL Client Provider
 final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
+  final box = await HiveStore.openBox(kGraphqlHiveBoxName);
   final link = AuthLink(
     getToken: () async => "Bearer ${await ref.read(tokenProvider.future)}",
   ).concat(
     HttpLink(
-      Enviroment.baseUrl,
+      switch (Environment.environment == "test") {
+        true => switch (Platform.isAndroid) {
+            true => "http://10.0.2.2:8000/graphql",
+            false => Environment.baseUrl,
+          },
+        false => Environment.baseUrl,
+      },
       defaultHeaders: {
-        "permission": Enviroment.permission,
+        "permission": Environment.permission,
         ...await ref.read(fingerprintProvider.future),
         "refreshToken": await ref.read(refreshTokenProvider.future) ?? "",
       },
@@ -53,13 +62,12 @@ final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
 
   return GraphQLClient(
     link: link,
-    cache: GraphQLCache(store: HiveStore()),
+    cache: GraphQLCache(store: HiveStore(box)),
   );
 });
 
 // Datasources Providers
-final authRemoteDataSourceProvider =
-    FutureProvider<AuthRemoteDatasrc>((ref) async {
+final authRemoteDataSourceProvider = FutureProvider<AuthRemoteDatasrc>((ref) async {
   final graphqlClient = await ref.read(graphQLClientProvider.future);
   return AuthRemoteDatasrcImpl(graphqlClient);
 });
@@ -78,14 +86,12 @@ final authRepoProvider = FutureProvider<AuthRepo>((ref) async {
 });
 
 // Usecases Providers
-final checkEmailExistsUsecaseProvider =
-    FutureProvider<CheckEmailExistsUsecase>((ref) async {
+final checkEmailExistsUsecaseProvider = FutureProvider<CheckEmailExistsUsecase>((ref) async {
   final authRepo = await ref.read(authRepoProvider.future);
   return CheckEmailExistsUsecase(authRepo);
 });
 
-final checkUsernameExistsUsecaseProvider =
-    FutureProvider<CheckUsernameExistsUsecase>((ref) async {
+final checkUsernameExistsUsecaseProvider = FutureProvider<CheckUsernameExistsUsecase>((ref) async {
   final authRepo = await ref.read(authRepoProvider.future);
   return CheckUsernameExistsUsecase(authRepo);
 });
@@ -100,26 +106,22 @@ final signUpUsecaseProvider = FutureProvider<SignUpUsecase>((ref) async {
   return SignUpUsecase(authRepo);
 });
 
-final authWithProviderUsecaseProvider =
-    FutureProvider<AuthWithProviderUsecase>((ref) async {
+final authWithProviderUsecaseProvider = FutureProvider<AuthWithProviderUsecase>((ref) async {
   final authRepo = await ref.read(authRepoProvider.future);
   return AuthWithProviderUsecase(authRepo);
 });
 
-final updateUserUsecaseProvider =
-    FutureProvider<UpdateUserUsecase>((ref) async {
+final updateUserUsecaseProvider = FutureProvider<UpdateUserUsecase>((ref) async {
   final authRepo = await ref.read(authRepoProvider.future);
   return UpdateUserUsecase(authRepo);
 });
 
-final forgotPasswordUsecaseProvider =
-    FutureProvider<ForgotPasswordUsecase>((ref) async {
+final forgotPasswordUsecaseProvider = FutureProvider<ForgotPasswordUsecase>((ref) async {
   final authRepo = await ref.read(authRepoProvider.future);
   return ForgotPasswordUsecase(authRepo);
 });
 
-final updatePasswordUsecaseProvider =
-    FutureProvider<UpdatePasswordUsecase>((ref) async {
+final updatePasswordUsecaseProvider = FutureProvider<UpdatePasswordUsecase>((ref) async {
   final authRepo = await ref.read(authRepoProvider.future);
   return UpdatePasswordUsecase(authRepo);
 });

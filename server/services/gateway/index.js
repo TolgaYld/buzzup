@@ -1,15 +1,11 @@
-const fastify = require("./src/app");
+const app = require("./src/app");
 const { log } = require("@TolgaYld/core-buzzup");
 const port = parseInt(process.env.PORT) || 8000;
 
 // Run the server!
-fastify.listen({ port, host: "0.0.0.0" }, function (err, address) {
-  if (err) {
-    fastify.log.error(err);
-    process.exit(1);
-  }
-  // Server is now listening on ${address}
-  log(`${process.env.CURRENTSERVICE} Server Up! on address: ${address}`);
+app.app.listen({ port }, () => {
+  log(`${process.env.CURRENTSERVICE} Server Up!}`);
+  log(`gql path is ${app.apolloServer.graphqlPath}`);
 });
 
 require("./src/db/dbConnection");

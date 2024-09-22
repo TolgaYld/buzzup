@@ -8,7 +8,7 @@ class FingerprintManager {
   static Future<Map<String, String>> generateFingerprint() async {
     final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     final nonce = UniqueKey().toString();
-    const secretKey = Enviroment.secretKey;
+    const secretKey = Environment.secretKey;
 
     final dataString = '$timestamp|$nonce|$secretKey';
     final bytes = utf8.encode(dataString);

@@ -1,28 +1,22 @@
 const { User, Post, Comment } = require("@TolgaYld/core-buzzup");
 const errorHandler = require("../errors/errorHandler");
 
-const findAll = async (request, reply) => {
+const findAll = async (req, res) => {
   try {
-    const id = request.headers.authorization;
+    const id = req.headers.authorization;
     if (id == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(id).exec();
 
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         const findAllComments = await Comment.find().exec();
         if (!findAllComments) {
-          return await errorHandler(
-            404,
-            "comments-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "comments-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findAllComments,
           });
@@ -30,33 +24,27 @@ const findAll = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findOne = async (request, reply) => {
+const findOne = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findOneComment = await Comment.findById(id).exec();
 
         if (!findOneComment) {
-          return await errorHandler(
-            404,
-            "comment-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "comment-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findOneComment,
           });
@@ -64,33 +52,27 @@ const findOne = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findAllCommentsFromUser = async (request, reply) => {
+const findAllCommentsFromUser = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findAllComments = await Comment.find({ user: id }).exec();
 
         if (!findAllComments) {
-          return await errorHandler(
-            404,
-            "comments-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "comments-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findAllComments,
           });
@@ -98,33 +80,28 @@ const findAllCommentsFromUser = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const createComment = async (request, reply) => {
+const createComment = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const findPost = await Post.findById(request.body.data.post);
+        const findPost = await Post.findById(req.body.data.post);
 
         if (!findPost) {
-          return await errorHandler(
-            404,
-            "post-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "post-not-found", true, req, res);
         } else {
           const createdComment = await Comment.create({
-            ...request.body.data,
+            ...req.body.data,
+            created_by: findUser,
           });
 
           if (!createdComment) {
@@ -132,8 +109,8 @@ const createComment = async (request, reply) => {
               400,
               "comment-not-created",
               true,
-              request,
-              reply,
+              req,
+              res,
             );
           } else {
             const addCommentToPost = await Post.findByIdAndUpdate(
@@ -145,11 +122,11 @@ const createComment = async (request, reply) => {
                 400,
                 "comment-not-created",
                 true,
-                request,
-                reply,
+                req,
+                res,
               );
             } else {
-              await reply.code(201).send({
+              await res.status(201).json({
                 success: true,
                 data: createdComment,
               });
@@ -159,47 +136,35 @@ const createComment = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(400, error, false, request, reply);
+    return await errorHandler(400, error, false, req, res);
   }
 };
 
-const updateComment = async (request, reply) => {
+const updateComment = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const findPost = await Post.findById(request.body.data.post).exec();
+        const findPost = await Post.findById(req.body.data.post).exec();
 
         if (!findPost) {
-          return await errorHandler(
-            404,
-            "post-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "post-not-found", true, req, res);
         } else {
-          const { id } = request.params;
+          const { id } = req.params;
           const findComment = await Comment.findById(id).exec();
 
           if (!findComment) {
-            return await errorHandler(
-              404,
-              "comment-not-found",
-              true,
-              request,
-              reply,
-            );
+            return await errorHandler(404, "comment-not-found", true, req, res);
           } else {
             const updatedComment = await Comment.findByIdAndUpdate(
               id,
               {
-                ...request.body.data,
+                ...req.body.data,
               },
               { new: true },
             ).exec();
@@ -209,11 +174,11 @@ const updateComment = async (request, reply) => {
                 400,
                 "comment-update-failed",
                 true,
-                request,
-                reply,
+                req,
+                res,
               );
             } else {
-              await reply.code(200).send({
+              await res.status(200).json({
                 success: true,
                 data: updatedComment,
               });
@@ -223,31 +188,25 @@ const updateComment = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const likeOrDislikeComment = async (request, reply) => {
+const likeOrDislikeComment = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findComment = await Comment.findById(id).exec();
 
         if (!findComment) {
-          return await errorHandler(
-            404,
-            "comment-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "comment-not-found", true, req, res);
         } else {
           let updatedComment;
           let hasAlreadyLiked = false;
@@ -263,7 +222,7 @@ const likeOrDislikeComment = async (request, reply) => {
               hasAlreadyDisliked = true;
             }
           });
-          if (request.body.like) {
+          if (req.body.like) {
             if (hasAlreadyLiked) {
               updatedComment = await Comment.findByIdAndUpdate(
                 findComment._id,
@@ -324,15 +283,9 @@ const likeOrDislikeComment = async (request, reply) => {
           }
 
           if (!updatedComment) {
-            return await errorHandler(
-              400,
-              "update-failed",
-              true,
-              request,
-              reply,
-            );
+            return await errorHandler(400, "update-failed", true, req, res);
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: updatedComment,
             });
@@ -341,32 +294,25 @@ const likeOrDislikeComment = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const deleteComment = async (request, reply) => {
+const deleteComment = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
 
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findComment = await Comment.findById(id).exec();
-
         if (!findComment) {
-          return await errorHandler(
-            404,
-            "comment-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "comment-not-found", true, req, res);
         } else {
           const deletedComment = await Comment.findByIdAndDelete(id).exec();
 
@@ -375,11 +321,11 @@ const deleteComment = async (request, reply) => {
               400,
               "comment-delete-failed",
               true,
-              request,
-              reply,
+              req,
+              res,
             );
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: findComment,
             });
@@ -388,7 +334,7 @@ const deleteComment = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 

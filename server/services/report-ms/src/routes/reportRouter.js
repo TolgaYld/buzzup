@@ -1,16 +1,20 @@
 const reportController = require("../controllers/reportController");
-module.exports = function (fastify, opts, done) {
-  fastify.get("/findAll", reportController.findAll);
-  fastify.get("/find/:id", reportController.findOne);
-  fastify.get(
-    "/findAllReportsFromUser/:id",
-    reportController.findAllReportsFromUser,
-  );
-  fastify.get(
-    "/findAllReportedsFromUser/:id",
-    reportController.findAllReportedsFromUser,
-  );
-  fastify.post("/create", reportController.createReport);
-  fastify.patch("/update/:id", reportController.updateReport);
-  done();
-};
+const router = require("express").Router();
+const permissionHandler = require("../middlewares/persmissionHandler");
+
+router.get("/findAll", permissionHandler, reportController.findAll);
+router.get("/find/:id", permissionHandler, reportController.findOne);
+router.get(
+  "/findAllReportsFromUser/:id",
+  permissionHandler,
+  reportController.findAllReportsFromUser,
+);
+router.get(
+  "/findAllReportedsFromUser/:id",
+  permissionHandler,
+  reportController.findAllReportedsFromUser,
+);
+router.post("/create", permissionHandler, reportController.createReport);
+router.patch("/update/:id", permissionHandler, reportController.updateReport);
+
+module.exports = router;

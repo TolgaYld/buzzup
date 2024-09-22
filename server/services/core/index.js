@@ -16,8 +16,6 @@ const Report = require("./src/models/reportModel");
 const getUserId = require("./src/utils/getId");
 const { log } = require("./src/modules/logModule");
 
-
-
 // ENVIRONMENT VARIABLES
 
 const {

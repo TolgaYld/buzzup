@@ -68,6 +68,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
+        print(failure.message);
         state = ErrorAuthState(failure.message);
         break;
       case Right(value: final user):
@@ -77,8 +78,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> _authWithProviderHandler(AuthWithProviderEvent event) async {
-    final authWithProviderUsecase =
-        await ref.read(authWithProviderUsecaseProvider.future);
+    final authWithProviderUsecase = await ref.read(authWithProviderUsecaseProvider.future);
 
     final result = await authWithProviderUsecase(
       (
@@ -115,8 +115,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> _updatePasswordHandler(UpdatePasswordEvent event) async {
-    final updatePasswordUsecase =
-        await ref.read(updatePasswordUsecaseProvider.future);
+    final updatePasswordUsecase = await ref.read(updatePasswordUsecaseProvider.future);
 
     final result = await updatePasswordUsecase(
       (
@@ -136,8 +135,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   Future<void> _forgotPasswordHandler(ForgotPasswordEvent event) async {
-    final forgotPasswordUsecase =
-        await ref.read(forgotPasswordUsecaseProvider.future);
+    final forgotPasswordUsecase = await ref.read(forgotPasswordUsecaseProvider.future);
 
     final result = await forgotPasswordUsecase(event.email);
 

@@ -1,11 +1,11 @@
-import 'package:buzzup/core/hooks/use_theme.hook.dart';
 import 'package:flutter/material.dart';
 
 class CoreUtils {
   const CoreUtils._();
 
   static void showSnackBar(BuildContext context, String message) {
-    final theme = useTheme();
+    // Verwende einen separaten Hook zum Abrufen des Themas innerhalb des HookWidget-Kontexts
+    final theme = Theme.of(context);
     ScaffoldMessenger.of(context)
       ..removeCurrentSnackBar()
       ..showSnackBar(

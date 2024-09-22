@@ -11,14 +11,14 @@ type Comment {
   _id: ID!
   text: String
   media: [String]
-  user: User!
+  created_by: User!
   post: Post!
   type: String!
   likes: [User!]!
-  dislikes: [User!]!
+  dislikes: [User!]
   is_active: Boolean
-  is_deleted: Boolean
-  created_at: String
+  is_deleted: Boolean!
+  created_at: String!
   last_update_from_user: ID
 }
 

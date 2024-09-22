@@ -1,9 +1,7 @@
-const createError = require("http-errors");
 const errorHandler = require("../../../errors/errorHandler");
-const axios = require("axios");
 
 const Channel = {
-  users: async (parent, args, { req }) => {
+  subscriptions: async (parent, args, { req }) => {
     try {
       return await parent.users;
     } catch (error) {

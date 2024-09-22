@@ -4,7 +4,7 @@ const axios = require("axios");
 const { getUserId } = require("@TolgaYld/core-buzzup");
 
 const Comment = {
-  user: async (parent, args, { req }) => {
+  created_by: async (parent, args, { req }) => {
     const id = await getUserId(req);
     try {
       const headers = { Authorization: id };

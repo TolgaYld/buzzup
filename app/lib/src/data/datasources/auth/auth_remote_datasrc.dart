@@ -159,11 +159,11 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
         MutationOptions(
           document: gql(GqlMutation.signUpMutation),
           variables: {
-            'username': username,
-            'email': email,
-            'password': password,
-            'repeat_password': repeatPassword,
-            'coordinates': coordinates,
+            "data": {
+              'username': username,
+              'email': email,
+              'password': password,
+            },
           },
         ),
       );

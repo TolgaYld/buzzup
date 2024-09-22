@@ -1,6 +1,7 @@
 const { getUserId } = require("@TolgaYld/core-buzzup");
 const createError = require("http-errors");
 const errorHandler = require("../../../errors/errorHandler");
+const hasPermissionKey = require("../../../middlewares/persmissionHandler");
 const axios = require("axios");
 
 const Query = {
@@ -108,6 +109,64 @@ const Query = {
         errorHandler(error.response.status, error.response.data.msg);
         throw Error(error.response.data.msg);
       }
+    }
+  },
+
+  checkIfEmailExists: async (parent, args, { req }) => {
+    try {
+      const hasPermission = hasPermissionKey(req);
+      if (!hasPermission) {
+        throw Error(createError(401, "unauthorized"));
+      } else {
+        const headers = {
+          permission: req.headers.permission,
+        };
+        const response = await axios.get(
+          process.env.AUTHSERVICE + "/checkEmail/" + args.email,
+          {
+            type: "CheckIfEmailExists",
+            headers,
+          },
+        );
+        if (response.status < 400 && response.data.success) {
+          return response.data.data;
+        } else {
+          errorHandler(response.status, response.data.msg);
+          throw Error(createError(response.status, response.data.msg));
+        }
+      }
+    } catch (error) {
+      errorHandler(error.response.status, error.response.data.msg);
+      throw Error(error.response.data.msg);
+    }
+  },
+
+  checkIfUsernameExists: async (parent, args, { req }) => {
+    try {
+      const hasPermission = hasPermissionKey(req);
+      if (!hasPermission) {
+        throw Error(createError(401, "unauthorized"));
+      } else {
+        const headers = {
+          permission: req.headers.permission,
+        };
+        const response = await axios.get(
+          process.env.AUTHSERVICE + "/checkUsername/" + args.username,
+          {
+            type: "CheckIfUsernameExists",
+            headers,
+          },
+        );
+        if (response.status < 400 && response.data.success) {
+          return response.data.data;
+        } else {
+          errorHandler(response.status, response.data.msg);
+          throw Error(createError(response.status, response.data.msg));
+        }
+      }
+    } catch (error) {
+      errorHandler(error.response.status, error.response.data.msg);
+      throw Error(error.response.data.msg);
     }
   },
 

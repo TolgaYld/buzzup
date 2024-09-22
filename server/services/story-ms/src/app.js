@@ -1,9 +1,11 @@
-if (process.env.NODE_ENV === "test")
+if (process.env.NODE_ENV === "test") {
   require("dotenv").config({ path: `.env.${process.env.NODE_ENV}` });
+}
+const express = require("express");
+const path = require("path");
 const i18next = require("i18next");
 const Backend = require("i18next-fs-backend");
 const i18nextMiddleware = require("i18next-http-middleware");
-const path = require("path");
 
 i18next
   .use(Backend)
@@ -17,25 +19,25 @@ i18next
     },
   });
 
-const fastify = require("fastify")({
-  logger: process.env.NODE_ENV !== "production",
-  cors: true,
+const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
+
+const storyRouter = require("./routes/storyRouter");
+
+// Use routes
+
+app.use("/", storyRouter);
+
+app.get("/hc", (req, res) => {
+  res.json({ hello: "world" });
 });
 
-fastify.register(require("./routes/storyRouter"), {
-  logLevel:
-    process.env.NODE_ENV === "test" || process.env.NODE_ENV === "development"
-      ? "debug"
-      : "warn",
-  prefix: "/api/v1.0",
-});
-
-fastify.get("/api/v1.0/hc", (request, reply) => {
-  reply.send({ hello: "world" });
-});
-
-fastify.register(i18nextMiddleware.plugin, { i18next });
+app.use(i18nextMiddleware.handle(i18next));
 
 // Run the server!
 
-module.exports = fastify;
+module.exports = app;

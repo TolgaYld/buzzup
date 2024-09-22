@@ -7,6 +7,8 @@
             "type": "dart",
             "cwd": "app",
             "args": [
+                "--dart-define=ENVIRONMENT=",
+                "--dart-define=BASE_URL=",
                 "--dart-define=SECRET_KEY=",
                 "--dart-define=SECRET_KEY_REFRESH="
             ]

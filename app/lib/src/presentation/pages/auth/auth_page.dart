@@ -5,6 +5,7 @@ import 'package:buzzup/core/hooks/use_theme.hook.dart';
 import 'package:buzzup/core/utils/core_utils.dart';
 import 'package:buzzup/src/application/auth/provider/auth.provider.dart';
 import 'package:buzzup/src/application/auth/provider/auth_mode.provider.dart';
+import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth_mode.state.dart';
 import 'package:buzzup/src/presentation/widgets/auth/forgot_password_widget.dart';
@@ -27,6 +28,7 @@ class AuthPage extends HookConsumerWidget {
     final theme = useTheme();
     final l10n = useL10n();
     final authState = ref.watch(authProvider);
+    final notifier = ref.read(authProvider.notifier);
     final authModeState = ref.watch(authModeProvider);
     final authModeNotifier = ref.read(authModeProvider.notifier);
 
@@ -44,7 +46,18 @@ class AuthPage extends HookConsumerWidget {
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            switch (authModeState) {
+              case SignInAuthModeState():
+                break;
+              case SignUpAuthModeState():
+                await notifier.event(SignUpEvent(
+                    email: "aaa@aaa.de", password: "passwor444dddd", repeatPassword: "passwor444dddd", username: "username", coordinates: [0.0, 0.0]));
+                break;
+              case ForgotPasswordAuthModeState():
+                break;
+            }
+          },
           child: Text(
             switch (authModeState) {
               SignInAuthModeState() => l10n.sign_in,

@@ -4,7 +4,7 @@ const axios = require("axios");
 const { getUserId } = require("@TolgaYld/core-buzzup");
 
 const Post = {
-  user: async (parent, args, { req }) => {
+  created_by: async (parent, args, { req }) => {
     const id = await getUserId(req);
     try {
       const headers = { Authorization: id };
@@ -27,9 +27,9 @@ const Post = {
     }
   },
 
-  channel: async (parent, args, { req }) => {
+  channels: async (parent, args, { req }) => {
     try {
-      return await parent.channel;
+      return await parent.channels;
     } catch (error) {
       errorHandler(400, error);
       throw Error(error);

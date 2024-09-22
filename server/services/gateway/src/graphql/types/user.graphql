@@ -3,81 +3,99 @@
 # import Comment from "./comment.graphql"
 # import Report from "./report.graphql"
 # import Channel from "./channel.graphql"
+# import Location from "./location.graphql"
+# import Token from "./token.graphql"
 
 type Query {
-    user(id: ID!): User!
-    users: [User!]!
-    userWithUsername(username: String!): User
-    userWithEmail(email: String!): User
+  user(id: ID!): User!
+  users: [User!]!
+  userWithUsername(username: String!): User
+  userWithEmail(email: String!): User
+  checkIfUsernameExists(username: String!): Boolean!
+  checkIfEmailExists(email: String!): Boolean!
 }
 
 type User {
-    _id: ID!
-    email: String!
-    username: String!
-    posts: [Post]
-    storys: [Story]
-    comments: [Comment]
-    reports: [Report]
-    reporteds: [Report]
-    channels: [Channel!]!
-    coordinates: [Float!]!
-    distance: Int!
-    points: Int!
-    official: Boolean!
-    device_type: String
-    device_id: String
-    is_deleted: Boolean
-    is_banned: Boolean
-    is_admin: Boolean
-    last_update_from_user: ID
+  _id: ID!
+  email: String!
+  username: String!
+  posts: [Post]
+  storys: [Story]
+  comments: [Comment]
+  reports: [Report]
+  reporteds: [Report]
+  channels: [Channel!]!
+  location: Location!
+  distance: Int!
+  points: Int!
+  provider: String!
+  provider_id: String
+  auto_generated_username: Boolean!
+  username_change_counter: Int!
+  official: Boolean!
+  device_type: String
+  device_id: String
+  is_deleted: Boolean!
+  is_banned: Boolean!
+  is_admin: Boolean!
+  created_at: String
+  last_update_from_user: ID
 }
 
-type Mutation{
-    signUpUser(data: SignUpUserInput!): AuthUser!
-    signInUser(data: SignInUserInput!): AuthUser!
-    updateUser(data: UpdateUserInput): AuthUser!
-    updateUserPassword(data: updatePasswordInput!): AuthUser!
-    deleteUser(id: ID!): User!
-    deleteUserFromDb(id: ID! ): String!
+type Mutation {
+  signUpUser(data: SignUpUserInput!): AuthUser!
+  signInUser(data: SignInUserInput!): AuthUser!
+  authUserWithProvider(data: AuthUserWithProviderInput): AuthUser!
+  updateUser(data: UpdateUserInput): AuthUser!
+  resetPassword(email: String): User
+  updateUserPassword(data: String!): AuthUser!
+  deleteUser(id: ID!): User!
+  deleteUserFromDb(id: ID!): String!
 }
 
-input SignUpUserInput{
-    username: String!
-    email: String!
-    password: String!
+input AuthUserWithProviderInput {
+  email: String!
+  provider: String!
+  provider_id: String!
+  coordinates: [Float!]!
 }
 
-input UpdateUserInput{
-    email: String
-    username: String
-    coordinates: [Float!]!
-    distance: Int
-    official: Boolean
-    is_deleted: Boolean
-    is_banned: Boolean
-    email_confirmed: Boolean
-    is_admin: Boolean
-    last_update_from_user: ID,
+input SignUpUserInput {
+  username: String!
+  email: String!
+  password: String!
+  repeat_password: String!
+  coordinates: [Float!]!
+}
+
+input UpdateUserInput {
+  email: String
+  username: String
+  coordinates: [Float!]!
+  distance: Int
+  official: Boolean
+  is_deleted: Boolean
+  is_banned: Boolean
+  email_confirmed: Boolean
+  is_admin: Boolean
+  last_update_from_user: ID
 }
 
 input updatePasswordInput {
-    password: String!
-    repeat_password: String!
+  password: String!
+  repeat_password: String!
 }
 
 input SignInUserInput {
-    signInEmailOrUsername: String
-    password: String!
+  emailOrUsername: String
+  password: String!
 }
 
 type AuthUser {
-    user: User
-    token: String!
-    refreshToken: String!
+  user: User!
+  tokens: Token!
 }
 
-
 type Subscription {
-    user: User!
+  user: User!
 }

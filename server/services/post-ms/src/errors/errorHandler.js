@@ -4,8 +4,8 @@ const errorHandler = async (
   statusCode,
   errorMessage,
   loadi18next,
-  request,
-  reply,
+  req,
+  res,
 ) => {
   if (loadi18next) {
     i18next.changeLanguage("en", (err, t) => {
@@ -15,15 +15,15 @@ const errorHandler = async (
       log.error(`Status Code: ${statusCode} / Error Message: ${loadVariable}`);
     });
 
-    return await reply
-      .code(statusCode)
-      .send({ msg: await request.t(errorMessage), success: false });
+    return await res
+      .status(statusCode)
+      .json({ msg: await req.t(errorMessage), success: false });
   } else {
     log.error(`Status Code: ${statusCode} / Error Message: ${errorMessage}`);
 
-    return await reply
-      .code(statusCode)
-      .send({ msg: errorMessage, success: false });
+    return await res
+      .status(statusCode)
+      .json({ msg: errorMessage, success: false });
   }
 };
 

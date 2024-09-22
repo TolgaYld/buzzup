@@ -1,27 +1,21 @@
 const { Story, User } = require("@TolgaYld/core-buzzup");
 const errorHandler = require("../errors/errorHandler");
 
-const findAll = async (request, reply) => {
+const findAll = async (req, res) => {
   try {
-    const id = request.headers.authorization;
+    const id = req.headers.authorization;
     if (id == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(id).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         const findAllStorys = await Story.find().exec();
         if (!findAllStorys) {
-          return await errorHandler(
-            404,
-            "storys-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "storys-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findAllStorys,
           });
@@ -29,33 +23,27 @@ const findAll = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findOne = async (request, reply) => {
+const findOne = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findOneStory = await Story.findById(id).exec();
 
         if (!findOneStory) {
-          return await errorHandler(
-            404,
-            "story-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "story-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findOneStory,
           });
@@ -63,33 +51,27 @@ const findOne = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findAllStorysFromUser = async (request, reply) => {
+const findAllStorysFromUser = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findAllStorys = await Story.find({ user: id }).exec();
 
         if (!findAllStorys) {
-          return await errorHandler(
-            404,
-            "story-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "story-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findAllStorys,
           });
@@ -97,36 +79,30 @@ const findAllStorysFromUser = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const createStory = async (request, reply) => {
+const createStory = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
 
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         const createdStory = await Story.create({
-          ...request.body.data,
+          ...req.body.data,
           user: findUser,
         });
 
         if (!createdStory) {
-          return await errorHandler(
-            400,
-            "story-not-created",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(400, "story-not-created", true, req, res);
         } else {
-          await reply.code(201).send({
+          await res.status(201).json({
             success: true,
             data: createdStory,
           });
@@ -134,50 +110,38 @@ const createStory = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(400, error, false, request, reply);
+    return await errorHandler(400, error, false, req, res);
   }
 };
 
-const updateStory = async (request, reply) => {
+const updateStory = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findStory = await Story.findById(id).exec();
 
         if (!findStory) {
-          return await errorHandler(
-            404,
-            "story-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "story-not-found", true, req, res);
         } else {
           const updatedStory = await Story.findByIdAndUpdate(
             findStory._id,
             {
-              ...request.body,
+              ...req.body,
             },
             { new: true },
           ).exec();
 
           if (!updatedStory) {
-            return await errorHandler(
-              400,
-              "update-failed",
-              true,
-              request,
-              reply,
-            );
+            return await errorHandler(400, "update-failed", true, req, res);
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: updatedStory,
             });
@@ -186,31 +150,25 @@ const updateStory = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const likeOrDislikeStory = async (request, reply) => {
+const likeOrDislikeStory = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findStory = await Story.findById(id).exec();
 
         if (!findStory) {
-          return await errorHandler(
-            404,
-            "story-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "story-not-found", true, req, res);
         } else {
           let updatedStory;
           let hasAlreadyLiked = false;
@@ -226,7 +184,7 @@ const likeOrDislikeStory = async (request, reply) => {
               hasAlreadyDisliked = true;
             }
           });
-          if (request.body.like) {
+          if (req.body.like) {
             if (hasAlreadyLiked) {
               updatedStory = await Story.findByIdAndUpdate(
                 findStory._id,
@@ -287,15 +245,9 @@ const likeOrDislikeStory = async (request, reply) => {
           }
 
           if (!updatedStory) {
-            return await errorHandler(
-              400,
-              "update-failed",
-              true,
-              request,
-              reply,
-            );
+            return await errorHandler(400, "update-failed", true, req, res);
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: updatedStory,
             });
@@ -304,32 +256,32 @@ const likeOrDislikeStory = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findInRadius = async (request, reply) => {
+const findInRadius = async (req, res) => {
   try {
-    const id = request.headers.authorization;
+    const id = req.headers.authorization;
     if (id == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(id).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         //Update longitude & latitude
         const updatedUser = await User.findByIdAndUpdate(
           id,
           {
             location: {
-              coordinates: request.body.coordinates,
+              coordinates: req.body.coordinates,
             },
           },
           { new: true },
         ).exec();
         if (!updatedUser) {
-          return await errorHandler(400, "update-failed", true, request, reply);
+          return await errorHandler(400, "update-failed", true, req, res);
         } else {
           const findAllStorys = await Story.find({
             location: {
@@ -346,15 +298,9 @@ const findInRadius = async (request, reply) => {
             },
           }).exec();
           if (!findAllStorys) {
-            return await errorHandler(
-              404,
-              "storys-not-found",
-              true,
-              request,
-              reply,
-            );
+            return await errorHandler(404, "storys-not-found", true, req, res);
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: findAllStorys,
             });
@@ -363,32 +309,26 @@ const findInRadius = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const deleteStory = async (request, reply) => {
+const deleteStory = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
 
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findStory = await Story.findById(id).exec();
 
         if (!findStory) {
-          return await errorHandler(
-            404,
-            "story-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "story-not-found", true, req, res);
         } else {
           const deletedStory = await Story.findByIdAndDelete(id).exec();
 
@@ -397,11 +337,11 @@ const deleteStory = async (request, reply) => {
               400,
               "story-delete-failed",
               true,
-              request,
-              reply,
+              req,
+              res,
             );
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: findStory,
             });
@@ -410,7 +350,7 @@ const deleteStory = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 

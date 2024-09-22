@@ -11,7 +11,7 @@ type Query {
 type Channel {
   _id: ID!
   name: String!
-  users: [User]
+  subscriptions: [User]
   posts: [Post]
   storys: [Story]
   created_by: User

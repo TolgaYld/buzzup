@@ -12,14 +12,15 @@ type Query {
 type Report {
   _id: ID!,
   reason: String!
-  reported_by_user: User! 
+  created_by: User! 
   reported_user: User!
   post: Post
   comment: Comment
   channel: Channel
   story: Story
   is_done: Boolean!
-  notes_from_us: String
+  notes_about_report: String
+  created_at: String!
   last_update_from_user: ID
 }
 
@@ -37,14 +38,14 @@ input CreateReportInput {
 }
 input UpdateReportInput {
   reason: String
-  reported_by_user: ID 
+  created_by: ID 
   reported_user: ID
   channel: ID
   post: ID
   comment: ID
   story: ID
   is_done: Boolean!
-  notes_from_us: String
+  notes_about_report: String
   is_deleted: Boolean
 }
 

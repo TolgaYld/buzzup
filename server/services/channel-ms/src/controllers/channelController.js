@@ -1,27 +1,21 @@
 const { Channel, User } = require("@TolgaYld/core-buzzup")
 const errorHandler = require("../errors/errorHandler");
 
-const findAll = async (request, reply) => {
+const findAll = async (req, res) => {
   try {
-    const id = request.headers.authorization;
+    const id = req.headers.authorization;
     if (id == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(id).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         const findAllChannels = await Channel.find().exec();
         if (!findAllChannels) {
-          return await errorHandler(
-            404,
-            "channels-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "channels-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findAllChannels,
           });
@@ -29,33 +23,27 @@ const findAll = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findOne = async (request, reply) => {
+const findOne = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findOneChannel = await Channel.findById(id).exec();
 
         if (!findOneChannel) {
-          return await errorHandler(
-            404,
-            "channel-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "channel-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findOneChannel,
           });
@@ -63,33 +51,27 @@ const findOne = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const findAllChannelsFromUser = async (request, reply) => {
+const findAllChannelsFromUser = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findAllChannels = await Channel.find({ users: id }).exec();
 
         if (!findAllChannels) {
-          return await errorHandler(
-            404,
-            "channel-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "channel-not-found", true, req, res);
         } else {
-          await reply.code(200).send({
+          await res.status(200).json({
             success: true,
             data: findAllChannels,
           });
@@ -97,37 +79,31 @@ const findAllChannelsFromUser = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const createChannel = async (request, reply) => {
+const createChannel = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
 
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
         const createdChannel = await Channel.create({
-          ...request.body.data,
+          ...req.body.data,
           users: [findUser],
           created_by: findUser,
         });
 
         if (!createdChannel) {
-          return await errorHandler(
-            400,
-            "channel-not-created",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(400, "channel-not-created", true, req, res);
         } else {
-          await reply.code(201).send({
+          await res.status(201).json({
             success: true,
             data: createdChannel,
           });
@@ -135,36 +111,30 @@ const createChannel = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(400, error, false, request, reply);
+    return await errorHandler(400, error, false, req, res);
   }
 };
 
-const updateChannel = async (request, reply) => {
+const updateChannel = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findChannel = await Channel.findById(id).exec();
 
         if (!findChannel) {
-          return await errorHandler(
-            404,
-            "channel-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "channel-not-found", true, req, res);
         } else {
           const updatedChannel = await Channel.findByIdAndUpdate(
             findChannel._id,
             {
-              ...request.body,
+              ...req.body,
             },
             { new: true },
           ).exec();
@@ -174,11 +144,11 @@ const updateChannel = async (request, reply) => {
               400,
               "channel-update-failed",
               true,
-              request,
-              reply,
+              req,
+              res,
             );
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: updatedChannel,
             });
@@ -187,31 +157,25 @@ const updateChannel = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const entryOrLeaveChannel = async (request, reply) => {
+const entryOrLeaveChannel = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findChannel = await Channel.findById(id).exec();
 
         if (!findChannel) {
-          return await errorHandler(
-            404,
-            "channel-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "channel-not-found", true, req, res);
         } else {
           let updatedChannel;
           let idExists = false;
@@ -243,11 +207,11 @@ const entryOrLeaveChannel = async (request, reply) => {
               400,
               "channel-update-failed",
               true,
-              request,
-              reply,
+              req,
+              res,
             );
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: updatedChannel,
             });
@@ -256,32 +220,26 @@ const entryOrLeaveChannel = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 
-const deleteChannel = async (request, reply) => {
+const deleteChannel = async (req, res) => {
   try {
-    const userId = request.headers.authorization;
+    const userId = req.headers.authorization;
     if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, request, reply);
+      return await errorHandler(401, "unauthorized", true, req, res);
     } else {
       const findUser = await User.findById(userId).exec();
 
       if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, request, reply);
+        return await errorHandler(401, "unauthorized", true, req, res);
       } else {
-        const { id } = request.params;
+        const { id } = req.params;
         const findChannel = await Channel.findById(id).exec();
 
         if (!findChannel) {
-          return await errorHandler(
-            404,
-            "channel-not-found",
-            true,
-            request,
-            reply,
-          );
+          return await errorHandler(404, "channel-not-found", true, req, res);
         } else {
           const deletedChannel = await Channel.findByIdAndDelete(id).exec();
 
@@ -290,11 +248,11 @@ const deleteChannel = async (request, reply) => {
               400,
               "channel-delete-failed",
               true,
-              request,
-              reply,
+              req,
+              res,
             );
           } else {
-            await reply.code(200).send({
+            await res.status(200).json({
               success: true,
               data: findChannel,
             });
@@ -303,7 +261,7 @@ const deleteChannel = async (request, reply) => {
       }
     }
   } catch (error) {
-    return await errorHandler(404, error, false, request, reply);
+    return await errorHandler(404, error, false, req, res);
   }
 };
 

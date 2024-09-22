@@ -1,14 +1,23 @@
 const channelController = require("../controllers/channelController");
-module.exports = function (fastify, opts, done) {
-  fastify.get("/findAll", channelController.findAll);
-  fastify.get(
-    "/findAllChannelsFromUser/:id",
-    channelController.findAllChannelsFromUser,
-  );
-  fastify.get("/find/:id", channelController.findOne);
-  fastify.post("/create", channelController.createChannel);
-  fastify.patch("/update/:id", channelController.updateChannel);
-  fastify.patch("/entryOrLeave/:id", channelController.entryOrLeaveChannel);
-  fastify.delete("/delete/:id", channelController.deleteChannel);
-  done();
-};
+const router = require("express").Router();
+const permissionHandler = require("../middlewares/persmissionHandler");
+router.get("/findAll", channelController.findAll);
+router.get(
+  "/findAllChannelsFromUser/:id",
+  channelController.findAllChannelsFromUser,
+);
+router.get("/find/:id", permissionHandler, channelController.findOne);
+router.post("/create", permissionHandler, channelController.createChannel);
+router.patch("/update/:id", permissionHandler, channelController.updateChannel);
+router.patch(
+  "/entryOrLeave/:id",
+  permissionHandler,
+  channelController.entryOrLeaveChannel,
+);
+router.delete(
+  "/delete/:id",
+  permissionHandler,
+  channelController.deleteChannel,
+);
+
+module.exports = router;
