@@ -31,6 +31,7 @@ const {
     REDISURL,
     REDISPASSWORD,
     SECRET_KEY_PERMISSION,
+    SESSION_SECRET,
 } = process.env;
 
 module.exports = {
@@ -54,4 +55,5 @@ module.exports = {
     REDISURL,
     REDISPASSWORD,
     SECRET_KEY_PERMISSION,
+    SESSION_SECRET,
 };

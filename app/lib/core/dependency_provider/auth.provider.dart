@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:buzzup/core/utils/fingerprint_manager.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:buzzup/core/common/constants.dart';
@@ -34,10 +33,6 @@ final refreshTokenProvider = FutureProvider<String?>((ref) async {
   return await storage.read(key: kCachedRefreshTokenKey);
 });
 
-final fingerprintProvider = FutureProvider<Map<String, String>>((ref) async {
-  return await FingerprintManager.generateFingerprint();
-});
-
 // GraphQL Client Provider
 final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
   final box = await HiveStore.openBox(kGraphqlHiveBoxName);
@@ -53,8 +48,6 @@ final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
         false => Environment.baseUrl,
       },
       defaultHeaders: {
-        "permission": Environment.permission,
-        ...await ref.read(fingerprintProvider.future),
         "refreshToken": await ref.read(refreshTokenProvider.future) ?? "",
       },
     ),

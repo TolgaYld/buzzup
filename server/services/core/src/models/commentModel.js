@@ -52,7 +52,7 @@ const CommentSchema = new Schema(
       type: SchemaTypes.ObjectId,
     },
   },
-  { collection: "Comments", timestamps: true },
+  { collection: "Comments", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, },
 );
 
 const Comment = mongoose.model("Comment", CommentSchema);

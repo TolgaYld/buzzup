@@ -2,22 +2,31 @@ mixin GqlMutation {
   static const String signUpMutation = '''
 mutation SignUpUser(\$data: SignUpUserInput!) {
   signUpUser(data: \$data) {
-    user {
+   user {
       _id
-      username
-      email
-      coordinates
-      distance
-      points
-      official
-      is_deleted
-      is_banned
-      is_admin
       device_id
       device_type
+      distance
+      email
+      is_admin
+      is_banned
+      is_deleted
+      location {
+        coordinates
+      }
+      official
+      points
+      provider
+      provider
+      username_change_counter
+     username
+      auto_generated_username
+      
+    },
+    tokens {
+     token
+     refreshToken
     }
-    token
-    refreshToken
   }
 }
 ''';

@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 const validator = require("validator");
 const Post = require("./postModel");
+const Story = require("./storyModel");
 const Comment = require("./commentModel");
 const Report = require("./reportModel");
 const Channel = require("./channelModel");
@@ -38,6 +39,30 @@ const UserSchema = new Schema(
         validator: Number.isInteger,
         message: "{VALUE} is not an integer value",
       },
+    },
+    auto_generated_username: {
+      type: SchemaTypes.Boolean,
+      default: false,
+      required: true,
+    },
+    username_change_counter: {
+      type: SchemaTypes.Number,
+      required: true,
+      min: 0,
+      default: 0,
+      validate: {
+        validator: Number.isInteger,
+        message: "{VALUE} is not an integer value",
+      },
+    },
+    provider: {
+      type: SchemaTypes.String,
+      required: true,
+      default: "LOCAL",
+    },
+    provider_id: {
+      type: SchemaTypes.String,
+      required: false,
     },
     location: {
       type: {
@@ -84,7 +109,10 @@ const UserSchema = new Schema(
       type: SchemaTypes.ObjectId,
     },
   },
-  { collection: "Users", timestamps: true },
+  {
+    collection: "Users",
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
+  },
 );
 
 UserSchema.index({ location: "2dsphere" });
@@ -103,6 +131,7 @@ UserSchema.post("findOneAndDelete", async function (next) {
       next,
     ).exec();
     await Post.deleteMany({ user: user.getFilter()._id }, next).exec();
+    await Story.deleteMany({ user: user.getFilter()._id }, next).exec();
     await Comment.deleteMany({ user: user.getFilter()._id }, next).exec();
     await Report.deleteMany(
       { reported_user: user.getFilter()._id },
@@ -120,17 +149,22 @@ UserSchema.post("findOneAndUpdate", async function (next) {
     if (user.getUpdate().$set.is_deleted) {
       await Post.updateMany(
         { user: user.getFilter()._id },
-        { is_deleted: true },
+        { is_deleted: user.getUpdate().$set.is_deleted },
+        next,
+      ).exec();
+      await Story.updateMany(
+        { user: user.getFilter()._id },
+        { is_deleted: user.getUpdate().$set.is_deleted },
         next,
       ).exec();
       await Comment.updateMany(
         { user: user.getFilter()._id },
-        { is_deleted: true },
+        { is_deleted: user.getUpdate().$set.is_deleted },
         next,
       ).exec();
       await Report.updateMany(
         { reported_user: user.getFilter()._id },
-        { is_deleted: true },
+        { is_deleted: user.getUpdate().$set.is_deleted },
         next,
       ).exec();
     }
@@ -138,17 +172,22 @@ UserSchema.post("findOneAndUpdate", async function (next) {
     if (user.getUpdate().$set.is_banned) {
       await Post.updateMany(
         { user: user.getFilter()._id },
-        { is_active: false },
+        { is_active: !user.getUpdate().$set.is_banned },
+        next,
+      ).exec();
+      await Story.updateMany(
+        { user: user.getFilter()._id },
+        { is_active: !user.getUpdate().$set.is_banned },
         next,
       ).exec();
       await Comment.updateMany(
         { user: user.getFilter()._id },
-        { is_active: false },
+        { is_active: !user.getUpdate().$set.is_banned },
         next,
       ).exec();
       await Report.updateMany(
         { reported_user: user.getFilter()._id },
-        { is_active: false },
+        { is_done: user.getUpdate().$set.is_banned },
         next,
       ).exec();
     }

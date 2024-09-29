@@ -9,10 +9,9 @@ const i18nextMiddleware = require("i18next-http-middleware");
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const { PubSub } = require("graphql-subscriptions");
-const http = require("http");
+const { SESSION_SECRET } = require("@TolgaYld/core-buzzup");
 const session = require("express-session");
 const flash = require("connect-flash");
-const verifyFingerprint = require("./middlewares/verifyFingerprintHandler");
 const limitter = require("express-rate-limit");
 const helmet = require("helmet");
 
@@ -25,8 +24,13 @@ i18next
   .use(Backend)
   .use(i18nextMiddleware.LanguageDetector)
   .init({
-    debug: process.env.NODE_ENV !== "production",
+    debug: false,
     fallbackLng: "en",
+    detection: {
+      order: ['cookie', 'querystring', 'header'],
+      caches: ['cookie'],
+      lookupCookie: 'i18next',
+    },
     backend: {
       loadPath:
         path.join(__dirname, "..") + "/locales/{{lng}}/translation.json",
@@ -35,7 +39,7 @@ i18next
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -85,25 +89,13 @@ async function startServer() {
   apolloServer = new ApolloServer({
     schema: schemaWithResolvers,
     context: async ({ req, res }) => {
-      const fingerprint = req.headers["x-fingerprint"];
-      const timestamp = req.headers["x-timestamp"];
-      const nonce = req.headers["x-nonce"];
-
-      const isValidFingerprint = await verifyFingerprint(
-        fingerprint,
-        timestamp,
-        nonce,
-      );
-      if (!isValidFingerprint) {
-        throw new Error("Invalid Fingerprint");
-      }
       return {
         req,
         res,
         pubsub,
       };
     },
-    introspection: true,
+    introspection: process.env.NODE_ENV !== "production",
   });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });

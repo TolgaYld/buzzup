@@ -1,73 +1,56 @@
 const { getUserId } = require("@TolgaYld/core-buzzup");
-const hasPermissionKey = require("../../../middlewares/persmissionHandler");
 const createError = require("http-errors");
 const axios = require("axios");
 const errorHandler = require("../../../errors/errorHandler");
-const { User } = require("@TolgaYld/core-buzzup");
+const { User, AUTHSERVICE } = require("@TolgaYld/core-buzzup");
 
 module.exports = {
   signUpUser: async (parent, args, { pubsub, req }) => {
+    console.log(AUTHSERVICE);
     try {
-      const hasPermission = hasPermissionKey(req);
-      if (!hasPermission) {
-        throw Error(createError(401, "unauthorized"));
-      } else {
-        const headers = {
-          permission: req.headers.permission,
-        };
-        const response = await axios.post(
-          process.env.AUTHSERVICE + "/signUp",
-          {
-            type: "signUpUser",
-            data: {
-              ...args.data,
-              email_confirmed: false,
-              is_admin: false,
-            },
+      const response = await axios.post(
+        AUTHSERVICE + "/signUp",
+        {
+          type: "signUpUser",
+          data: {
+            ...args.data,
+            email_confirmed: false,
+            is_admin: false,
           },
-          { headers },
-        );
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          // errorHandler(response.status, response.data.msg);
+        },
+      );
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        // errorHandler(response.status, response.data.msg);
 
-          throw Error(createError(response.status, response.data.msg));
-        }
+        throw Error(createError(response.status, response.data.msg));
       }
     } catch (error) {
-      // errorHandler(error.response.status, error.response.data.msg);
+      console.log(error);
+      errorHandler(error.response.status, error.response.data.msg);
       throw Error(createError(error.response.status, error.response.data.msg));
     }
   },
 
   authUserWithProvider: async (parent, args, { pubsub, req }) => {
     try {
-      const hasPermission = hasPermissionKey(req);
-      if (!hasPermission) {
-        throw Error(createError(401, "unauthorized"));
-      } else {
-        const headers = {
-          permission: req.headers.permission,
-        };
-        const response = await axios.post(
-          process.env.AUTHSERVICE + "/authWithProvider",
-          {
-            type: "authUserWithProvider",
-            data: {
-              ...args.data,
-              email_confirmed: false,
-              is_admin: false,
-            },
+      const response = await axios.post(
+        AUTHSERVICE + "/authWithProvider",
+        {
+          type: "authUserWithProvider",
+          data: {
+            ...args.data,
+            email_confirmed: false,
+            is_admin: false,
           },
-          { headers },
-        );
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          // errorHandler(response.status, response.data.msg);
-          throw Error(createError(response.data.msg));
-        }
+        },
+      );
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        // errorHandler(response.status, response.data.msg);
+        throw Error(createError(response.data.msg));
       }
     } catch (error) {
       // errorHandler(error.response.status, error.response.data.msg);
@@ -81,32 +64,24 @@ module.exports = {
     { req },
   ) => {
     try {
-      const hasPermission = hasPermissionKey(req);
-      if (!hasPermission) {
-        throw Error(createError(401, "unauthorized"));
-      } else {
-        const headers = {
-          permission: req.headers.permission,
-        };
-        const response = await axios.post(
-          process.env.AUTHSERVICE + "/signIn",
-          {
-            type: "signInUser",
-            data: {
-              emailOrUsername,
-              password,
-            },
-          },
-          { headers },
-        );
 
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          console.log(response);
-          errorHandler(response.status, response.data.msg);
-          throw Error(createError(response.status, response.data.msg));
-        }
+      const response = await axios.post(
+        AUTHSERVICE + "/signIn",
+        {
+          type: "signInUser",
+          data: {
+            emailOrUsername,
+            password,
+          },
+        },
+      );
+
+      if (response.data.success) {
+        return response.data.data;
+      } else {
+        console.log(response);
+        errorHandler(response.status, response.data.msg);
+        throw Error(createError(response.status, response.data.msg));
       }
     } catch (error) {
       // errorHandler(error.response.status, error.response.data.msg);
@@ -117,9 +92,7 @@ module.exports = {
   deleteUser: async (parent, args, { req }) => {
     try {
       const id = await getUserId(req);
-      const hasPermission = await hasPermissionKey(req);
-
-      if (id == null || !hasPermission) {
+      if (id == null) {
         throw Error(createError(401, "unauthorized"));
       } else {
         const findUser = await User.findById(id).exec();
@@ -129,11 +102,10 @@ module.exports = {
         } else {
           const headers = {
             Authorization: id,
-            permission: req.headers.permission,
           };
 
           const response = await axios.patch(
-            process.env.AUTHSERVICE + "/update/" + args.id,
+            AUTHSERVICE + "/update/" + args.id,
             {
               type: "updateUser",
               data: {
@@ -161,9 +133,8 @@ module.exports = {
   deleteUserFromDb: async (parent, args, { req }) => {
     try {
       const id = await getUserId(req);
-      const hasPermission = await hasPermissionKey(req);
 
-      if (id == null && !hasPermission) {
+      if (id == null) {
         throw Error(createError(401, "unauthorized"));
       } else {
         const findUser = await User.findById(id).exec();
@@ -173,17 +144,15 @@ module.exports = {
         } else {
           const headers = {
             Authorization: id,
-            permission: req.headers.permission,
           };
 
           const response = await axios.delete(
-            process.env.AUTHSERVICE + "/delete/" + args.id,
+            AUTHSERVICE + "/delete/" + args.id,
             {
               type: "DeleteUserFromDb",
               headers,
             },
           );
-
           if (response.data.success) {
             return "User: " + args.id + " deleted";
           } else {
@@ -201,9 +170,7 @@ module.exports = {
   updateUser: async (parent, args, { req }) => {
     try {
       const id = await getUserId(req);
-      const hasPermission = await hasPermissionKey(req);
-
-      if (id == null && !hasPermission) {
+      if (id == null) {
         throw Error(createError(401, "unauthorized"));
       } else {
         const findUser = await User.findById(id).exec();
@@ -212,11 +179,10 @@ module.exports = {
         } else {
           const headers = {
             Authorization: id,
-            permission: req.headers.permission,
           };
 
           const response = await axios.patch(
-            process.env.AUTHSERVICE + "/update/" + id,
+            AUTHSERVICE + "/update/" + id,
             {
               type: "updateUser",
               data: {
@@ -244,9 +210,8 @@ module.exports = {
   updateUserPassword: async (parent, args, { req }) => {
     try {
       const id = await getUserId(req);
-      const hasPermission = await hasPermissionKey(req);
 
-      if (id == null && !hasPermission) {
+      if (id == null) {
         throw Error(createError(401, "unauthorized"));
       } else {
         const findUser = await User.findById(id).exec();
@@ -255,11 +220,10 @@ module.exports = {
         } else {
           const headers = {
             Authorization: id,
-            permission: req.headers.permission,
           };
 
           const response = await axios.patch(
-            process.env.AUTHSERVICE + "/updatePassword/" + id,
+            AUTHSERVICE + "/updatePassword/" + id,
             {
               type: "updatePassword",
               data: {
@@ -286,36 +250,27 @@ module.exports = {
 
   resetPassword: async (parent, args, { pubsub, req }) => {
     try {
-      const hasPermission = await hasPermissionKey(req);
-      if (!hasPermission) {
-        throw Error(createError(401, "unauthorized"));
+      const findUsersEmail = await User.findOne({
+        email: args.email,
+      }).exec();
+      if (!findUsersEmail) {
+        throw Error(createError(401, "could not reset password"));
       } else {
-        const findUsersEmail = await User.findOne({
-          email: args.email,
-        }).exec();
-        if (!findUsersEmail) {
-          throw Error(createError(401, "could not reset password"));
-        } else {
-          const headers = {
-            permission: req.headers.permission,
-          };
-          const response = await axios.post(
-            process.env.AUTHSERVICE + "/resetPassword",
-            {
-              type: "resetPassword",
-              data: {
-                email: args.email,
-              },
+        const response = await axios.post(
+          AUTHSERVICE + "/resetPassword",
+          {
+            type: "resetPassword",
+            data: {
+              email: args.email,
             },
-            { headers },
-          );
+          },
+        );
 
-          if (response.data.success) {
-            return response.data.data;
-          } else {
-            errorHandler(response.status, response.data.msg);
-            throw Error(createError(response.status, response.data.msg));
-          }
+        if (response.data.success) {
+          return response.data.data;
+        } else {
+          errorHandler(response.status, response.data.msg);
+          throw Error(createError(response.status, response.data.msg));
         }
       }
     } catch (error) {

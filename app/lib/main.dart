@@ -41,10 +41,7 @@ class MyApp extends HookConsumerWidget {
     };
 
     final home = switch (gpsStatusState) {
-      GpsStatusState(
-        status: ServiceStatus.disabled,
-        permission: (LocationPermission.denied || LocationPermission.deniedForever || LocationPermission.unableToDetermine)
-      ) =>
+      GpsStatusState(permission: (LocationPermission.denied || LocationPermission.deniedForever || LocationPermission.unableToDetermine)) =>
         const LocationServiceDisabledPage(),
       _ => const AuthPage(),
     };

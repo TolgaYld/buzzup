@@ -42,7 +42,7 @@ const ReportSchema = new Schema(
       type: SchemaTypes.ObjectId,
     },
   },
-  { collection: "Reports", timestamps: true },
+  { collection: "Reports", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, },
 );
 
 const Report = mongoose.model("Report", ReportSchema);

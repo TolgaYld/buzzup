@@ -30,9 +30,6 @@ const PostSchema = new Schema(
     type: {
       type: SchemaTypes.String,
     },
-    expiry_date: {
-      type: SchemaTypes.Date,
-    },
     likes: [
       {
         type: SchemaTypes.ObjectId,
@@ -66,19 +63,27 @@ const PostSchema = new Schema(
       ref: "Users",
       required: true,
     },
-    channel: {
-      type: SchemaTypes.ObjectId,
-      ref: "Channels",
-      required: true,
+    channels: {
+      type: [{
+        type: SchemaTypes.ObjectId,
+        ref: "Channels",
+        required: true,
+      }],
+      validate: [arrayLimit, "{PATH} exceeds the limit of 3"]
     },
     last_update_from_user: {
       type: SchemaTypes.ObjectId,
     },
   },
-  { collection: "Posts", timestamps: true },
+  { collection: "Posts", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, },
 );
 
+function arrayLimit(val) {
+  return val.length <= 3;
+}
+
 PostSchema.index({ location: "2dsphere" });
+
 
 const Post = mongoose.model("Post", PostSchema);
 

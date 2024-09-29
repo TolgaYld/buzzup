@@ -35,6 +35,7 @@ type User {
   official: Boolean!
   device_type: String
   device_id: String
+  email_confirmed: Boolean!
   is_deleted: Boolean!
   is_banned: Boolean!
   is_admin: Boolean!

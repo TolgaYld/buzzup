@@ -181,7 +181,9 @@ const checkIfUsernameExists = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
+  log("aaaa");
   const isEmail = validator.isEmail(req.body.data.email);
+
 
   const isStrongPassword = validator.isStrongPassword(
     req.body.data.password,
