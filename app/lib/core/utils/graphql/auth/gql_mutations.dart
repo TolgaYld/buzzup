@@ -19,7 +19,7 @@ mutation SignUpUser(\$data: SignUpUserInput!) {
       provider
       provider
       username_change_counter
-     username
+      username
       auto_generated_username
       
     },
