@@ -9,6 +9,7 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
     required this.controller,
     required this.focusNode,
     required this.icon,
+    this.onChanged,
     this.hintText,
     this.filled = false,
   });
@@ -18,6 +19,7 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
   final bool filled;
   final TextEditingController controller;
   final FocusNode focusNode;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,6 +27,7 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
+      onChanged: onChanged,
       decoration: InputDecoration(
         disabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: theme.colorScheme.primary),

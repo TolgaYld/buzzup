@@ -9,10 +9,18 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 class SignUpWidget extends HookConsumerWidget {
   const SignUpWidget({
     required GlobalKey signUpFormKey,
+    required this.onChangedUsername,
+    required this.onChangedEmail,
+    required this.onChangedPassword,
+    required this.onChangedRepeatPassword,
     super.key,
   }) : _signUpFormKey = signUpFormKey;
 
   final GlobalKey _signUpFormKey;
+  final Function(String) onChangedUsername;
+  final Function(String) onChangedEmail;
+  final Function(String) onChangedPassword;
+  final Function(String) onChangedRepeatPassword;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,6 +43,7 @@ class SignUpWidget extends HookConsumerWidget {
           CustomTextFormFieldWidget(
             controller: usernameController,
             focusNode: usernameFocusNode,
+            onChanged: onChangedUsername,
             icon: Icon(
               Icons.person,
               color: theme.colorScheme.onPrimary,
@@ -45,6 +54,7 @@ class SignUpWidget extends HookConsumerWidget {
           CustomTextFormFieldWidget(
             controller: emailController,
             focusNode: emailFocusNode,
+            onChanged: onChangedEmail,
             hintText: l10n.email_adress,
             icon: Icon(
               Icons.email,
@@ -55,6 +65,7 @@ class SignUpWidget extends HookConsumerWidget {
           CustomTextFormFieldWidget(
             controller: passwordController,
             focusNode: passwordFocusNode,
+            onChanged: onChangedPassword,
             icon: const Icon(Icons.lock),
             hintText: l10n.password,
           ),
@@ -62,6 +73,7 @@ class SignUpWidget extends HookConsumerWidget {
           CustomTextFormFieldWidget(
             controller: repeatPasswordController,
             focusNode: repeatPasswordFocusNode,
+            onChanged: onChangedRepeatPassword,
             icon: const Icon(Icons.lock),
             hintText: l10n.repeat_password,
           ),

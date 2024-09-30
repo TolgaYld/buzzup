@@ -13,7 +13,9 @@ import 'package:buzzup/src/presentation/widgets/auth/sign_in_widget.dart';
 import 'package:buzzup/src/presentation/widgets/auth/sign_up_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthPage extends HookConsumerWidget {
@@ -40,6 +42,10 @@ class AuthPage extends HookConsumerWidget {
     });
     final signInFormKey = GlobalKey();
     final signUpFormKey = GlobalKey();
+    final signUpUsername = useState("");
+    final signUpEmail = useState("");
+    final signUpPassword = useState("");
+    final signUpRepeatPassword = useState("");
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -47,12 +53,20 @@ class AuthPage extends HookConsumerWidget {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: ElevatedButton(
           onPressed: () async {
+            final coordinates = await Geolocator.getCurrentPosition();
             switch (authModeState) {
               case SignInAuthModeState():
                 break;
               case SignUpAuthModeState():
-                await notifier.event(SignUpEvent(
-                    email: "aaa@aaa.de", password: "passwor444dddd", repeatPassword: "passwor444dddd", username: "username", coordinates: [0.0, 0.0]));
+                await notifier.event(
+                  SignUpEvent(
+                    username: signUpUsername.value,
+                    email: signUpEmail.value,
+                    password: signUpPassword.value,
+                    repeatPassword: signUpRepeatPassword.value,
+                    coordinates: [coordinates.latitude, coordinates.longitude],
+                  ),
+                );
                 break;
               case ForgotPasswordAuthModeState():
                 break;
@@ -97,6 +111,10 @@ class AuthPage extends HookConsumerWidget {
                     SignUpAuthModeState() => SignUpWidget(
                         key: signUpKey,
                         signUpFormKey: signUpFormKey,
+                        onChangedEmail: (value) => signUpEmail.value = value,
+                        onChangedPassword: (value) => signUpPassword.value = value,
+                        onChangedRepeatPassword: (value) => signUpRepeatPassword.value = value,
+                        onChangedUsername: (value) => signUpUsername.value = value,
                       ),
                     ForgotPasswordAuthModeState() => const ForgotPasswordWidget(key: forgotPasswordKey),
                   },

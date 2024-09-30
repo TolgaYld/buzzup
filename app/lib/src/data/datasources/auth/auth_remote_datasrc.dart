@@ -163,14 +163,16 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
               'username': username,
               'email': email,
               'password': password,
+              'repeat_password': repeatPassword,
+              'coordinates': coordinates,
             },
           },
         ),
       );
       if (response.data case final d? when response.hasException == false) {
-        return UserMapper.fromMap(
-          d['signUpUser']['user'],
-        );
+        final user = UserMapper.fromMap(d['signUpUser']['user']);
+        final tokens = TokenMapper.fromMap(d['signUpUser']['tokens']);
+        return user.copyWith(tokens: tokens);
       } else {
         if (response.exception case final exc?) {
           throw ApiException(
