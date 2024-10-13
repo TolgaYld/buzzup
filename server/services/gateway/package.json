@@ -9,8 +9,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=production node ./index.js",
-    "dev": "npm run start-redis && NODE_ENV=test nodemon ./index.js",
-    "start-redis": "docker rm -f redis-buzzup || true && docker run --name redis-buzzup -p 6379:6379 -d redis",
+    "dev": "NODE_ENV=test nodemon ./index.js",
     "lint": "eslint ./src/"
   },
   "dependencies": {
@@ -26,8 +25,7 @@
     "graphql": "^16.8.1",
     "graphql-subscriptions": "^2.0.0",
     "graphql-tools": "^9.0.1",
-    "helmet": "^7.1.0",
-    "redis": "^4.7.0"
+    "helmet": "^7.1.0"
   },
   "eslintConfig": {
     "parserOptions": {
