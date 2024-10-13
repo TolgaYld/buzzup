@@ -36,48 +36,83 @@ class AuthPage extends HookConsumerWidget {
 
     ref.listen<AuthState>(authProvider, (previous, next) {
       if (next is SignedInState) {
+        // Handle SignedInState
+        print("SignedInState");
       } else if (next is ErrorAuthState) {
         CoreUtils.showSnackBar(context, next.message);
       }
     });
-    final signInFormKey = GlobalKey();
-    final signUpFormKey = GlobalKey();
+
+    final signInFormKey = GlobalKey<FormState>();
+    final signUpFormKey = GlobalKey<FormState>();
     final signUpUsername = useState("");
     final signUpEmail = useState("");
     final signUpPassword = useState("");
     final signUpRepeatPassword = useState("");
+    final signInEmailOrUsername = useState("");
+    final signInPassword = useState("");
+    final forgotPw = useState("");
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: ElevatedButton(
-          onPressed: () async {
-            final coordinates = await Geolocator.getCurrentPosition();
-            switch (authModeState) {
-              case SignInAuthModeState():
-                break;
-              case SignUpAuthModeState():
-                await notifier.event(
-                  SignUpEvent(
-                    username: signUpUsername.value,
-                    email: signUpEmail.value,
-                    password: signUpPassword.value,
-                    repeatPassword: signUpRepeatPassword.value,
-                    coordinates: [coordinates.latitude, coordinates.longitude],
-                  ),
-                );
-                break;
-              case ForgotPasswordAuthModeState():
-                break;
-            }
+        floatingActionButton: AnimatedSwitcher(
+          duration: Durations.short3,
+          transitionBuilder: (Widget child, Animation<double> animation) {
+            return ScaleTransition(
+              scale: Tween<double>(begin: 0.3, end: 1.0).animate(
+                CurvedAnimation(
+                  parent: animation,
+                  curve: Curves.ease,
+                ),
+              ),
+              child: child,
+            );
           },
-          child: Text(
-            switch (authModeState) {
-              SignInAuthModeState() => l10n.sign_in,
-              SignUpAuthModeState() => l10n.sign_up,
-              ForgotPasswordAuthModeState() => l10n.reset_password,
+          child: ElevatedButton(
+            key: ValueKey(authModeState.runtimeType),
+            onPressed: () async {
+              final coordinates = await Geolocator.getCurrentPosition();
+              switch (authModeState) {
+                case SignInAuthModeState():
+                  if (signInFormKey.currentState?.validate() ?? false) {
+                    await notifier.event(
+                      SignInEvent(
+                        emailOrUsername: signInEmailOrUsername.value,
+                        password: signInPassword.value,
+                        coordinates: [coordinates.latitude, coordinates.longitude],
+                      ),
+                    );
+                  }
+                  break;
+                case SignUpAuthModeState():
+                  if (signUpFormKey.currentState?.validate() ?? false) {
+                    await notifier.event(
+                      SignUpEvent(
+                        username: signUpUsername.value,
+                        email: signUpEmail.value,
+                        password: signUpPassword.value,
+                        repeatPassword: signUpRepeatPassword.value,
+                        coordinates: [coordinates.latitude, coordinates.longitude],
+                      ),
+                    );
+                  }
+                  break;
+                case ForgotPasswordAuthModeState():
+                  await notifier.event(
+                    ForgotPasswordEvent(forgotPw.value),
+                  );
+                  break;
+              }
             },
+            child: Text(
+              switch (authModeState) {
+                SignInAuthModeState() => l10n.sign_in,
+                SignUpAuthModeState() => l10n.sign_up,
+                ForgotPasswordAuthModeState() => l10n.reset_password,
+              },
+            ),
           ),
         ),
         resizeToAvoidBottomInset: false,
@@ -97,7 +132,7 @@ class AuthPage extends HookConsumerWidget {
               ),
               child: AnimatedSize(
                 duration: Durations.short3,
-                curve: Curves.easeInOut,
+                curve: Curves.linear,
                 child: AnimatedSwitcher(
                   duration: Durations.short3,
                   transitionBuilder: (Widget child, Animation<double> animation) {

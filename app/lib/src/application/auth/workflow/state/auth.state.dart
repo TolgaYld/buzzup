@@ -28,8 +28,7 @@ class SignedUpState extends AuthState with SignedUpStateMappable {
 }
 
 @MappableClass()
-class AuthenticatedWithProviderState extends AuthState
-    with AuthenticatedWithProviderStateMappable {
+class AuthenticatedWithProviderState extends AuthState with AuthenticatedWithProviderStateMappable {
   const AuthenticatedWithProviderState(this.user);
 
   final User user;
@@ -46,8 +45,7 @@ class PasswordChangedState extends AuthState with PasswordChangedStateMappable {
 }
 
 @MappableClass()
-class PasswordResettedState extends AuthState
-    with PasswordResettedStateMappable {
+class PasswordResettedState extends AuthState with PasswordResettedStateMappable {
   const PasswordResettedState();
 }
 

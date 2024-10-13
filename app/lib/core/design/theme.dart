@@ -3,24 +3,24 @@ import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   AppTheme._();
+
   // Light Theme Colors
   static const Color _lightBackgroundColor = Color(0xFFFFFFFF);
   static const Color _lightPrimaryColor = Color(0xFF008080);
   static const Color _lightPrimaryVariantColor = Color(0xFFFFC800);
   static const Color _lightOnPrimaryColor = _lightPrimaryVariantColor;
   static const Color _lightTextColorPrimary = _lightPrimaryColor;
-  static const Color _appBarColorLight = _lightPrimaryColor; // Teal
+  static const Color _appBarColorLight = _lightPrimaryColor;
 
   // Dark Theme Colors
   static final Color _darkBackgroundColor = Colors.grey[850]!;
-  static final Color _darkPrimaryColor = Colors.grey[850]!; // Dunkles Grau
+  static final Color _darkPrimaryColor = Colors.grey[850]!;
   static const Color _darkPrimaryVariantColor = Colors.black;
-  static const Color _darkOnPrimaryColor = Color(0xFFFFD700); // Gold
-  static const Color _darkTextColorPrimary = Color(0xFFFFD700); // Gold
-  static final Color _appBarColorDark = Colors.grey[850]!; // Dunkles Grau
+  static const Color _darkOnPrimaryColor = Color(0xFFFFD700);
+  static const Color _darkTextColorPrimary = Color(0xFFFFD700);
+  static final Color _appBarColorDark = Colors.grey[850]!;
 
   static const Color _iconColor = Color(0xFFFFFFFF);
-
   static const Color _accentColorDark = Color.fromRGBO(253, 166, 41, 1);
 
   static final TextStyle _lightHeadingText = GoogleFonts.dmSans(
@@ -47,12 +47,30 @@ class AppTheme {
   static final InputDecorationTheme _inputDecorationTheme = InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: _lightTextColorPrimary),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(9),
-      borderSide: const BorderSide(color: _lightTextColorPrimary),
+      borderRadius: BorderRadius.circular(30),
+      borderSide: const BorderSide(color: _lightTextColorPrimary, width: 2),
     ),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(9),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: const BorderSide(color: _lightPrimaryColor),
     ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: const BorderSide(color: Colors.red, width: 2),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(30),
+      borderSide: const BorderSide(color: Colors.red, width: 2),
+    ),
+    contentPadding: EdgeInsets.zero,
+    errorStyle: GoogleFonts.dmSans(
+      color: Colors.red,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+    ),
+    prefixIconColor: _iconColor,
+    filled: true,
+    fillColor: Colors.black.withOpacity(0.063),
   );
 
   static final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
@@ -115,7 +133,9 @@ class AppTheme {
 
   static final ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    inputDecorationTheme: _inputDecorationTheme,
+    inputDecorationTheme: _inputDecorationTheme.copyWith(
+      fillColor: Colors.black.withOpacity(0.2),
+    ),
     textSelectionTheme: const TextSelectionThemeData(cursorColor: _darkTextColorPrimary),
     scaffoldBackgroundColor: _darkBackgroundColor,
     appBarTheme: AppBarTheme(

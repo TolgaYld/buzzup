@@ -8,10 +8,12 @@ class SignInEvent extends AuthEvent {
   const SignInEvent({
     required this.emailOrUsername,
     required this.password,
+    required this.coordinates,
   });
 
   final String emailOrUsername;
   final String password;
+  final List<double> coordinates;
 }
 
 class SignUpEvent extends AuthEvent {

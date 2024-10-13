@@ -12,11 +12,13 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
     this.onChanged,
     this.hintText,
     this.filled = false,
+    this.errorText,
   });
 
   final Icon icon;
   final String? hintText;
   final bool filled;
+  final String? errorText;
   final TextEditingController controller;
   final FocusNode focusNode;
   final Function(String)? onChanged;
@@ -24,29 +26,13 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = useTheme();
+
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
       onChanged: onChanged,
       decoration: InputDecoration(
-        disabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: theme.colorScheme.primary),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: theme.colorScheme.error,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: theme.colorScheme.error,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(30),
-        ),
+        errorText: errorText,
         contentPadding: EdgeInsets.zero,
         prefixIcon: Container(
           padding: const EdgeInsets.only(top: 16, bottom: 16),
@@ -66,22 +52,6 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
           ),
         ),
         hintText: hintText,
-        hintStyle: TextStyle(color: theme.hintColor),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: theme.colorScheme.primary,
-            width: 2,
-          ),
-          borderRadius: BorderRadius.circular(30),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            color: theme.colorScheme.primary,
-          ),
-          borderRadius: BorderRadius.circular(25),
-        ),
-        filled: filled,
-        fillColor: Colors.black.withOpacity(0.1),
       ),
     );
   }
