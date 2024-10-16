@@ -9,52 +9,48 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SignUpWidget extends HookConsumerWidget {
   const SignUpWidget({
-    required GlobalKey<FormState> signUpFormKey,
-    required this.onChangedUsername,
-    required this.onChangedEmail,
-    required this.onChangedPassword,
-    required this.onChangedRepeatPassword,
+    required this.signUpFormKey,
+    required this.usernameController,
+    required this.emailController,
+    required this.passwordController,
+    required this.repeatPasswordController,
+    required this.usernameFocusNode,
+    required this.emailFocusNode,
+    required this.passwordFocusNode,
+    required this.repeatPasswordFocusNode,
     super.key,
-  }) : _signUpFormKey = signUpFormKey;
+  });
 
-  final GlobalKey<FormState> _signUpFormKey;
-  final Function(String) onChangedUsername;
-  final Function(String) onChangedEmail;
-  final Function(String) onChangedPassword;
-  final Function(String) onChangedRepeatPassword;
+  final GlobalKey<FormState> signUpFormKey;
+  final TextEditingController usernameController;
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
+  final TextEditingController repeatPasswordController;
+  final FocusNode usernameFocusNode;
+  final FocusNode emailFocusNode;
+  final FocusNode passwordFocusNode;
+  final FocusNode repeatPasswordFocusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = useTheme();
     final l10n = useL10n();
 
-    final usernameController = useTextEditingController();
-    final usernameFocusNode = useFocusNode();
-    final emailController = useTextEditingController();
-    final emailFocusNode = useFocusNode();
-    final passwordController = useTextEditingController();
-    final passwordFocusNode = useFocusNode();
-    final repeatPasswordController = useTextEditingController();
-    final repeatPasswordFocusNode = useFocusNode();
-
-    // formz inputs
     final username = useState(const UsernameInput.pure());
     final email = useState(const EmailInput.pure());
     final password = useState(const PasswordInput.pure());
     final repeatPassword = useState(const RepeatPasswordInput.pure(''));
 
-    // Zustand, um festzuhalten, ob validiert wurde
     final hasTriedSubmit = useState(false);
 
-    // Überprüfe, ob das Formular erfolgreich validiert ist
     bool validateForm() {
-      final isValid = _signUpFormKey.currentState?.validate() ?? false;
+      final isValid = signUpFormKey.currentState?.validate() ?? false;
       return isValid;
     }
 
     // Fehlernachricht für jedes Feld (nur nach dem Klick auf den Button anzeigen)
     String? getUsernameErrorText() {
-      if (!hasTriedSubmit.value) return null; // Keine Fehler, bevor der Button geklickt wurde
+      if (!hasTriedSubmit.value) return null;
       return username.value.isNotValid ? 'Invalid username' : null;
     }
 
@@ -74,41 +70,37 @@ class SignUpWidget extends HookConsumerWidget {
     }
 
     // Validierung bei der Eingabe (erst nach dem Klick auf den Button aktivieren)
-    void _onUsernameChanged(String value) {
-      username.value = UsernameInput.dirty(value);
+    void _onUsernameChanged() {
+      username.value = UsernameInput.dirty(usernameController.text);
       if (hasTriedSubmit.value) {
-        _signUpFormKey.currentState?.validate();
+        signUpFormKey.currentState?.validate();
       }
-      onChangedUsername(value);
     }
 
     void _onEmailChanged(String value) {
       email.value = EmailInput.dirty(value);
       if (hasTriedSubmit.value) {
-        _signUpFormKey.currentState?.validate();
+        signUpFormKey.currentState?.validate();
       }
-      onChangedEmail(value);
     }
 
     void _onPasswordChanged(String value) {
       password.value = PasswordInput.dirty(value);
       repeatPassword.value = RepeatPasswordInput.dirty(value, repeatPasswordController.text);
       if (hasTriedSubmit.value) {
-        _signUpFormKey.currentState?.validate();
+        signUpFormKey.currentState?.validate();
       }
-      onChangedPassword(value);
     }
 
     void _onRepeatPasswordChanged(String value) {
       repeatPassword.value = RepeatPasswordInput.dirty(passwordController.text, value);
       if (hasTriedSubmit.value) {
-        _signUpFormKey.currentState?.validate();
+        signUpFormKey.currentState?.validate();
       }
-      onChangedRepeatPassword(value);
     }
 
     return Form(
-      key: _signUpFormKey,
+      key: signUpFormKey,
       autovalidateMode: AutovalidateMode.disabled, // Autovalidierung deaktiviert
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -116,7 +108,7 @@ class SignUpWidget extends HookConsumerWidget {
           CustomTextFormFieldWidget(
             controller: usernameController,
             focusNode: usernameFocusNode,
-            onChanged: _onUsernameChanged,
+            onChanged: (_) => _onUsernameChanged(),
             icon: Icon(
               Icons.person,
               color: theme.colorScheme.onPrimary,

@@ -38,6 +38,8 @@ class AuthPage extends HookConsumerWidget {
       if (next is SignedInState) {
         // Handle SignedInState
         print("SignedInState");
+      } else if (next is SignedUpState) {
+        print("SignedUpState");
       } else if (next is ErrorAuthState) {
         CoreUtils.showSnackBar(context, next.message);
       }
@@ -45,13 +47,22 @@ class AuthPage extends HookConsumerWidget {
 
     final signInFormKey = GlobalKey<FormState>();
     final signUpFormKey = GlobalKey<FormState>();
-    final signUpUsername = useState("");
-    final signUpEmail = useState("");
-    final signUpPassword = useState("");
-    final signUpRepeatPassword = useState("");
-    final signInEmailOrUsername = useState("");
-    final signInPassword = useState("");
-    final forgotPw = useState("");
+
+    final signUpUsernameController = useTextEditingController();
+    final signUpUsernameFocusNode = useFocusNode();
+    final signUpEmailController = useTextEditingController();
+    final signUpEmailFocusNode = useFocusNode();
+    final signUpPasswordController = useTextEditingController();
+    final signUpPasswordFocusNode = useFocusNode();
+    final signUpRepeatPasswordController = useTextEditingController();
+    final signUpRepeatPasswordFocusNode = useFocusNode();
+
+    final signInEmailOrUsernameController = useTextEditingController();
+    final signInEmailOrUsernameFocusNode = useFocusNode();
+    final signInPasswordController = useTextEditingController();
+    final signInPasswordFocusNode = useFocusNode();
+
+    final forgotPasswordController = useTextEditingController();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -79,9 +90,9 @@ class AuthPage extends HookConsumerWidget {
                   if (signInFormKey.currentState?.validate() ?? false) {
                     await notifier.event(
                       SignInEvent(
-                        emailOrUsername: signInEmailOrUsername.value,
-                        password: signInPassword.value,
-                        coordinates: [coordinates.latitude, coordinates.longitude],
+                        emailOrUsername: signInEmailOrUsernameController.text,
+                        password: signInPasswordController.text,
+                        coordinates: [coordinates.longitude, coordinates.latitude],
                       ),
                     );
                   }
@@ -90,18 +101,18 @@ class AuthPage extends HookConsumerWidget {
                   if (signUpFormKey.currentState?.validate() ?? false) {
                     await notifier.event(
                       SignUpEvent(
-                        username: signUpUsername.value,
-                        email: signUpEmail.value,
-                        password: signUpPassword.value,
-                        repeatPassword: signUpRepeatPassword.value,
-                        coordinates: [coordinates.latitude, coordinates.longitude],
+                        username: signUpUsernameController.text,
+                        email: signUpEmailController.text,
+                        password: signUpPasswordController.text,
+                        repeatPassword: signUpRepeatPasswordController.text,
+                        coordinates: [coordinates.longitude, coordinates.latitude],
                       ),
                     );
                   }
                   break;
                 case ForgotPasswordAuthModeState():
                   await notifier.event(
-                    ForgotPasswordEvent(forgotPw.value),
+                    ForgotPasswordEvent(forgotPasswordController.text),
                   );
                   break;
               }
@@ -146,10 +157,14 @@ class AuthPage extends HookConsumerWidget {
                     SignUpAuthModeState() => SignUpWidget(
                         key: signUpKey,
                         signUpFormKey: signUpFormKey,
-                        onChangedEmail: (value) => signUpEmail.value = value,
-                        onChangedPassword: (value) => signUpPassword.value = value,
-                        onChangedRepeatPassword: (value) => signUpRepeatPassword.value = value,
-                        onChangedUsername: (value) => signUpUsername.value = value,
+                        emailController: signUpEmailController,
+                        emailFocusNode: signUpEmailFocusNode,
+                        passwordController: signUpPasswordController,
+                        passwordFocusNode: signUpPasswordFocusNode,
+                        repeatPasswordController: signUpRepeatPasswordController,
+                        repeatPasswordFocusNode: signUpRepeatPasswordFocusNode,
+                        usernameController: signUpUsernameController,
+                        usernameFocusNode: signUpUsernameFocusNode,
                       ),
                     ForgotPasswordAuthModeState() => const ForgotPasswordWidget(key: forgotPasswordKey),
                   },
