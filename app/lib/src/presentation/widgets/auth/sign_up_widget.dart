@@ -9,6 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SignUpWidget extends HookConsumerWidget {
   const SignUpWidget({
+    required this.autovalidateMode,
     required this.signUpFormKey,
     required this.usernameController,
     required this.emailController,
@@ -21,6 +22,7 @@ class SignUpWidget extends HookConsumerWidget {
     super.key,
   });
 
+  final AutovalidateMode autovalidateMode;
   final GlobalKey<FormState> signUpFormKey;
   final TextEditingController usernameController;
   final TextEditingController emailController;
@@ -41,80 +43,66 @@ class SignUpWidget extends HookConsumerWidget {
     final password = useState(const PasswordInput.pure());
     final repeatPassword = useState(const RepeatPasswordInput.pure(''));
 
-    final hasTriedSubmit = useState(false);
-
     bool validateForm() {
       final isValid = signUpFormKey.currentState?.validate() ?? false;
       return isValid;
     }
 
-    // Fehlernachricht für jedes Feld (nur nach dem Klick auf den Button anzeigen)
     String? getUsernameErrorText() {
-      if (!hasTriedSubmit.value) return null;
       return username.value.isNotValid ? 'Invalid username' : null;
     }
 
     String? getEmailErrorText() {
-      if (!hasTriedSubmit.value) return null;
       return email.value.isNotValid ? 'Invalid email' : null;
     }
 
     String? getPasswordErrorText() {
-      if (!hasTriedSubmit.value) return null;
       return password.value.isNotValid ? 'Invalid password' : null;
     }
 
     String? getRepeatPasswordErrorText() {
-      if (!hasTriedSubmit.value) return null;
       return repeatPassword.value.isNotValid ? 'Passwords do not match' : null;
     }
 
-    // Validierung bei der Eingabe (erst nach dem Klick auf den Button aktivieren)
     void _onUsernameChanged() {
       username.value = UsernameInput.dirty(usernameController.text);
-      if (hasTriedSubmit.value) {
-        signUpFormKey.currentState?.validate();
-      }
+
+      signUpFormKey.currentState?.validate();
     }
 
     void _onEmailChanged(String value) {
       email.value = EmailInput.dirty(value);
-      if (hasTriedSubmit.value) {
-        signUpFormKey.currentState?.validate();
-      }
     }
 
     void _onPasswordChanged(String value) {
       password.value = PasswordInput.dirty(value);
       repeatPassword.value = RepeatPasswordInput.dirty(value, repeatPasswordController.text);
-      if (hasTriedSubmit.value) {
-        signUpFormKey.currentState?.validate();
-      }
+
+      signUpFormKey.currentState?.validate();
     }
 
     void _onRepeatPasswordChanged(String value) {
       repeatPassword.value = RepeatPasswordInput.dirty(passwordController.text, value);
-      if (hasTriedSubmit.value) {
-        signUpFormKey.currentState?.validate();
-      }
+
+      signUpFormKey.currentState?.validate();
     }
 
     return Form(
       key: signUpFormKey,
-      autovalidateMode: AutovalidateMode.disabled, // Autovalidierung deaktiviert
+      autovalidateMode: autovalidateMode,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomTextFormFieldWidget(
             controller: usernameController,
             focusNode: usernameFocusNode,
+            validator: (_) => getUsernameErrorText(),
             onChanged: (_) => _onUsernameChanged(),
             icon: Icon(
               Icons.person,
               color: theme.colorScheme.onPrimary,
             ),
             hintText: l10n.username,
-            errorText: getUsernameErrorText(), // Fehlertext nur anzeigen, wenn Button geklickt wurde
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
@@ -126,25 +114,27 @@ class SignUpWidget extends HookConsumerWidget {
               Icons.email,
               color: theme.colorScheme.onPrimary,
             ),
-            errorText: getEmailErrorText(), // Fehlertext nur anzeigen, wenn Button geklickt wurde
+            validator: (_) => getEmailErrorText(),
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
             controller: passwordController,
             focusNode: passwordFocusNode,
+            visible: false,
             onChanged: _onPasswordChanged,
             icon: const Icon(Icons.lock),
             hintText: l10n.password,
-            errorText: getPasswordErrorText(), // Fehlertext nur anzeigen, wenn Button geklickt wurde
+            validator: (_) => getPasswordErrorText(),
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
             controller: repeatPasswordController,
             focusNode: repeatPasswordFocusNode,
+            visible: false,
             onChanged: _onRepeatPasswordChanged,
             icon: const Icon(Icons.lock),
             hintText: l10n.repeat_password,
-            errorText: getRepeatPasswordErrorText(), // Fehlertext nur anzeigen, wenn Button geklickt wurde
+            validator: (_) => getRepeatPasswordErrorText(),
           ),
         ],
       ),

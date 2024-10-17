@@ -13,15 +13,21 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
     this.hintText,
     this.filled = false,
     this.errorText,
+    this.keyboardType,
+    this.visible = true,
+    this.validator,
   });
 
   final Icon icon;
   final String? hintText;
   final bool filled;
+  final bool visible;
   final String? errorText;
+  final TextInputType? keyboardType;
   final TextEditingController controller;
   final FocusNode focusNode;
   final Function(String)? onChanged;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -30,7 +36,10 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
     return TextFormField(
       controller: controller,
       focusNode: focusNode,
+      keyboardType: keyboardType,
       onChanged: onChanged,
+      obscureText: !visible,
+      validator: validator,
       decoration: InputDecoration(
         errorText: errorText,
         contentPadding: EdgeInsets.zero,

@@ -48,6 +48,8 @@ class AuthPage extends HookConsumerWidget {
     final signInFormKey = GlobalKey<FormState>();
     final signUpFormKey = GlobalKey<FormState>();
 
+    final validateMode = useState(AutovalidateMode.disabled);
+
     final signUpUsernameController = useTextEditingController();
     final signUpUsernameFocusNode = useFocusNode();
     final signUpEmailController = useTextEditingController();
@@ -98,6 +100,7 @@ class AuthPage extends HookConsumerWidget {
                   }
                   break;
                 case SignUpAuthModeState():
+                  validateMode.value = AutovalidateMode.always;
                   if (signUpFormKey.currentState?.validate() ?? false) {
                     await notifier.event(
                       SignUpEvent(
@@ -155,6 +158,7 @@ class AuthPage extends HookConsumerWidget {
                         signInFormKey: signInFormKey,
                       ),
                     SignUpAuthModeState() => SignUpWidget(
+                        autovalidateMode: validateMode.value,
                         key: signUpKey,
                         signUpFormKey: signUpFormKey,
                         emailController: signUpEmailController,
