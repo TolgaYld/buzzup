@@ -18,7 +18,7 @@
     "facebook_login": "Facebook ile giriş yap",
     "apple_login": "Apple ile giriş yap",
     "required": "Gerekli",
-    "min_length_password": "Şifre en az 6 haneli olmalıdır",
+    "min_length_password": "Şifre en az 8 haneli olmalıdır",
     "special_character": "Şifrede en az bir özel karakter olmalıdır",
     "email_is_required": "E-Mail address is required",
     "not_a_valid_email": "E-posta adresi gereklidir",
@@ -30,5 +30,8 @@
     "press_to_see_picture": "Resmi görmek için basılı tutun",
     "press_to_see_video": "Videoyu izlemek için basılı tutun",
     "turn_on_location_service_message": "ZoneWhisper'ı kullanabilmek için konum bilgilerini etkinleştirmelisin",
-    "go_to_settings": "Ayarları aç"
+    "go_to_settings": "Ayarları aç",
+    "not_empty_spaces": "Boşluk içermemelidir",
+    "invalid_input": "Geçersiz giriş",
+    "passwords_do_not_match": "Şifreler eşleşmiyor"
 }

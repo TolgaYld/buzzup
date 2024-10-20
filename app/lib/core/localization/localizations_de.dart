@@ -64,7 +64,7 @@ class L10nDe extends L10n {
   String get required => 'Pflichtfeld';
 
   @override
-  String get min_length_password => 'Mindestens 6 Zeichen';
+  String get min_length_password => 'Mindestens 8 Zeichen';
 
   @override
   String get special_character => 'Mindestens ein Sonderzeichen';
@@ -101,4 +101,13 @@ class L10nDe extends L10n {
 
   @override
   String get go_to_settings => 'Einstellungen öffnen';
+
+  @override
+  String get not_empty_spaces => 'Darf keine Leerzeichen enthalten';
+
+  @override
+  String get invalid_input => 'Ungültige Eingabe';
+
+  @override
+  String get passwords_do_not_match => 'Passwörter stimmen nicht überein';
 }

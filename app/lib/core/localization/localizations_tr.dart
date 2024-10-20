@@ -64,7 +64,7 @@ class L10nTr extends L10n {
   String get required => 'Gerekli';
 
   @override
-  String get min_length_password => 'Şifre en az 6 haneli olmalıdır';
+  String get min_length_password => 'Şifre en az 8 haneli olmalıdır';
 
   @override
   String get special_character => 'Şifrede en az bir özel karakter olmalıdır';
@@ -101,4 +101,13 @@ class L10nTr extends L10n {
 
   @override
   String get go_to_settings => 'Ayarları aç';
+
+  @override
+  String get not_empty_spaces => 'Boşluk içermemelidir';
+
+  @override
+  String get invalid_input => 'Geçersiz giriş';
+
+  @override
+  String get passwords_do_not_match => 'Şifreler eşleşmiyor';
 }

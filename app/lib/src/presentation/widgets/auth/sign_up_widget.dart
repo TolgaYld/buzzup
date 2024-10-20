@@ -43,47 +43,23 @@ class SignUpWidget extends HookConsumerWidget {
     final password = useState(const PasswordInput.pure());
     final repeatPassword = useState(const RepeatPasswordInput.pure(''));
 
-    bool validateForm() {
-      final isValid = signUpFormKey.currentState?.validate() ?? false;
-      return isValid;
-    }
-
-    String? getUsernameErrorText() {
-      return username.value.isNotValid ? 'Invalid username' : null;
-    }
-
-    String? getEmailErrorText() {
-      return email.value.isNotValid ? 'Invalid email' : null;
-    }
-
-    String? getPasswordErrorText() {
-      return password.value.isNotValid ? 'Invalid password' : null;
-    }
-
-    String? getRepeatPasswordErrorText() {
-      return repeatPassword.value.isNotValid ? 'Passwords do not match' : null;
-    }
-
-    void _onUsernameChanged() {
+    void onUsernameChanged() {
       username.value = UsernameInput.dirty(usernameController.text);
-
       signUpFormKey.currentState?.validate();
     }
 
-    void _onEmailChanged(String value) {
+    void onEmailChanged(String value) {
       email.value = EmailInput.dirty(value);
     }
 
-    void _onPasswordChanged(String value) {
+    void onPasswordChanged(String value) {
       password.value = PasswordInput.dirty(value);
       repeatPassword.value = RepeatPasswordInput.dirty(value, repeatPasswordController.text);
-
       signUpFormKey.currentState?.validate();
     }
 
-    void _onRepeatPasswordChanged(String value) {
+    void onRepeatPasswordChanged(String value) {
       repeatPassword.value = RepeatPasswordInput.dirty(passwordController.text, value);
-
       signUpFormKey.currentState?.validate();
     }
 
@@ -96,8 +72,13 @@ class SignUpWidget extends HookConsumerWidget {
           CustomTextFormFieldWidget(
             controller: usernameController,
             focusNode: usernameFocusNode,
-            validator: (_) => getUsernameErrorText(),
-            onChanged: (_) => _onUsernameChanged(),
+            validator: (_) => switch (username.value.error) {
+              UsernameValidationError.empty => l10n.required,
+              UsernameValidationError.spaces => l10n.not_empty_spaces,
+              UsernameValidationError.invalid => l10n.invalid_input,
+              _ => l10n.invalid_input,
+            },
+            onChanged: (_) => onUsernameChanged(),
             icon: Icon(
               Icons.person,
               color: theme.colorScheme.onPrimary,
@@ -108,33 +89,45 @@ class SignUpWidget extends HookConsumerWidget {
           CustomTextFormFieldWidget(
             controller: emailController,
             focusNode: emailFocusNode,
-            onChanged: _onEmailChanged,
+            onChanged: onEmailChanged,
             hintText: l10n.email_adress,
             icon: Icon(
               Icons.email,
               color: theme.colorScheme.onPrimary,
             ),
-            validator: (_) => getEmailErrorText(),
+            validator: (_) => switch (email.value.error) {
+              EmailValidationError.empty => l10n.email_is_required,
+              EmailValidationError.invalid => l10n.not_a_valid_email,
+              _ => l10n.not_a_valid_email,
+            },
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
             controller: passwordController,
             focusNode: passwordFocusNode,
             visible: false,
-            onChanged: _onPasswordChanged,
+            onChanged: onPasswordChanged,
             icon: const Icon(Icons.lock),
             hintText: l10n.password,
-            validator: (_) => getPasswordErrorText(),
+            validator: (_) => switch (password.value.error) {
+              PasswordValidationError.empty => l10n.required,
+              PasswordValidationError.tooShort => l10n.min_length_password,
+              _ => l10n.invalid_input,
+            },
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
             controller: repeatPasswordController,
             focusNode: repeatPasswordFocusNode,
             visible: false,
-            onChanged: _onRepeatPasswordChanged,
+            onChanged: onRepeatPasswordChanged,
             icon: const Icon(Icons.lock),
             hintText: l10n.repeat_password,
-            validator: (_) => getRepeatPasswordErrorText(),
+            validator: (_) => switch (repeatPassword.value.error) {
+              RepeatPasswordValidationError.empty => l10n.required,
+              RepeatPasswordValidationError.doesNotMatch => l10n.password,
+              _ => l10n.invalid_input,
+            },
           ),
         ],
       ),

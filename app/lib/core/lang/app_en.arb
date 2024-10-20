@@ -18,7 +18,7 @@
     "facebook_login": "Facebook Sign In",
     "apple_login": "Apple Sign In",
     "required": "Required",
-    "min_length_password": "Password must be at least 6 digits",
+    "min_length_password": "Password must be at least 8 digits",
     "special_character": "Password must have at least one special character",
     "email_is_required": "E-Mail address is required",
     "not_a_valid_email": "Enter a valid e-mail address",
@@ -30,5 +30,8 @@
     "press_to_see_picture": "Press and hold to see the picture",
     "press_to_see_video": "Press and hold to watch the video",
     "turn_on_location_service_message": "You must turn on your location services to use ZoneWhisper",
-    "go_to_settings": "Open settings"
+    "go_to_settings": "Open settings",
+    "not_empty_spaces": "Must not contain spaces",
+    "invalid_input": "Invalid input",
+    "passwords_do_not_match": "Passwords do not match"
 }

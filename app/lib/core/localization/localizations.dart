@@ -8,6 +8,7 @@ import 'package:intl/intl.dart' as intl;
 import 'localizations_de.dart';
 import 'localizations_en.dart';
 import 'localizations_es.dart';
+import 'localizations_fr.dart';
 import 'localizations_tr.dart';
 
 // ignore_for_file: type=lint
@@ -96,6 +97,7 @@ abstract class L10n {
     Locale('de'),
     Locale('en'),
     Locale('es'),
+    Locale('fr'),
     Locale('tr')
   ];
 
@@ -216,7 +218,7 @@ abstract class L10n {
   /// No description provided for @min_length_password.
   ///
   /// In de, this message translates to:
-  /// **'Mindestens 6 Zeichen'**
+  /// **'Mindestens 8 Zeichen'**
   String get min_length_password;
 
   /// No description provided for @special_character.
@@ -290,6 +292,24 @@ abstract class L10n {
   /// In de, this message translates to:
   /// **'Einstellungen öffnen'**
   String get go_to_settings;
+
+  /// No description provided for @not_empty_spaces.
+  ///
+  /// In de, this message translates to:
+  /// **'Darf keine Leerzeichen enthalten'**
+  String get not_empty_spaces;
+
+  /// No description provided for @invalid_input.
+  ///
+  /// In de, this message translates to:
+  /// **'Ungültige Eingabe'**
+  String get invalid_input;
+
+  /// No description provided for @passwords_do_not_match.
+  ///
+  /// In de, this message translates to:
+  /// **'Passwörter stimmen nicht überein'**
+  String get passwords_do_not_match;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
@@ -301,7 +321,7 @@ class _L10nDelegate extends LocalizationsDelegate<L10n> {
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['de', 'en', 'es', 'tr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['de', 'en', 'es', 'fr', 'tr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_L10nDelegate old) => false;
@@ -315,6 +335,7 @@ L10n lookupL10n(Locale locale) {
     case 'de': return L10nDe();
     case 'en': return L10nEn();
     case 'es': return L10nEs();
+    case 'fr': return L10nFr();
     case 'tr': return L10nTr();
   }
 

@@ -64,7 +64,7 @@ class L10nEs extends L10n {
   String get required => 'Requerido';
 
   @override
-  String get min_length_password => 'La contraseña debe tener al menos 6 dígitos';
+  String get min_length_password => 'La contraseña debe tener al menos 8 dígitos';
 
   @override
   String get special_character => 'La contraseña debe tener al menos un carácter especial';
@@ -101,4 +101,13 @@ class L10nEs extends L10n {
 
   @override
   String get go_to_settings => 'Ir a la configuración';
+
+  @override
+  String get not_empty_spaces => 'No debe contener espacios';
+
+  @override
+  String get invalid_input => 'Entrada no válida';
+
+  @override
+  String get passwords_do_not_match => 'Las contraseñas no coinciden';
 }
