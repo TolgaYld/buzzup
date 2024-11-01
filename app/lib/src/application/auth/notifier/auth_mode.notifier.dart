@@ -7,7 +7,6 @@ class AuthModeNotifier extends StateNotifier<AuthModeState> {
       : super(
           SignInAuthModeState(
             formKey: AuthModeNotifier.signInFormKey,
-            numberOfTextFields: 2,
           ),
         );
 
@@ -18,21 +17,18 @@ class AuthModeNotifier extends StateNotifier<AuthModeState> {
   void signIn() {
     state = SignInAuthModeState(
       formKey: signInFormKey,
-      numberOfTextFields: 2,
     );
   }
 
   void signUp() {
     state = SignUpAuthModeState(
       formKey: signUpFormKey,
-      numberOfTextFields: 4,
     );
   }
 
   void forgotPassword() {
     state = ForgotPasswordAuthModeState(
       formKey: forgotPasswordFormKey,
-      numberOfTextFields: 1,
     );
   }
 }

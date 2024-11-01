@@ -110,4 +110,21 @@ class L10nEn extends L10n {
 
   @override
   String get passwords_do_not_match => 'Passwords do not match';
+
+  @override
+  String minimum_length_of_input(Object count) {
+    return 'Minimum $count characters';
+  }
+
+  @override
+  String get or => 'Or';
+
+  @override
+  String get login_via_google => 'Login via Google';
+
+  @override
+  String get login_via_facebook => 'Login via Facebook';
+
+  @override
+  String get login_via_apple => 'Login via Apple';
 }

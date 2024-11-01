@@ -33,5 +33,10 @@
     "go_to_settings": "Open settings",
     "not_empty_spaces": "Must not contain spaces",
     "invalid_input": "Invalid input",
-    "passwords_do_not_match": "Passwords do not match"
+    "passwords_do_not_match": "Passwords do not match",
+    "minimum_length_of_input": "Minimum {count} characters",
+    "or": "Or",
+    "login_via_google": "Login via Google",
+    "login_via_facebook": "Login via Facebook",
+    "login_via_apple": "Login via Apple"
 }

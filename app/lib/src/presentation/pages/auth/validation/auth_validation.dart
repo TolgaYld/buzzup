@@ -6,7 +6,7 @@ enum PasswordValidationError { empty, tooShort }
 
 enum RepeatPasswordValidationError { empty, doesNotMatch }
 
-enum UsernameValidationError { invalid, empty, spaces }
+enum UsernameValidationError { invalid, empty, spaces, tooShort }
 
 class UsernameInput extends FormzInput<String, UsernameValidationError> {
   const UsernameInput.pure() : super.pure("");
@@ -19,6 +19,7 @@ class UsernameInput extends FormzInput<String, UsernameValidationError> {
   UsernameValidationError? validator(String value) {
     return switch (value) {
       final value when value.isEmpty => UsernameValidationError.empty,
+      final value when value.length < 3 => UsernameValidationError.tooShort,
       final value when _usernameRegExp.hasMatch(value) == false => UsernameValidationError.invalid,
       final value when value.contains(" ") == true => UsernameValidationError.spaces,
       _ => null,

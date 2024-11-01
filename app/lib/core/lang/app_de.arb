@@ -33,5 +33,10 @@
     "go_to_settings": "Einstellungen öffnen",
     "not_empty_spaces": "Darf keine Leerzeichen enthalten",
     "invalid_input": "Ungültige Eingabe",
-    "passwords_do_not_match": "Passwörter stimmen nicht überein"
+    "passwords_do_not_match": "Passwörter stimmen nicht überein",
+    "minimum_length_of_input": "Mindestens {count} Zeichen",
+    "or": "Oder",
+    "login_via_google": "Mit Google anmelden",
+    "login_via_facebook": "Mit Facebook anmelden",
+    "login_via_apple": "Mit Apple anmelden"
 }

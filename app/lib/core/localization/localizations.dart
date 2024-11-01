@@ -310,6 +310,36 @@ abstract class L10n {
   /// In de, this message translates to:
   /// **'Passwörter stimmen nicht überein'**
   String get passwords_do_not_match;
+
+  /// No description provided for @minimum_length_of_input.
+  ///
+  /// In de, this message translates to:
+  /// **'Mindestens {count} Zeichen'**
+  String minimum_length_of_input(Object count);
+
+  /// No description provided for @or.
+  ///
+  /// In de, this message translates to:
+  /// **'Oder'**
+  String get or;
+
+  /// No description provided for @login_via_google.
+  ///
+  /// In de, this message translates to:
+  /// **'Mit Google anmelden'**
+  String get login_via_google;
+
+  /// No description provided for @login_via_facebook.
+  ///
+  /// In de, this message translates to:
+  /// **'Mit Facebook anmelden'**
+  String get login_via_facebook;
+
+  /// No description provided for @login_via_apple.
+  ///
+  /// In de, this message translates to:
+  /// **'Mit Apple anmelden'**
+  String get login_via_apple;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

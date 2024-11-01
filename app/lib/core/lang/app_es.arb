@@ -33,5 +33,10 @@
     "go_to_settings": "Ir a la configuración",
     "not_empty_spaces": "No debe contener espacios",
     "invalid_input": "Entrada no válida",
-    "passwords_do_not_match": "Las contraseñas no coinciden"
+    "passwords_do_not_match": "Las contraseñas no coinciden",
+    "minimum_length_of_input": "Mínimo {count} caracteres",
+    "or": "O",
+    "login_via_google": "Iniciar sesión con Google",
+    "login_via_facebook": "Iniciar sesión con Facebook",
+    "login_via_apple": "Iniciar sesión con Apple"
 }

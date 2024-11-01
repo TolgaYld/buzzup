@@ -9,7 +9,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SignUpWidget extends HookConsumerWidget {
   const SignUpWidget({
-    required this.autovalidateMode,
+    required this.validateMode,
     required this.signUpFormKey,
     required this.usernameController,
     required this.emailController,
@@ -22,7 +22,6 @@ class SignUpWidget extends HookConsumerWidget {
     super.key,
   });
 
-  final AutovalidateMode autovalidateMode;
   final GlobalKey<FormState> signUpFormKey;
   final TextEditingController usernameController;
   final TextEditingController emailController;
@@ -32,11 +31,14 @@ class SignUpWidget extends HookConsumerWidget {
   final FocusNode emailFocusNode;
   final FocusNode passwordFocusNode;
   final FocusNode repeatPasswordFocusNode;
+  final AutovalidateMode validateMode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = useTheme();
     final l10n = useL10n();
+    final passwordIsVisible = useState(false);
+    final repeatPasswordIsVisible = useState(false);
 
     final username = useState(const UsernameInput.pure());
     final email = useState(const EmailInput.pure());
@@ -45,27 +47,38 @@ class SignUpWidget extends HookConsumerWidget {
 
     void onUsernameChanged() {
       username.value = UsernameInput.dirty(usernameController.text);
-      signUpFormKey.currentState?.validate();
+      if (validateMode == AutovalidateMode.always) {
+        signUpFormKey.currentState?.validate();
+      }
     }
 
     void onEmailChanged(String value) {
       email.value = EmailInput.dirty(value);
+      if (validateMode == AutovalidateMode.always) {
+        signUpFormKey.currentState?.validate();
+      }
     }
 
     void onPasswordChanged(String value) {
       password.value = PasswordInput.dirty(value);
+      repeatPassword.value = RepeatPasswordInput.dirty(value, "");
       repeatPassword.value = RepeatPasswordInput.dirty(value, repeatPasswordController.text);
-      signUpFormKey.currentState?.validate();
+      if (validateMode == AutovalidateMode.always) {
+        signUpFormKey.currentState?.validate();
+      }
     }
 
     void onRepeatPasswordChanged(String value) {
+      password.value = PasswordInput.dirty(passwordController.text);
       repeatPassword.value = RepeatPasswordInput.dirty(passwordController.text, value);
-      signUpFormKey.currentState?.validate();
+      if (validateMode == AutovalidateMode.always) {
+        signUpFormKey.currentState?.validate();
+      }
     }
 
     return Form(
       key: signUpFormKey,
-      autovalidateMode: autovalidateMode,
+      autovalidateMode: validateMode,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -76,7 +89,8 @@ class SignUpWidget extends HookConsumerWidget {
               UsernameValidationError.empty => l10n.required,
               UsernameValidationError.spaces => l10n.not_empty_spaces,
               UsernameValidationError.invalid => l10n.invalid_input,
-              _ => l10n.invalid_input,
+              UsernameValidationError.tooShort => l10n.minimum_length_of_input(3),
+              null => null,
             },
             onChanged: (_) => onUsernameChanged(),
             icon: Icon(
@@ -84,6 +98,7 @@ class SignUpWidget extends HookConsumerWidget {
               color: theme.colorScheme.onPrimary,
             ),
             hintText: l10n.username,
+            autovalidateMode: validateMode,
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
@@ -98,36 +113,53 @@ class SignUpWidget extends HookConsumerWidget {
             validator: (_) => switch (email.value.error) {
               EmailValidationError.empty => l10n.email_is_required,
               EmailValidationError.invalid => l10n.not_a_valid_email,
-              _ => l10n.not_a_valid_email,
+              null => null,
             },
+            autovalidateMode: validateMode,
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
             controller: passwordController,
             focusNode: passwordFocusNode,
-            visible: false,
+            visible: passwordIsVisible.value,
             onChanged: onPasswordChanged,
             icon: const Icon(Icons.lock),
             hintText: l10n.password,
             validator: (_) => switch (password.value.error) {
               PasswordValidationError.empty => l10n.required,
               PasswordValidationError.tooShort => l10n.min_length_password,
-              _ => l10n.invalid_input,
+              null => null,
             },
+            autovalidateMode: validateMode,
+            suffixIcon: IconButton(
+              icon: Icon(
+                passwordIsVisible.value ? Icons.visibility : Icons.visibility_off,
+                color: theme.colorScheme.primary,
+              ),
+              onPressed: () => passwordIsVisible.value = !passwordIsVisible.value,
+            ),
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
             controller: repeatPasswordController,
             focusNode: repeatPasswordFocusNode,
-            visible: false,
+            visible: repeatPasswordIsVisible.value,
             onChanged: onRepeatPasswordChanged,
             icon: const Icon(Icons.lock),
             hintText: l10n.repeat_password,
             validator: (_) => switch (repeatPassword.value.error) {
               RepeatPasswordValidationError.empty => l10n.required,
-              RepeatPasswordValidationError.doesNotMatch => l10n.password,
-              _ => l10n.invalid_input,
+              RepeatPasswordValidationError.doesNotMatch => l10n.passwords_do_not_match,
+              null => null,
             },
+            autovalidateMode: validateMode,
+            suffixIcon: IconButton(
+              icon: Icon(
+                repeatPasswordIsVisible.value ? Icons.visibility : Icons.visibility_off,
+                color: theme.colorScheme.primary,
+              ),
+              onPressed: () => repeatPasswordIsVisible.value = !repeatPasswordIsVisible.value,
+            ),
           ),
         ],
       ),

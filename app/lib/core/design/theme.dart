@@ -8,7 +8,7 @@ class AppTheme {
   static const Color _lightBackgroundColor = Color(0xFFFFFFFF);
   static const Color _lightPrimaryColor = Color(0xFF008080);
   static const Color _lightPrimaryVariantColor = Color(0xFFFFC800);
-  static const Color _lightOnPrimaryColor = _lightPrimaryVariantColor;
+  static const Color _lightOnPrimaryColor = _lightBackgroundColor;
   static const Color _lightTextColorPrimary = _lightPrimaryColor;
   static const Color _appBarColorLight = _lightPrimaryColor;
 
@@ -62,11 +62,10 @@ class AppTheme {
       borderRadius: BorderRadius.circular(30),
       borderSide: const BorderSide(color: Colors.red, width: 2),
     ),
-    contentPadding: EdgeInsets.zero,
     errorStyle: GoogleFonts.dmSans(
       color: Colors.red,
       fontWeight: FontWeight.bold,
-      fontSize: 14,
+      fontSize: 12,
     ),
     prefixIconColor: _iconColor,
     filled: true,
@@ -75,9 +74,12 @@ class AppTheme {
 
   static final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: _lightOnPrimaryColor,
-      foregroundColor: _lightTextColorPrimary,
+      backgroundColor: _lightPrimaryColor,
+      foregroundColor: _lightOnPrimaryColor,
       splashFactory: NoSplash.splashFactory,
+      disabledBackgroundColor: _lightPrimaryColor.withOpacity(0.3),
+      disabledForegroundColor: _lightOnPrimaryColor,
+      disabledIconColor: _lightPrimaryColor,
     ),
   );
 
@@ -125,8 +127,9 @@ class AppTheme {
       onSecondary: _lightTextColorPrimary,
       primary: _lightPrimaryColor,
       onPrimary: _lightPrimaryVariantColor,
-      secondary: _lightOnPrimaryColor,
+      secondary: _lightPrimaryVariantColor,
       primaryContainer: _lightPrimaryVariantColor,
+      tertiary: Colors.black87,
     ),
     textTheme: _lightTextTheme,
   );

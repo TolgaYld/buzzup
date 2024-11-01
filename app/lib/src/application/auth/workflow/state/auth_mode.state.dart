@@ -7,17 +7,14 @@ part 'auth_mode.state.mapper.dart';
 sealed class AuthModeState with AuthModeStateMappable {
   const AuthModeState({
     required this.formKey,
-    required this.numberOfTextFields,
   });
   final GlobalKey formKey;
-  final int numberOfTextFields;
 }
 
 @MappableClass()
 class SignInAuthModeState extends AuthModeState with SignInAuthModeStateMappable {
   const SignInAuthModeState({
     required super.formKey,
-    required super.numberOfTextFields,
   });
 }
 
@@ -25,7 +22,6 @@ class SignInAuthModeState extends AuthModeState with SignInAuthModeStateMappable
 class SignUpAuthModeState extends AuthModeState with SignUpAuthModeStateMappable {
   const SignUpAuthModeState({
     required super.formKey,
-    required super.numberOfTextFields,
   });
 }
 
@@ -33,6 +29,5 @@ class SignUpAuthModeState extends AuthModeState with SignUpAuthModeStateMappable
 class ForgotPasswordAuthModeState extends AuthModeState with ForgotPasswordAuthModeStateMappable {
   const ForgotPasswordAuthModeState({
     required super.formKey,
-    required super.numberOfTextFields,
   });
 }

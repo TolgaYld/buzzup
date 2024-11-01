@@ -110,4 +110,21 @@ class L10nEs extends L10n {
 
   @override
   String get passwords_do_not_match => 'Las contraseñas no coinciden';
+
+  @override
+  String minimum_length_of_input(Object count) {
+    return 'Mínimo $count caracteres';
+  }
+
+  @override
+  String get or => 'O';
+
+  @override
+  String get login_via_google => 'Iniciar sesión con Google';
+
+  @override
+  String get login_via_facebook => 'Iniciar sesión con Facebook';
+
+  @override
+  String get login_via_apple => 'Iniciar sesión con Apple';
 }

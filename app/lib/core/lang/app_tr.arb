@@ -33,5 +33,10 @@
     "go_to_settings": "Ayarları aç",
     "not_empty_spaces": "Boşluk içermemelidir",
     "invalid_input": "Geçersiz giriş",
-    "passwords_do_not_match": "Şifreler eşleşmiyor"
+    "passwords_do_not_match": "Şifreler eşleşmiyor",
+    "minimum_length_of_input": "En az {count} karakter",
+    "or": "Veya",
+    "login_via_google": "Google ile giriş yap",
+    "login_via_facebook": "Facebook ile giriş yap",
+    "login_via_apple": "Apple ile giriş yap"
 }

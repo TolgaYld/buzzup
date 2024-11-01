@@ -1,4 +1,6 @@
 import 'package:buzzup/core/common/gen/assets.gen.dart';
+import 'package:buzzup/core/common/widgets/animated_size_switcher.dart';
+import 'package:buzzup/core/common/widgets/loading_indicator.dart';
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
@@ -33,6 +35,8 @@ class AuthPage extends HookConsumerWidget {
     final notifier = ref.read(authProvider.notifier);
     final authModeState = ref.watch(authModeProvider);
     final authModeNotifier = ref.read(authModeProvider.notifier);
+    final validateModeSignUp = useState(AutovalidateMode.disabled);
+    final validateModeForgotPassword = useState(AutovalidateMode.disabled);
 
     ref.listen<AuthState>(authProvider, (previous, next) {
       if (next is SignedInState) {
@@ -47,8 +51,6 @@ class AuthPage extends HookConsumerWidget {
 
     final signInFormKey = GlobalKey<FormState>();
     final signUpFormKey = GlobalKey<FormState>();
-
-    final validateMode = useState(AutovalidateMode.disabled);
 
     final signUpUsernameController = useTextEditingController();
     final signUpUsernameFocusNode = useFocusNode();
@@ -100,7 +102,7 @@ class AuthPage extends HookConsumerWidget {
                   }
                   break;
                 case SignUpAuthModeState():
-                  validateMode.value = AutovalidateMode.always;
+                  validateModeSignUp.value = AutovalidateMode.always;
                   if (signUpFormKey.currentState?.validate() ?? false) {
                     await notifier.event(
                       SignUpEvent(
@@ -120,12 +122,23 @@ class AuthPage extends HookConsumerWidget {
                   break;
               }
             },
-            child: Text(
-              switch (authModeState) {
-                SignInAuthModeState() => l10n.sign_in,
-                SignUpAuthModeState() => l10n.sign_up,
-                ForgotPasswordAuthModeState() => l10n.reset_password,
-              },
+            child: AnimatedSizeSwitcher(
+              duration: Durations.short3,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (authState is LoadingState) const LoadingIndicator(),
+                  Flexible(
+                    child: Text(
+                      switch (authModeState) {
+                        SignInAuthModeState() => l10n.sign_in,
+                        SignUpAuthModeState() => l10n.sign_up,
+                        ForgotPasswordAuthModeState() => l10n.reset_password,
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -158,7 +171,7 @@ class AuthPage extends HookConsumerWidget {
                         signInFormKey: signInFormKey,
                       ),
                     SignUpAuthModeState() => SignUpWidget(
-                        autovalidateMode: validateMode.value,
+                        validateMode: validateModeSignUp.value,
                         key: signUpKey,
                         signUpFormKey: signUpFormKey,
                         emailController: signUpEmailController,
@@ -202,7 +215,8 @@ class AuthPage extends HookConsumerWidget {
                             _ => "",
                           },
                           style: theme.textTheme.labelSmall?.copyWith(
-                            color: theme.colorScheme.secondary,
+                            color: theme.colorScheme.tertiary,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),

@@ -16,6 +16,8 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
     this.keyboardType,
     this.visible = true,
     this.validator,
+    this.autovalidateMode,
+    this.suffixIcon,
   });
 
   final Icon icon;
@@ -28,6 +30,8 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
   final FocusNode focusNode;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final AutovalidateMode? autovalidateMode;
+  final Widget? suffixIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,6 +44,7 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
       onChanged: onChanged,
       obscureText: !visible,
       validator: validator,
+      autovalidateMode: autovalidateMode,
       decoration: InputDecoration(
         errorText: errorText,
         contentPadding: EdgeInsets.zero,
@@ -60,6 +65,7 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
             color: const Color(0xFFFFFFFF),
           ),
         ),
+        suffixIcon: suffixIcon,
         hintText: hintText,
       ),
     );

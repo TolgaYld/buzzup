@@ -110,4 +110,21 @@ class L10nTr extends L10n {
 
   @override
   String get passwords_do_not_match => 'Şifreler eşleşmiyor';
+
+  @override
+  String minimum_length_of_input(Object count) {
+    return 'En az $count karakter';
+  }
+
+  @override
+  String get or => 'Veya';
+
+  @override
+  String get login_via_google => 'Google ile giriş yap';
+
+  @override
+  String get login_via_facebook => 'Facebook ile giriş yap';
+
+  @override
+  String get login_via_apple => 'Apple ile giriş yap';
 }

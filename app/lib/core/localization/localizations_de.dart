@@ -110,4 +110,21 @@ class L10nDe extends L10n {
 
   @override
   String get passwords_do_not_match => 'Passwörter stimmen nicht überein';
+
+  @override
+  String minimum_length_of_input(Object count) {
+    return 'Mindestens $count Zeichen';
+  }
+
+  @override
+  String get or => 'Oder';
+
+  @override
+  String get login_via_google => 'Mit Google anmelden';
+
+  @override
+  String get login_via_facebook => 'Mit Facebook anmelden';
+
+  @override
+  String get login_via_apple => 'Mit Apple anmelden';
 }

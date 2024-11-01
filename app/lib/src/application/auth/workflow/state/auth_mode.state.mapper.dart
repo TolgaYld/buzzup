@@ -27,14 +27,10 @@ class AuthModeStateMapper extends ClassMapperBase<AuthModeState> {
       v.formKey;
   static const Field<AuthModeState, GlobalKey<State<StatefulWidget>>>
       _f$formKey = Field('formKey', _$formKey);
-  static int _$numberOfTextFields(AuthModeState v) => v.numberOfTextFields;
-  static const Field<AuthModeState, int> _f$numberOfTextFields =
-      Field('numberOfTextFields', _$numberOfTextFields);
 
   @override
   final MappableFields<AuthModeState> fields = const {
     #formKey: _f$formKey,
-    #numberOfTextFields: _f$numberOfTextFields,
   };
 
   static AuthModeState _instantiate(DecodingData data) {
@@ -62,7 +58,7 @@ mixin AuthModeStateMappable {
 
 abstract class AuthModeStateCopyWith<$R, $In extends AuthModeState, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({GlobalKey<State<StatefulWidget>>? formKey, int? numberOfTextFields});
+  $R call({GlobalKey<State<StatefulWidget>>? formKey});
   AuthModeStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -85,21 +81,14 @@ class SignInAuthModeStateMapper extends ClassMapperBase<SignInAuthModeState> {
       v.formKey;
   static const Field<SignInAuthModeState, GlobalKey<State<StatefulWidget>>>
       _f$formKey = Field('formKey', _$formKey);
-  static int _$numberOfTextFields(SignInAuthModeState v) =>
-      v.numberOfTextFields;
-  static const Field<SignInAuthModeState, int> _f$numberOfTextFields =
-      Field('numberOfTextFields', _$numberOfTextFields);
 
   @override
   final MappableFields<SignInAuthModeState> fields = const {
     #formKey: _f$formKey,
-    #numberOfTextFields: _f$numberOfTextFields,
   };
 
   static SignInAuthModeState _instantiate(DecodingData data) {
-    return SignInAuthModeState(
-        formKey: data.dec(_f$formKey),
-        numberOfTextFields: data.dec(_f$numberOfTextFields));
+    return SignInAuthModeState(formKey: data.dec(_f$formKey));
   }
 
   @override
@@ -158,7 +147,7 @@ extension SignInAuthModeStateValueCopy<$R, $Out>
 abstract class SignInAuthModeStateCopyWith<$R, $In extends SignInAuthModeState,
     $Out> implements AuthModeStateCopyWith<$R, $In, $Out> {
   @override
-  $R call({GlobalKey<State<StatefulWidget>>? formKey, int? numberOfTextFields});
+  $R call({GlobalKey<State<StatefulWidget>>? formKey});
   SignInAuthModeStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -172,18 +161,11 @@ class _SignInAuthModeStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SignInAuthModeState> $mapper =
       SignInAuthModeStateMapper.ensureInitialized();
   @override
-  $R call(
-          {GlobalKey<State<StatefulWidget>>? formKey,
-          int? numberOfTextFields}) =>
-      $apply(FieldCopyWithData({
-        if (formKey != null) #formKey: formKey,
-        if (numberOfTextFields != null) #numberOfTextFields: numberOfTextFields
-      }));
+  $R call({GlobalKey<State<StatefulWidget>>? formKey}) =>
+      $apply(FieldCopyWithData({if (formKey != null) #formKey: formKey}));
   @override
-  SignInAuthModeState $make(CopyWithData data) => SignInAuthModeState(
-      formKey: data.get(#formKey, or: $value.formKey),
-      numberOfTextFields:
-          data.get(#numberOfTextFields, or: $value.numberOfTextFields));
+  SignInAuthModeState $make(CopyWithData data) =>
+      SignInAuthModeState(formKey: data.get(#formKey, or: $value.formKey));
 
   @override
   SignInAuthModeStateCopyWith<$R2, SignInAuthModeState, $Out2>
@@ -210,21 +192,14 @@ class SignUpAuthModeStateMapper extends ClassMapperBase<SignUpAuthModeState> {
       v.formKey;
   static const Field<SignUpAuthModeState, GlobalKey<State<StatefulWidget>>>
       _f$formKey = Field('formKey', _$formKey);
-  static int _$numberOfTextFields(SignUpAuthModeState v) =>
-      v.numberOfTextFields;
-  static const Field<SignUpAuthModeState, int> _f$numberOfTextFields =
-      Field('numberOfTextFields', _$numberOfTextFields);
 
   @override
   final MappableFields<SignUpAuthModeState> fields = const {
     #formKey: _f$formKey,
-    #numberOfTextFields: _f$numberOfTextFields,
   };
 
   static SignUpAuthModeState _instantiate(DecodingData data) {
-    return SignUpAuthModeState(
-        formKey: data.dec(_f$formKey),
-        numberOfTextFields: data.dec(_f$numberOfTextFields));
+    return SignUpAuthModeState(formKey: data.dec(_f$formKey));
   }
 
   @override
@@ -283,7 +258,7 @@ extension SignUpAuthModeStateValueCopy<$R, $Out>
 abstract class SignUpAuthModeStateCopyWith<$R, $In extends SignUpAuthModeState,
     $Out> implements AuthModeStateCopyWith<$R, $In, $Out> {
   @override
-  $R call({GlobalKey<State<StatefulWidget>>? formKey, int? numberOfTextFields});
+  $R call({GlobalKey<State<StatefulWidget>>? formKey});
   SignUpAuthModeStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -297,18 +272,11 @@ class _SignUpAuthModeStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SignUpAuthModeState> $mapper =
       SignUpAuthModeStateMapper.ensureInitialized();
   @override
-  $R call(
-          {GlobalKey<State<StatefulWidget>>? formKey,
-          int? numberOfTextFields}) =>
-      $apply(FieldCopyWithData({
-        if (formKey != null) #formKey: formKey,
-        if (numberOfTextFields != null) #numberOfTextFields: numberOfTextFields
-      }));
+  $R call({GlobalKey<State<StatefulWidget>>? formKey}) =>
+      $apply(FieldCopyWithData({if (formKey != null) #formKey: formKey}));
   @override
-  SignUpAuthModeState $make(CopyWithData data) => SignUpAuthModeState(
-      formKey: data.get(#formKey, or: $value.formKey),
-      numberOfTextFields:
-          data.get(#numberOfTextFields, or: $value.numberOfTextFields));
+  SignUpAuthModeState $make(CopyWithData data) =>
+      SignUpAuthModeState(formKey: data.get(#formKey, or: $value.formKey));
 
   @override
   SignUpAuthModeStateCopyWith<$R2, SignUpAuthModeState, $Out2>
@@ -339,21 +307,14 @@ class ForgotPasswordAuthModeStateMapper
   static const Field<ForgotPasswordAuthModeState,
           GlobalKey<State<StatefulWidget>>> _f$formKey =
       Field('formKey', _$formKey);
-  static int _$numberOfTextFields(ForgotPasswordAuthModeState v) =>
-      v.numberOfTextFields;
-  static const Field<ForgotPasswordAuthModeState, int> _f$numberOfTextFields =
-      Field('numberOfTextFields', _$numberOfTextFields);
 
   @override
   final MappableFields<ForgotPasswordAuthModeState> fields = const {
     #formKey: _f$formKey,
-    #numberOfTextFields: _f$numberOfTextFields,
   };
 
   static ForgotPasswordAuthModeState _instantiate(DecodingData data) {
-    return ForgotPasswordAuthModeState(
-        formKey: data.dec(_f$formKey),
-        numberOfTextFields: data.dec(_f$numberOfTextFields));
+    return ForgotPasswordAuthModeState(formKey: data.dec(_f$formKey));
   }
 
   @override
@@ -416,7 +377,7 @@ abstract class ForgotPasswordAuthModeStateCopyWith<
     $In extends ForgotPasswordAuthModeState,
     $Out> implements AuthModeStateCopyWith<$R, $In, $Out> {
   @override
-  $R call({GlobalKey<State<StatefulWidget>>? formKey, int? numberOfTextFields});
+  $R call({GlobalKey<State<StatefulWidget>>? formKey});
   ForgotPasswordAuthModeStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -433,19 +394,12 @@ class _ForgotPasswordAuthModeStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ForgotPasswordAuthModeState> $mapper =
       ForgotPasswordAuthModeStateMapper.ensureInitialized();
   @override
-  $R call(
-          {GlobalKey<State<StatefulWidget>>? formKey,
-          int? numberOfTextFields}) =>
-      $apply(FieldCopyWithData({
-        if (formKey != null) #formKey: formKey,
-        if (numberOfTextFields != null) #numberOfTextFields: numberOfTextFields
-      }));
+  $R call({GlobalKey<State<StatefulWidget>>? formKey}) =>
+      $apply(FieldCopyWithData({if (formKey != null) #formKey: formKey}));
   @override
   ForgotPasswordAuthModeState $make(CopyWithData data) =>
       ForgotPasswordAuthModeState(
-          formKey: data.get(#formKey, or: $value.formKey),
-          numberOfTextFields:
-              data.get(#numberOfTextFields, or: $value.numberOfTextFields));
+          formKey: data.get(#formKey, or: $value.formKey));
 
   @override
   ForgotPasswordAuthModeStateCopyWith<$R2, ForgotPasswordAuthModeState, $Out2>

@@ -110,4 +110,21 @@ class L10nFr extends L10n {
 
   @override
   String get passwords_do_not_match => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String minimum_length_of_input(Object count) {
+    return 'Minimum $count caractères';
+  }
+
+  @override
+  String get or => 'Ou';
+
+  @override
+  String get login_via_google => 'Connexion via Google';
+
+  @override
+  String get login_via_facebook => 'Connexion via Facebook';
+
+  @override
+  String get login_via_apple => 'Connexion via Apple';
 }
