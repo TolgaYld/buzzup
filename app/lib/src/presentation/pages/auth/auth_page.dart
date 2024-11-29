@@ -169,6 +169,10 @@ class AuthPage extends HookConsumerWidget {
                     SignInAuthModeState() => SignInWidget(
                         key: signInKey,
                         signInFormKey: signInFormKey,
+                        emailOrUsernameController: signInEmailOrUsernameController,
+                        emailOrUsernameFocusNode: signInEmailOrUsernameFocusNode,
+                        passwordController: signInPasswordController,
+                        passwordFocusNode: signInPasswordFocusNode,
                       ),
                     SignUpAuthModeState() => SignUpWidget(
                         validateMode: validateModeSignUp.value,

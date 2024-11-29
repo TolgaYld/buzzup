@@ -12,21 +12,25 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SignInWidget extends HookConsumerWidget {
   const SignInWidget({
-    required GlobalKey signInFormKey,
     super.key,
+    required GlobalKey signInFormKey,
+    required this.emailOrUsernameController,
+    required this.emailOrUsernameFocusNode,
+    required this.passwordController,
+    required this.passwordFocusNode,
   }) : _signInFormKey = signInFormKey;
 
   final GlobalKey _signInFormKey;
+  final TextEditingController emailOrUsernameController;
+  final FocusNode emailOrUsernameFocusNode;
+  final TextEditingController passwordController;
+  final FocusNode passwordFocusNode;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n();
     final theme = useTheme();
     final authModeNotifier = ref.read(authModeProvider.notifier);
-    final emailController = useTextEditingController();
-    final emailFocusNode = useFocusNode();
-    final passwordController = useTextEditingController();
-    final passwordFocusNode = useFocusNode();
     final passwordVisible = useState(false);
     return Form(
       key: _signInFormKey,
@@ -34,8 +38,8 @@ class SignInWidget extends HookConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CustomTextFormFieldWidget(
-            controller: emailController,
-            focusNode: emailFocusNode,
+            controller: emailOrUsernameController,
+            focusNode: emailOrUsernameFocusNode,
             icon: Icon(
               Icons.email,
               color: theme.colorScheme.onPrimary,

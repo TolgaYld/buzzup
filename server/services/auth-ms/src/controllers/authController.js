@@ -181,10 +181,7 @@ const checkIfUsernameExists = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
-  log("aaaa");
   const isEmail = validator.isEmail(req.body.data.email);
-
-
   const isStrongPassword = validator.isStrongPassword(
     req.body.data.password,
     validatePasswordOptions,
@@ -303,8 +300,8 @@ const signInUser = async (req, res) => {
         username: req.body.data.emailOrUsername,
       }).exec();
     }
-
     if (!findUser) {
+
       return await errorHandler(406, "authentication-failed", true, req, res);
     } else {
       if (findUser.provider !== "LOCAL") {

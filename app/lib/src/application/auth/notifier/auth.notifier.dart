@@ -46,6 +46,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     switch (result) {
       case Left(value: final failure):
         state = ErrorAuthState(failure.message);
+        print(failure.message);
         break;
       case Right(value: final user):
         state = SignedInState(user);
@@ -68,7 +69,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
-        print(failure.message);
         state = ErrorAuthState(failure.message);
         break;
       case Right(value: final user):

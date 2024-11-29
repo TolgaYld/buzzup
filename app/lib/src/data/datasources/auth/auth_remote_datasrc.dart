@@ -121,13 +121,17 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
         MutationOptions(
           document: gql(GqlMutation.signInMutation),
           variables: {
-            'emailOrUsername': emailOrUsername,
-            'password': password,
+            "data": {
+              'emailOrUsername': emailOrUsername,
+              'password': password,
+            },
           },
         ),
       );
       if (response.data case final d? when response.hasException == false) {
-        return UserMapper.fromMap(d['signInUser']['user']);
+        final user = UserMapper.fromMap(d['signInUser']['user']);
+        final tokens = TokenMapper.fromMap(d['signInUser']['tokens']);
+        return user.copyWith(tokens: tokens);
       } else {
         if (response.exception case final exc?) {
           throw ApiException(

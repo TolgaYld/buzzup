@@ -68,7 +68,6 @@ class AuthRepoImpl implements AuthRepo {
         emailOrUsername: emailOrUsername,
         password: password,
       );
-
       if (result.tokens case final tkns?) {
         await _localDatasrc.setTokens(
           token: tkns.token,

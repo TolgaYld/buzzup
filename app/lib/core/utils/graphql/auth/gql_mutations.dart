@@ -55,8 +55,10 @@ mutation SignInUser(\$data: SignInUserInput!) {
       username_change_counter
       created_at
     }
-    token
-    refreshToken
+   tokens {
+      token
+      refreshToken
+    }
   }
 }
 ''';
