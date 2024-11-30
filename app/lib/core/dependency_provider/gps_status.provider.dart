@@ -33,10 +33,13 @@ final getGpsStatusUsecaseProvider = Provider<GetGpsStatusUsecase>((ref) {
 });
 
 // Notifier provider
-final gpsStatusNotifierProvider =
-    StateNotifierProvider<GpsStatusNotifier, GpsStatusState>((ref) {
+final gpsStatusNotifierProvider = StateNotifierProvider<GpsStatusNotifier, GpsStatusState>((ref) {
   return GpsStatusNotifier(
     watchGpsStatusUsecase: ref.read(watchGpsStatusUsecaseProvider),
     getGpsStatusUsecase: ref.read(getGpsStatusUsecaseProvider),
   );
 });
+
+final gpsStatusInitProvider = FutureProvider<void>(
+  (ref) async => await ref.read(gpsStatusNotifierProvider.notifier).updateLocationStatus(),
+);

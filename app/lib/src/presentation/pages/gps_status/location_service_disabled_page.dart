@@ -12,6 +12,8 @@ import 'package:rive_animated_icon/rive_animated_icon.dart';
 class LocationServiceDisabledPage extends HookConsumerWidget {
   const LocationServiceDisabledPage({super.key});
 
+  static final String routeName = '/location_service_disabled';
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = useTheme();
