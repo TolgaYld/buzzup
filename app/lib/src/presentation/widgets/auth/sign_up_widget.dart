@@ -43,7 +43,18 @@ class SignUpWidget extends HookConsumerWidget {
     final username = useState(const UsernameInput.pure());
     final email = useState(const EmailInput.pure());
     final password = useState(const PasswordInput.pure());
-    final repeatPassword = useState(const RepeatPasswordInput.pure(''));
+    final repeatPassword = useState(const RepeatPasswordInput.pure(""));
+
+    useEffect(
+      () {
+        username.value = UsernameInput.dirty(usernameController.text);
+        email.value = EmailInput.dirty(emailController.text);
+        password.value = PasswordInput.dirty(passwordController.text);
+        repeatPassword.value = RepeatPasswordInput.dirty(passwordController.text, repeatPasswordController.text);
+        return null;
+      },
+      [],
+    );
 
     void onUsernameChanged() {
       username.value = UsernameInput.dirty(usernameController.text);

@@ -20,9 +20,7 @@ Future<void> main() async {
 
   HiveStore.init(onPath: appDocumentDir.path);
   runApp(
-    const ProviderScope(
-      child: MyApp(),
-    ),
+    const ProviderScope(child: MyApp()),
   );
 }
 
@@ -59,6 +57,7 @@ class MyApp extends HookConsumerWidget {
 
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       localizationsDelegates: L10n.localizationsDelegates,
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

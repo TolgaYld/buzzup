@@ -4,11 +4,12 @@ import 'package:buzzup/core/common/widgets/custom_text_form_field_widget.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
+import 'package:buzzup/core/utils/extensions/iterable.extension.dart';
 import 'package:buzzup/src/application/auth/provider/auth_mode.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 
 class SignInWidget extends HookConsumerWidget {
   const SignInWidget({
@@ -44,7 +45,7 @@ class SignInWidget extends HookConsumerWidget {
               Icons.email,
               color: theme.colorScheme.onPrimary,
             ),
-            hintText: l10n.email_adress,
+            hintText: l10n.email_or_username,
           ),
           const VSpace.m(),
           CustomTextFormFieldWidget(
@@ -69,94 +70,60 @@ class SignInWidget extends HookConsumerWidget {
             ),
           ),
           const VSpace.x3l(),
-          Text(l10n.or),
-          const VSpace.m(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: Spacers.xl),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                ElevatedButton.icon(
+              children: <Widget>[
+                _SignInViaProviderButton(
+                  l10n.login_via_google,
+                  button: Buttons.google,
                   onPressed: () {},
-                  label: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      l10n.login_via_google,
-                      style: TextStyle(color: theme.primaryColor),
-                    ),
-                  ),
-                  icon: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: Spacers.x2l),
-                      child: Icon(
-                        FontAwesomeIcons.google,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: BorderSide(color: theme.primaryColor),
-                    alignment: Alignment.centerLeft,
-                  ),
                 ),
-                ElevatedButton.icon(
+                _SignInViaProviderButton(
+                  l10n.login_via_facebook,
+                  button: Buttons.facebook,
                   onPressed: () {},
-                  label: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      l10n.login_via_facebook,
-                      style: TextStyle(color: theme.primaryColor),
-                    ),
-                  ),
-                  icon: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: Spacers.x2l),
-                      child: Icon(
-                        Icons.facebook_rounded,
-                        color: theme.primaryColor,
-                      ),
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    side: BorderSide(color: theme.primaryColor),
-                    alignment: Alignment.centerLeft,
-                  ),
                 ),
                 if (Platform.isIOS)
-                  ElevatedButton.icon(
+                  _SignInViaProviderButton(
+                    l10n.login_via_apple,
+                    button: Buttons.apple,
                     onPressed: () {},
-                    label: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        l10n.login_via_apple,
-                        style: TextStyle(color: theme.primaryColor),
-                      ),
-                    ),
-                    icon: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: Spacers.x2l),
-                        child: Icon(
-                          Icons.apple_rounded,
-                          color: theme.primaryColor,
-                        ),
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      side: BorderSide(color: theme.primaryColor),
-                      alignment: Alignment.centerLeft,
-                    ),
                   ),
-              ],
+              ].intersperse(const VSpace.s()).toList(),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SignInViaProviderButton extends HookConsumerWidget {
+  const _SignInViaProviderButton(
+    this.text, {
+    required this.button,
+    required this.onPressed,
+    this.mini = false,
+  });
+
+  final String? text;
+  final Buttons button;
+  final bool mini;
+  final void Function() onPressed;
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SignInButton(
+      button,
+      elevation: 3,
+      mini: mini,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
+      clipBehavior: Clip.antiAlias,
+      text: text,
+      onPressed: onPressed,
     );
   }
 }

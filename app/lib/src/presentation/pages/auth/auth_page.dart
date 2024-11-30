@@ -51,7 +51,7 @@ class AuthPage extends HookConsumerWidget {
 
     final signInFormKey = GlobalKey<FormState>();
     final signUpFormKey = GlobalKey<FormState>();
-
+    final forgotPasswordFormKey = GlobalKey<FormState>();
     final signUpUsernameController = useTextEditingController();
     final signUpUsernameFocusNode = useFocusNode();
     final signUpEmailController = useTextEditingController();
@@ -60,13 +60,12 @@ class AuthPage extends HookConsumerWidget {
     final signUpPasswordFocusNode = useFocusNode();
     final signUpRepeatPasswordController = useTextEditingController();
     final signUpRepeatPasswordFocusNode = useFocusNode();
-
     final signInEmailOrUsernameController = useTextEditingController();
     final signInEmailOrUsernameFocusNode = useFocusNode();
     final signInPasswordController = useTextEditingController();
     final signInPasswordFocusNode = useFocusNode();
-
     final forgotPasswordController = useTextEditingController();
+    final forgotPasswordFocusNode = useFocusNode();
 
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
@@ -187,7 +186,13 @@ class AuthPage extends HookConsumerWidget {
                         usernameController: signUpUsernameController,
                         usernameFocusNode: signUpUsernameFocusNode,
                       ),
-                    ForgotPasswordAuthModeState() => const ForgotPasswordWidget(key: forgotPasswordKey),
+                    ForgotPasswordAuthModeState() => ForgotPasswordWidget(
+                        key: forgotPasswordKey,
+                        formKey: forgotPasswordFormKey,
+                        validateMode: validateModeForgotPassword.value,
+                        emailController: forgotPasswordController,
+                        emailFocusNode: forgotPasswordFocusNode,
+                      ),
                   },
                 ),
               ),
