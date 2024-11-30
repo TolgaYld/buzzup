@@ -14,18 +14,18 @@
   },
   "dependencies": {
     "@TolgaYld/core-buzzup": "*",
-    "@graphql-tools/graphql-file-loader": "^8.0.1",
-    "@graphql-tools/load": "^8.0.2",
+    "@graphql-tools/graphql-file-loader": "^8.0.5",
+    "@graphql-tools/load": "^8.0.6",
     "apollo-server-express": "^3.13.0",
     "connect-flash": "^0.1.1",
     "ejs": "^3.1.10",
-    "express-rate-limit": "^7.4.0",
-    "express-session": "^1.18.0",
+    "express-rate-limit": "^7.4.1",
+    "express-session": "^1.18.1",
     "express-validator": "^7.2.0",
     "graphql": "^16.8.1",
-    "graphql-subscriptions": "^2.0.0",
-    "graphql-tools": "^9.0.1",
-    "helmet": "^7.1.0"
+    "graphql-subscriptions": "^3.0.0",
+    "graphql-tools": "^9.0.5",
+    "helmet": "^8.0.0"
   },
   "eslintConfig": {
     "parserOptions": {

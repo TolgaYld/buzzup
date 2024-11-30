@@ -5,7 +5,7 @@ const port = parseInt(process.env.PORT) || 8000;
 // Run the server!
 app.app.listen({ port }, () => {
   log(`${process.env.CURRENTSERVICE} Server Up!}`);
-  log(`gql path is ${app.apolloServer.graphqlPath}`);
+  log(`GQL-Path is ${app.apolloServer.graphqlPath}`);
 });
 
 require("./src/db/dbConnection");

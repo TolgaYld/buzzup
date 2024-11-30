@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@TolgaYld/core-buzzup": "*",
-    "bull": "^4.12.9"
+    "bull": "^4.16.4"
   },
   "devDependencies": {
     "rewire": "^7.0.0"
