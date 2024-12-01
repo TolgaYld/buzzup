@@ -13,5 +13,6 @@
     "pw-at-least-characters": "Dein Passwort muss aus mindestens 9 Zeichen bestehen",
     "pw-not-match": "Parolalar uyuşmuyor",
     "unauthorized": "İzinsiz erişim",
-    "unexpected-error": "Beklenmeyen hata"
+    "unexpected-error": "Beklenmeyen hata",
+    "could-not-reset-password": "Şifre sıfırlanamadı"
 }

@@ -13,5 +13,6 @@
     "pw-at-least-characters": "Your password must consist of at least 9 characters",
     "pw-not-match": "Passwords do not match",
     "unauthorized": "Unauthorized access",
-    "unexpected-error": "Unexpected error"
+    "unexpected-error": "Unexpected error",
+    "could-not-reset-password": "Could not reset password"
 }

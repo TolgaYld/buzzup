@@ -5,7 +5,8 @@ const { token, refreshToken } = require("../helpers/token");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 const generateRandomPassword = require('../helpers/pwdHandler');
-const sendConfirmationEmail = require("../helpers/sendConfirmationEmail");
+const { sendConfirmationEmail, sendResetEmail } = require("../helpers/mailHandler");
+const jwt = require("jsonwebtoken");
 
 const saltValue = 12;
 const tokenDuration = "3h";
@@ -145,17 +146,8 @@ const createUser = async (req, res) => {
   }
 
   // // send confirmation email
-  // const transporter = nodemailer.createTransport({
-  //   host: process.env.MAIL_HOST_SMTP,
-  //   auth: {
-  //     user: process.env.MAIL_USER,
-  //     pass: process.env.MAIL_PW,
-  //   },
-  // });
-
   // await sendConfirmationEmail(
   //   createdUser,
-  //   transporter,
   //   jwt,
   //   confirmEmailTemplate,
   //   errorHandler
@@ -285,402 +277,186 @@ const updateUser = async (req, res) => {
 };
 
 const updateUserPassword = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findRequesterId = await User.findById(userId).exec();
-      if (!findRequesterId) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const isStrongPassword = validator.isStrongPassword(
-          req.body.data.password,
-          validatePasswordOptions,
-        );
-        if (!isStrongPassword) {
-          return await errorHandler(
-            406,
-            "pw-at-least-character",
-            true,
-            req,
-            res,
-          );
-        } else {
-          if (req.body.data.password !== req.body.data.repeat_password) {
-            return await errorHandler(406, "pw-not-match", true, req, res);
-          } else {
-            const { id } = req.params;
-            const findUser = await User.findById(id).exec();
+  const { id } = req.params;
+  const { password, repeat_password } = req.body.data;
 
-            if (!findUser) {
-              return await errorHandler(404, "user-not-found", true, req, res);
-            } else {
-              const updatedUser = await User.findByIdAndUpdate(
-                findUser._id,
-                {
-                  password: await bcrypt.hash(
-                    req.body.data.password,
-                    saltValue,
-                  ),
-                },
-                { new: true },
-              ).exec();
-
-              if (!updatedUser) {
-                return await errorHandler(
-                  400,
-                  "user-password-update-failed",
-                  true,
-                  req,
-                  res,
-                );
-              } else {
-                await res.status(200).json({
-                  success: true,
-                  data: {
-                    user: updatedUser,
-                    tokens: {
-                      token: token.generate(updatedUser, tokenDuration),
-                      refreshToken: refreshToken.generate(
-                        updatedUser,
-                        refreshTokenDuration,
-                      ),
-                    },
-                  },
-                });
-              }
-            }
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  if (validator.isStrongPassword(password, validatePasswordOptions) == false) {
+    throw { statusCode: 406, message: "pw-at-least-character" };
   }
+
+  if (password !== repeat_password) {
+    throw { statusCode: 406, message: "pw-not-match" };
+  }
+
+  const findUser = await User.findById(id).exec();
+  if (findUser == null) {
+    throw { statusCode: 404, message: "user-not-found" };
+  }
+
+  const hashedPassword = await bcrypt.hash(password, saltValue);
+  const updatedUser = await User.findByIdAndUpdate(
+    findUser._id,
+    { password: hashedPassword },
+    { new: true }
+  ).exec();
+
+  if (updatedUser == null) {
+    throw { statusCode: 400, message: "user-password-update-failed" };
+  }
+
+  return await sendSuccessResponseWithTokens(updatedUser, res);
 };
 
 const deleteUser = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
+  const { id } = req.params;
+  const userToDelete = await User.findById(id).exec();
 
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findRequesterId = await User.findById(userId).exec();
-      if (!findRequesterId) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findUser = await User.findById(id).exec();
-
-        if (!findUser) {
-          return await errorHandler(404, "user-not-found", true, req, res);
-        } else {
-          const deletedUser = await User.findByIdAndUpdate(
-            id,
-            {
-              is_deleted: true,
-            },
-            { new: true },
-          ).exec();
-
-          if (!deletedUser) {
-            return await errorHandler(
-              400,
-              "user-update-failed",
-              true,
-              req,
-              res,
-            );
-          } else {
-            await res.status(200).json({
-              success: true,
-              data: deletedUser,
-            });
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  if (userToDelete == null) {
+    throw { statusCode: 404, message: "user-not-found" };
   }
+
+  const deletedUser = await User.findByIdAndUpdate(
+    id,
+    { is_deleted: true },
+    { new: true }
+  ).exec();
+
+  if (deletedUser == null) {
+    throw { statusCode: 400, message: "user-update-failed" };
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: deletedUser,
+  });
 };
 
 const deleteUserFromDb = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
+  const { id } = req.params;
+  const userToDelete = await User.findById(id).exec();
 
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findRequesterId = await User.findById(userId).exec();
-      if (!findRequesterId) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findUser = await User.findById(id).exec();
-
-        if (!findUser) {
-          return await errorHandler(404, "user-not-found", true, req, res);
-        } else {
-          const deletedUser = await User.findByIdAndDelete(id);
-
-          if (!deletedUser) {
-            return await errorHandler(
-              400,
-              "user-delete-failed",
-              true,
-              req,
-              res,
-            );
-          } else {
-            await res.status(200).json({
-              success: true,
-              data: findUser,
-            });
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  if (userToDelete == null) {
+    throw { statusCode: 404, message: "user-not-found" };
   }
+
+  const deletedUser = await User.findByIdAndDelete(id).exec();
+
+  if (deletedUser == null) {
+    throw { statusCode: 400, message: "user-delete-failed" };
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: userToDelete,
+  });
 };
 
 const tokenService = async (req, res) => {
-  const tokenDuration = "3h";
-  const refreshTokenDuration = "90d";
-  const refresh = await req.headers.refresh;
-  const authorization = await req.headers.authorization;
+  const refresh = req.headers.refresh;
+  const authorization = req.headers.authorization;
 
-  if (refresh != null && authorization != null) {
-    let id;
-
-    try {
-      const reftoken = await refresh.split(" ")[1]; //split or u can use replace('Bearer', '')
-      const decoded = jwt.verify(reftoken, process.env.SECRET_KEY_REFRESH);
-
-      id = await decoded.id;
-
-      const findUser = await User.findById(id).exec();
-
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        await res.status(200).json({
-          success: true,
-          tokens: {
-            token: token.generate(findUser, tokenDuration),
-            refreshToken: refreshToken.generate(findUser, refreshTokenDuration),
-          },
-        });
-      }
-    } catch (error) {
-      return await errorHandler(404, error, false, req, res);
-    }
-  } else {
-    return await errorHandler(401, "unauthorized", true, req, res);
+  if (refresh == null || authorization == null) {
+    throw { statusCode: 401, message: "unauthorized" };
   }
+
+  const reftoken = refresh.split(" ")[1]; //split or u can use replace('Bearer', '')
+  const decoded = jwt.verify(reftoken, process.env.SECRET_KEY_REFRESH);
+  const { id } = decoded;
+  const findUser = await User.findById(id).exec();
+
+  if (findUser == null) {
+    throw { statusCode: 401, message: "unauthorized" };
+  }
+  return res.status(200).json({
+    success: true,
+    tokens: {
+      token: token.generate(findUser, tokenDuration),
+      refreshToken: refreshToken.generate(findUser, refreshTokenDuration),
+    },
+  });
 };
 
 const resetPassword = async (req, res) => {
-  const tokenDuration = "3h";
-
-  try {
-    const findUser = await User.findOne({ email: req.body.data.email }).exec();
-
-    if (!findUser) {
-      return await errorHandler(
-        400,
-        "Could not reset password",
-        true,
-        req,
-        res,
-      );
-    } else {
-      // const jwtInfos = {
-      //   id: findUser.id,
-      // };
-
-      // const secret = process.env.UPDATE_PW_SECRET_KEY + "-" + findUser.password;
-      // const jwtToken = jwt.sign(jwtInfos, secret, { expiresIn: tokenDuration });
-
-      // const url =
-      //   process.env.GATEWAY_URL +
-      //   "/auth/updatePw/" +
-      //   findUser.id +
-      //   "/" +
-      //   jwtToken;
-
-      // let transporter = nodemailer.createTransport({
-      //   host: process.env.MAIL_HOST_SMTP,
-      //   auth: {
-      //     user: process.env.MAIL_USER,
-      //     pass: process.env.MAIL_PW,
-      //   },
-      // });
-      // let emailSended = await transporter.sendMail({
-      //   from: process.env.MAIL_USER,
-      //   to: findUser.email.trim(),
-      //   subject: "Reset Password",
-      //   html: resetPasswordTemplate(url),
-      // });
-
-      // if (emailSended.accepted.length > 0) {
-      await res.json({
-        success: true,
-        data: findUser.email,
-      });
-      // } else {
-      //   return await errorHandler(
-      //     400,
-      //     "Could not reset password",
-      //     true,
-      //     req,
-      //     res,
-      //   );
-      // }
-    }
-  } catch (error) {
-    return await errorHandler(400, error, false, req, res);
+  const { email } = req.body.data;
+  const findUser = await User.findOne({ email }).exec();
+  if (findUser == null) {
+    throw { statusCode: 400, message: "Could not reset password" };
   }
+
+  // const jwtInfos = { id: findUser.id };
+  // const secret = `${process.env.UPDATE_PW_SECRET_KEY}-${findUser.password}`;
+  // const jwtToken = jwt.sign(jwtInfos, secret, { expiresIn: "1h" });
+  // const resetUrl = `${process.env.GATEWAY_URL}/auth/updatePw/${findUser.id}/${jwtToken}`;
+  // const emailSent = await sendResetEmail(findUser.email.trim(), resetPasswordTemplate(resetUrl));
+
+  // if (emailSent === false) {
+  //   throw { statusCode: 400, message: "Could not reset password" };
+  // }
+
+  return res.json({
+    success: true,
+    data: findUser.email,
+  });
 };
 
-const verifyEmail = async (req, res, next) => {
-  try {
-    const token = req.query.id;
-    if (token) {
-      jwt.verify(
-        token,
-        process.env.CONFIRM_MAIL_SECRET_KEY,
-        async (e, decoded) => {
-          if (e) {
-            return await errorHandler(404, e, false, req, res);
-          } else {
-            const idInToken = decoded.id;
-            const findUser = await User.findOne({
-              _id: idInToken,
-              email_confirmed: false,
-            }).exec();
+const verifyEmail = async (req, res) => {
+  const token = req.query.id;
 
-            if (findUser) {
-              const updatedUser = await User.findByIdAndUpdate(
-                findUser._id,
-                {
-                  email_confirmed: true,
-                },
-                { new: true },
-              );
-
-              if (updatedUser) {
-                await res.status(200).json({
-                  success: true,
-                  data: updatedUser,
-                });
-              } else {
-                return await errorHandler(
-                  404,
-                  "Could not activate e-mail",
-                  false,
-                  req,
-                  res,
-                );
-              }
-            } else {
-              return await errorHandler(
-                404,
-                "Could not activate e-mail",
-                false,
-                req,
-                res,
-              );
-            }
-          }
-        },
-      );
-    } else {
-      return await errorHandler(
-        404,
-        "Could not activate e-mail",
-        false,
-        req,
-        res,
-      );
-    }
-  } catch (error) {
-    return await errorHandler(
-      404,
-      "Could not activate e-mail",
-      false,
-      req,
-      res,
-    );
+  if (token == null) {
+    throw { statusCode: 404, message: "Could not activate e-mail" };
   }
+
+  const decoded = jwt.verify(token, process.env.CONFIRM_MAIL_SECRET_KEY);
+  const idInToken = decoded.id;
+
+  const findUser = await User.findOne({ _id: idInToken }).exec();
+  if (findUser == null) {
+    throw { statusCode: 404, message: "User not found" };
+  }
+
+  if (findUser.email_confirmed) {
+    return await res.status(200).json({
+      success: true,
+    });
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    findUser._id,
+    { email_confirmed: true },
+    { new: true }
+  ).exec();
+
+  if (updatedUser == null) {
+    throw { statusCode: 400, message: "Could not activate e-mail" };
+  }
+
+  return await res.status(200).json({
+    success: true,
+    data: updatedUser,
+  });
 };
 
 const updatePasswordWebContent = async (req, res) => {
-  try {
-    const tkn = req.params.token.trim();
-    const id = req.params.id.trim();
+  const token = req.params.token?.trim();
+  const userId = req.params.id?.trim();
 
-    let findUser;
-    if (tkn && id) {
-      try {
-        findUser = await User.findById(id).exec();
-      } catch (error) {
-        return await errorHandler(
-          400,
-          "Could not reset password",
-          true,
-          req,
-          res,
-        );
-      }
-
-      if (findUser) {
-        const secret =
-          process.env.UPDATE_PW_SECRET_KEY + "-" + findUser.password;
-        jwt.verify(tkn, secret, async (e, decoded) => {
-          if (e) {
-            return await errorHandler(
-              400,
-              "Could not reset password",
-              true,
-              req,
-              res,
-            );
-          } else {
-            await res.status(200).json({
-              success: true,
-              data: {
-                id: findUser.id,
-                token: tkn,
-              },
-            });
-          }
-        });
-      } else {
-        return await errorHandler(
-          400,
-          "Could not reset password",
-          true,
-          req,
-          res,
-        );
-      }
-    } else {
-      return await errorHandler(
-        400,
-        "Could not reset password",
-        true,
-        req,
-        res,
-      );
-    }
-  } catch (error) {
-    return await errorHandler(400, "Could not reset password", true, req, res);
+  if (token == null || userId == null) {
+    throw { statusCode: 400, message: "could-not-reset-password" };
   }
+  const findUser = await User.findById(userId).exec();
+
+  if (findUser == null) {
+    throw { statusCode: 400, message: "could-not-reset-password" };
+  }
+  const secret = process.env.UPDATE_PW_SECRET_KEY + "-" + findUser.password;
+  jwt.verify(token, secret);
+
+  return res.status(200).json({
+    success: true,
+    data: {
+      id: findUser.id,
+      token,
+    },
+  });
 };
 
 // Helper Functions
