@@ -1,20 +1,25 @@
+const { catchErrors, authorizeUser } = require("@TolgaYld/core-buzzup");
+const errorHandler = require("../errors/errorHandler");
 const channelController = require("../controllers/channelController");
 const router = require("express").Router();
-router.get("/findAll", channelController.findAll);
+
+const authorize = authorizeUser(errorHandler);
+
+router.get("/findAll", authorize, catchErrors(channelController.findAll, errorHandler));
 router.get(
-  "/findAllChannelsFromUser/:id",
-  channelController.findAllChannelsFromUser,
+  "/findAllChannelsFromUser/:id", authorize,
+  catchErrors(channelController.findAllChannelsFromUser, errorHandler),
 );
-router.get("/find/:id", channelController.findOne);
-router.post("/create", channelController.createChannel);
-router.patch("/update/:id", channelController.updateChannel);
+router.get("/find/:id", authorize, catchErrors(channelController.findOne, errorHandler));
+router.post("/create", authorize, catchErrors(channelController.createChannel, errorHandler));
+router.patch("/update/:id", authorize, catchErrors(channelController.updateChannel, errorHandler));
 router.patch(
-  "/entryOrLeave/:id",
-  channelController.entryOrLeaveChannel,
+  "/entryOrLeave/:id", authorize,
+  catchErrors(channelController.entryOrLeaveChannel, errorHandler),
 );
 router.delete(
-  "/delete/:id",
-  channelController.deleteChannel,
+  "/delete/:id", authorize,
+  catchErrors(channelController.deleteChannel, errorHandler),
 );
 
 module.exports = router;
