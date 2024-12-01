@@ -54,14 +54,22 @@ const ChannelSchema = new Schema(
   { collection: "Channels", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, },
 );
 
-ChannelSchema.post("findOneAndDelete", async function (next) {
+ChannelSchema.post("findOneAndDelete", async function () {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
-    let channel = this;
-    await Post.deleteMany({ channels: channel.getFilter()._id }, next).exec();
-    await Story.deleteMany({ channels: channel.getFilter()._id }, next).exec();
-    await Report.deleteMany({ channel: channel.getFilter()._id }, next).exec();
+    const channelId = this.getFilter()._id;
+
+    await Post.deleteMany({ channels: channelId }, { session });
+    await Story.deleteMany({ channels: channelId }, { session });
+    await Report.deleteMany({ channel: channelId }, { session });
+
+    await session.commitTransaction();
   } catch (error) {
-    log("error: " + error);
+    await session.abortTransaction();
+    log("Error in findOneAndDelete: " + error);
+  } finally {
+    await session.endSession();
   }
 });
 
@@ -89,47 +97,56 @@ ChannelSchema.post("findOneAndDelete", async function (next) {
   }
 });
 
-ChannelSchema.post("findOneAndUpdate", async function (next) {
+ChannelSchema.post("findOneAndUpdate", async function () {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    let channel = this;
+    const channelId = this.getFilter()._id;
+    const updateData = this.getUpdate().$set;
 
-    if (channel.getUpdate().$set.is_deleted) {
+    if (updateData.is_deleted != null) {
       await Post.updateMany(
-        { channels: channel.getFilter()._id },
-        { is_deleted: channel.getUpdate().$set.is_deleted },
-        next,
-      ).exec();
+        { channels: channelId },
+        { is_deleted: updateData.is_deleted },
+        { session }
+      );
       await Story.updateMany(
-        { channels: channel.getFilter()._id },
-        { is_deleted: channel.getUpdate().$set.is_deleted },
-        next,
-      ).exec();
+        { channels: channelId },
+        { is_deleted: updateData.is_deleted },
+        { session }
+      );
       await Report.updateMany(
-        { channel: channel.getFilter()._id },
-        { is_done: channel.getUpdate().$set.is_deleted },
-        next,
-      ).exec();
+        { channel: channelId },
+        { is_done: updateData.is_deleted },
+        { session }
+      );
     }
 
-    if (channel.getUpdate().$set.is_active) {
+    if (updateData.is_active != null) {
       await Post.updateMany(
-        { channels: channel.getFilter()._id },
-        { is_active: channel.getUpdate().$set.is_active },
-        next,
-      ).exec();
+        { channels: channelId },
+        { is_active: updateData.is_active },
+        { session }
+      );
       await Story.updateMany(
-        { channels: channel.getFilter()._id },
-        { is_active: channel.getUpdate().$set.is_active },
-        next,
-      ).exec();
+        { channels: channelId },
+        { is_active: updateData.is_active },
+        { session }
+      );
       await Report.updateMany(
-        { reported_user: channel.getFilter()._id },
-        { is_done: channel.getUpdate().$set.is_active },
-        next,
-      ).exec();
+        { channel: channelId },
+        { is_done: updateData.is_active },
+        { session }
+      );
     }
+
+    await session.commitTransaction();
   } catch (error) {
-    log("error: " + error);
+    await session.abortTransaction();
+    log("Error in findOneAndUpdate: " + error);
+  } finally {
+    await session.endSession();
   }
 });
 

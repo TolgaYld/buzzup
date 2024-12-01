@@ -117,84 +117,61 @@ const UserSchema = new Schema(
 
 UserSchema.index({ location: "2dsphere" });
 
-UserSchema.post("findOneAndDelete", async function (next) {
+UserSchema.post("findOneAndDelete", async function () {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    let user = this;
-    await Channel.updateMany(
-      {},
-      { $pull: { users: { _id: user.getFilter()._id } } },
-      next,
-    ).exec();
-    await Channel.updateMany(
-      {},
-      { $pull: { created_by: { _id: user.getFilter()._id } } },
-      next,
-    ).exec();
-    await Post.deleteMany({ user: user.getFilter()._id }, next).exec();
-    await Story.deleteMany({ user: user.getFilter()._id }, next).exec();
-    await Comment.deleteMany({ user: user.getFilter()._id }, next).exec();
-    await Report.deleteMany(
-      { reported_user: user.getFilter()._id },
-      next,
-    ).exec();
+    const userId = this.getFilter()._id;
+    await Channel.updateMany({}, { $pull: { users: userId } }, { session });
+    await Channel.updateMany({}, { $pull: { created_by: userId } }, { session });
+    await Post.deleteMany({ user: userId }, { session });
+    await Story.deleteMany({ user: userId }, { session });
+    await Comment.deleteMany({ user: userId }, { session });
+    await Report.deleteMany({ reported_user: userId }, { session });
+
+    await session.commitTransaction();
   } catch (error) {
+    // rollback the transaction
+    await session.abortTransaction();
     log("error: " + error);
+  } finally {
+    await session.endSession();
   }
 });
 
-UserSchema.post("findOneAndUpdate", async function (next) {
+
+UserSchema.post("findOneAndUpdate", async function () {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
   try {
-    let user = this;
+    const userId = this.getFilter()._id;
+    const update = this.getUpdate().$set;
 
-    if (user.getUpdate().$set.is_deleted) {
-      await Post.updateMany(
-        { user: user.getFilter()._id },
-        { is_deleted: user.getUpdate().$set.is_deleted },
-        next,
-      ).exec();
-      await Story.updateMany(
-        { user: user.getFilter()._id },
-        { is_deleted: user.getUpdate().$set.is_deleted },
-        next,
-      ).exec();
-      await Comment.updateMany(
-        { user: user.getFilter()._id },
-        { is_deleted: user.getUpdate().$set.is_deleted },
-        next,
-      ).exec();
-      await Report.updateMany(
-        { reported_user: user.getFilter()._id },
-        { is_deleted: user.getUpdate().$set.is_deleted },
-        next,
-      ).exec();
+    if (update.is_deleted === true) {
+      await Post.updateMany({ user: userId }, { is_deleted: true }, { session });
+      await Story.updateMany({ user: userId }, { is_deleted: true }, { session });
+      await Comment.updateMany({ user: userId }, { is_deleted: true }, { session });
+      await Report.updateMany({ reported_user: userId }, { is_deleted: true }, { session });
     }
 
-    if (user.getUpdate().$set.is_banned) {
-      await Post.updateMany(
-        { user: user.getFilter()._id },
-        { is_active: !user.getUpdate().$set.is_banned },
-        next,
-      ).exec();
-      await Story.updateMany(
-        { user: user.getFilter()._id },
-        { is_active: !user.getUpdate().$set.is_banned },
-        next,
-      ).exec();
-      await Comment.updateMany(
-        { user: user.getFilter()._id },
-        { is_active: !user.getUpdate().$set.is_banned },
-        next,
-      ).exec();
-      await Report.updateMany(
-        { reported_user: user.getFilter()._id },
-        { is_done: user.getUpdate().$set.is_banned },
-        next,
-      ).exec();
+    if (update.is_banned === true) {
+      await Post.updateMany({ user: userId }, { is_active: false }, { session });
+      await Story.updateMany({ user: userId }, { is_active: false }, { session });
+      await Comment.updateMany({ user: userId }, { is_active: false }, { session });
+      await Report.updateMany({ reported_user: userId }, { is_done: true }, { session });
     }
+
+    await session.commitTransaction();
   } catch (error) {
+    await session.abortTransaction();
     log("error: " + error);
+  } finally {
+    await session.endSession();
   }
 });
+
 
 const User = mongoose.model("User", UserSchema);
 
