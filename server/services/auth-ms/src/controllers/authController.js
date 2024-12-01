@@ -473,26 +473,23 @@ const handleDeletedUserRestoration = async (user, updateData, res) => {
     if (updatedUser == null) {
       throw { statusCode: 400, message: "user-update-failed" };
     }
-
-    await Promise.all([
-      Post.updateMany({ user: updatedUser._id }, { is_deleted: false }, { session }),
-      Comment.updateMany({ user: updatedUser._id }, { is_deleted: false }, { session }),
-      Report.updateMany({ reported_user: updatedUser._id }, { is_deleted: false }, { session }),
-    ]);
+    await Post.updateMany({ user: updatedUser._id }, { is_deleted: false }, { session });
+    await Comment.updateMany({ user: updatedUser._id }, { is_deleted: false }, { session });
+    await Report.updateMany({ reported_user: updatedUser._id }, { is_deleted: false }, { session });
 
     await session.commitTransaction();
-    session.endSession();
+    await session.endSession();
 
-    return sendSuccessResponseWithTokens(updatedUser, res);
+    return await sendSuccessResponseWithTokens(updatedUser, res);
   } catch (error) {
     await session.abortTransaction();
-    session.endSession();
+    await session.endSession();
     throw error;
   }
 };
 
-const sendSuccessResponseWithTokens = (user, res, statusCode = 200) => {
-  return res.status(statusCode).json({
+const sendSuccessResponseWithTokens = async (user, res, statusCode = 200) => {
+  return await res.status(statusCode).json({
     success: true,
     data: {
       user,
