@@ -12,5 +12,6 @@
     "not-valid-email": "Geçerli bir e-posta adresi değil",
     "pw-at-least-characters": "Dein Passwort muss aus mindestens 9 Zeichen bestehen",
     "pw-not-match": "Parolalar uyuşmuyor",
-    "unauthorized": "İzinsiz erişim"
+    "unauthorized": "İzinsiz erişim",
+    "unexpected-error": "Beklenmeyen hata"
 }

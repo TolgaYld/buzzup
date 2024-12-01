@@ -14,7 +14,9 @@ const Report = require("./src/models/reportModel");
 // UTILS
 
 const getUserId = require("./src/utils/getId");
+const catchErrors = require("./src/utils/catchErrors");
 const { log } = require("./src/modules/logModule");
+const authorizeUser = require("./src/utils/authorizeUser");
 
 // ENVIRONMENT VARIABLES
 
@@ -42,6 +44,8 @@ module.exports = {
     Story,
     Report,
     getUserId,
+    catchErrors,
+    authorizeUser,
     SECRET_KEY,
     SECRET_KEY_REFRESH,
     MONGODBCONNECTIONSTRING,

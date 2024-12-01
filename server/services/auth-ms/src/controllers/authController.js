@@ -1,9 +1,11 @@
+const mongoose = require("mongoose");
 const { User, Post, Comment, Report, log } = require("@TolgaYld/core-buzzup");
 const errorHandler = require("../errors/errorHandler");
 const { token, refreshToken } = require("../helpers/token");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
-const generatePwdCharset = require('../helpers/pwdCharset');
+const generateRandomPassword = require('../helpers/pwdHandler');
+const sendConfirmationEmail = require("../helpers/sendConfirmationEmail");
 
 const saltValue = 12;
 const tokenDuration = "3h";
@@ -24,624 +26,262 @@ const validatePasswordOptions = {
 };
 
 const findAll = async (req, res) => {
-  try {
-    const id = req.headers.authorization;
+  const findAllUsers = await User.find().exec();
 
-    if (id == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(id).exec();
-
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const findAllUsers = await User.find().exec();
-        if (!findAllUsers) {
-          return await errorHandler(404, "users-not-found", true, req, res);
-        } else {
-          await res.status(200).json({
-            success: true,
-            data: findAllUsers,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  if (findAllUsers == null) {
+    throw { statusCode: 404, message: "users-not-found" };
   }
+
+  res.status(200).json({
+    success: true,
+    data: findAllUsers,
+  });
 };
 
 const findOne = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
+  const { id } = req.params;
 
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findOneUser = await User.findById(id).exec();
-
-        if (!findOneUser) {
-          return await errorHandler(404, "user-not-found", true, req, res);
-        } else {
-          await res.status(200).json({
-            success: true,
-            data: findOneUser,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const findOneUser = await User.findById(id).exec();
+  if (findOneUser == null) {
+    throw { statusCode: 404, message: "user-not-found" };
   }
+
+  return res.status(200).json({
+    success: true,
+    data: findOneUser,
+  });
 };
 
 const findWithUsername = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
+  const { username } = req.params;
 
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { username } = req.params;
-        const findOneUser = await User.findOne({ username }).exec();
-
-        if (!findOneUser) {
-          return await errorHandler(404, "user-not-found", true, req, res);
-        } else {
-          await res.status(200).json({
-            success: true,
-            data: findOneUser,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const findOneUser = await User.findOne({ username }).exec();
+  if (findOneUser == null) {
+    throw { statusCode: 404, message: "user-not-found" };
   }
+
+  return res.status(200).json({
+    success: true,
+    data: findOneUser,
+  });
 };
 
 const findWithEmail = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
+  const { email } = req.params;
 
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { email } = req.params;
-        const findOneUser = await User.findOne({ email }).exec();
-
-        if (!findOneUser) {
-          return await errorHandler(404, "user-not-found", true, req, res);
-        } else {
-          await res.status(200).json({
-            success: true,
-            data: findOneUser,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const findOneUser = await User.findOne({ email }).exec();
+  if (!findOneUser) {
+    throw { statusCode: 404, message: "user-not-found" };
   }
+
+  return res.status(200).json({
+    success: true,
+    data: findOneUser,
+  });
 };
+
 
 const checkIfEmailExists = async (req, res) => {
-  try {
-    const { email } = req.params;
-    const findOneUser = await User.findOne({ email }).exec();
-
-    if (!findOneUser) {
-      await res.status(200).json({
-        success: true,
-        data: false,
-      });
-    } else {
-      await res.status(200).json({
-        success: true,
-        data: true,
-      });
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
-  }
+  const { email } = req.params;
+  const findOneUser = await User.findOne({ email }).exec();
+  return res.status(200).json({
+    success: true,
+    data: !!findOneUser,
+  });
 };
 
-const checkIfUsernameExists = async (req, res) => {
-  try {
-    const { username } = req.params;
-    const findOneUser = await User.findOne({ username }).exec();
 
-    if (!findOneUser) {
-      await res.status(200).json({
-        success: true,
-        data: false,
-      });
-    } else {
-      await res.status(200).json({
-        success: true,
-        data: true,
-      });
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
-  }
+const checkIfUsernameExists = async (req, res) => {
+  const { username } = req.params;
+  const findOneUser = await User.findOne({ username }).exec();
+  await res.status(200).json({
+    success: true,
+    data: !!findOneUser,
+  });
+
+
 };
 
 const createUser = async (req, res) => {
-  const isEmail = validator.isEmail(req.body.data.email);
-  const isStrongPassword = validator.isStrongPassword(
-    req.body.data.password,
-    validatePasswordOptions,
-  );
+  const { email, password, repeat_password, username, coordinates } = req.body.data;
 
-  if (!isEmail || !isStrongPassword) {
-    if (!isEmail) {
-      return await errorHandler(406, "not-valid-email", true, req, res);
+  if (validator.isEmail(email) === false) {
+    throw { statusCode: 406, message: "not-valid-email" };
+  }
+
+  if (validator.isStrongPassword(password, validatePasswordOptions) === false) {
+    throw { statusCode: 406, message: "pw-at-least-character" };
+  }
+
+  if (password !== repeat_password) {
+    throw { statusCode: 406, message: "pw-not-match" };
+  }
+
+  const existingUser = await User.findOne({
+    $or: [{ email }, { username }],
+  }).exec();
+
+  if (existingUser != null) {
+    if (existingUser.email === email) {
+      throw { statusCode: 406, message: "email-in-use" };
     }
-    if (!isStrongPassword) {
-      return await errorHandler(406, "pw-at-least-character", true, req, res);
-    }
-  } else {
-    if (req.body.data.password !== req.body.data.repeat_password) {
-      return await errorHandler(406, "pw-not-match", true, req, res);
-    } else {
-      try {
-        const findUserWithEmail = await User.findOne({
-          email: req.body.data.email,
-        }).exec();
-
-        if (findUserWithEmail) {
-          return await errorHandler(406, "email-in-use", true, req, res);
-        } else {
-          const findUserWithUsername = await User.findOne({
-            username: req.body.data.username,
-          }).exec();
-
-          if (findUserWithUsername) {
-            return await errorHandler(406, "username-in-use", true, req, res);
-          } else {
-            delete req.body.data.repeat_password;
-            const createdUser = await User.create({
-              ...req.body.data,
-
-              password: await bcrypt.hash(req.body.data.password, saltValue),
-              location: {
-                coordinates: req.body.data.coordinates,
-              },
-            });
-
-            if (!createdUser) {
-              return await errorHandler(
-                400,
-                "user-not-created",
-                true,
-                req,
-                res,
-              );
-            } else {
-              //   let transporter = nodemailer.createTransport({
-              //   host: process.env.MAIL_HOST_SMTP,
-              //   auth: {
-              //     user: process.env.MAIL_USER,
-              //     pass: process.env.MAIL_PW,
-              //   },
-              // });
-
-              // const jwtInfos = {
-              //   id: createdUser.id,
-              //   email: createdUser.email,
-              // };
-
-              // const jwtToken = jwt.sign(
-              //   jwtInfos,
-              //   process.env.CONFIRM_MAIL_SECRET_KEY,
-              //   {
-              //     expiresIn: "365d",
-              //   },
-              // );
-
-              // const url = process.env.GATEWAY_URL + "/auth/verify?id=" + jwtToken;
-
-              // await transporter.sendMail({
-              //   from: process.env.MAIL_USER,
-              //   to: createdUser.email.trim(),
-              //   subject: "Confirm E-Mail",
-              //   html: confirmEmailTemplate(url),
-              // });
-
-              await res.status(201).json({
-                success: true,
-                data: {
-                  user: createdUser,
-                  tokens: {
-                    token: token.generate(createdUser, tokenDuration),
-                    refreshToken: refreshToken.generate(
-                      createdUser,
-                      refreshTokenDuration,
-                    ),
-                  },
-                },
-              });
-            }
-          }
-        }
-      } catch (error) {
-        log(error);
-        return await errorHandler(400, error, false, req, res);
-      }
+    if (existingUser.username === username) {
+      throw { statusCode: 406, message: "username-in-use" };
     }
   }
+
+  // create new user
+  const hashedPassword = await bcrypt.hash(password, saltValue);
+  const newUserData = {
+    email,
+    username,
+    password: hashedPassword,
+    location: { coordinates },
+  };
+
+  const createdUser = await User.create(newUserData);
+  if (createdUser === null) {
+    throw { statusCode: 400, message: "user-not-created" };
+  }
+
+  // // send confirmation email
+  // const transporter = nodemailer.createTransport({
+  //   host: process.env.MAIL_HOST_SMTP,
+  //   auth: {
+  //     user: process.env.MAIL_USER,
+  //     pass: process.env.MAIL_PW,
+  //   },
+  // });
+
+  // await sendConfirmationEmail(
+  //   createdUser,
+  //   transporter,
+  //   jwt,
+  //   confirmEmailTemplate,
+  //   errorHandler
+  // );
+
+  return sendSuccessResponseWithTokens(createdUser, res, 201);
 };
 
 const signInUser = async (req, res) => {
-  const isEmail = validator.isEmail(req.body.data.emailOrUsername);
+  const { emailOrUsername, password, coordinates } = req.body.data;
+  const isEmail = validator.isEmail(emailOrUsername);
+  const findUser = await User.findOne(
+    isEmail ? { email: emailOrUsername } : { username: emailOrUsername }
+  ).exec();
 
-  try {
-    let findUser;
-    if (isEmail) {
-      findUser = await User.findOne({
-        email: req.body.data.emailOrUsername,
-      }).exec();
-    } else {
-      findUser = await User.findOne({
-        username: req.body.data.emailOrUsername,
-      }).exec();
-    }
-    if (!findUser) {
-
-      return await errorHandler(406, "authentication-failed", true, req, res);
-    } else {
-      if (findUser.provider !== "LOCAL") {
-        return await errorHandler(406, "authentication-failed", true, req, res);
-      } else {
-        if (findUser.is_banned) {
-          return await errorHandler(403, "user-is-banned", true, req, res);
-        } else {
-          const validPassword = await bcrypt.compare(
-            req.body.data.password,
-            findUser.password,
-          );
-          if (!validPassword) {
-            return await errorHandler(
-              406,
-              "authentication-failed",
-              true,
-              req,
-              res,
-            );
-          } else {
-            if (findUser.is_deleted) {
-              const updatedUser = await User.findByIdAndUpdate(
-                findUser._id,
-                {
-                  is_deleted: false,
-                },
-                { new: true },
-              ).exec();
-              if (!updatedUser) {
-                return await errorHandler(
-                  400,
-                  "user-update-failed",
-                  true,
-                  req,
-                  res,
-                );
-              } else {
-                await Post.updateMany(
-                  { user: updatedUser._id },
-                  { is_deleted: false },
-                ).exec();
-
-                await Comment.updateMany(
-                  { user: updatedUser._id },
-                  { is_deleted: false },
-                ).exec();
-
-                await Report.updateMany(
-                  { reported_user: updatedUser._id },
-                  { is_deleted: false },
-                ).exec();
-
-                await res.status(200).json({
-                  success: true,
-                  data: {
-                    user: updatedUser,
-                    tokens: {
-                      token: token.generate(updatedUser, tokenDuration),
-                      refreshToken: refreshToken.generate(
-                        updatedUser,
-                        refreshTokenDuration,
-                      ),
-                    },
-                  },
-                });
-              }
-            } else {
-              await res.status(200).json({
-                success: true,
-                data: {
-                  user: findUser,
-                  tokens: {
-                    token: token.generate(findUser, tokenDuration),
-                    refreshToken: refreshToken.generate(
-                      findUser,
-                      refreshTokenDuration,
-                    ),
-                  },
-                },
-              });
-            }
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(400, error, false, req, res);
+  if (findUser == null) {
+    throw { statusCode: 406, message: "authentication-failed" };
   }
+
+  if (findUser.provider != "LOCAL") {
+    throw { statusCode: 406, message: "authentication-failed" };
+  }
+
+  if (findUser.is_banned) {
+    throw { statusCode: 403, message: "user-is-banned" };
+  }
+
+  const validPassword = await bcrypt.compare(password, findUser.password);
+  if (validPassword == false) {
+    throw { statusCode: 406, message: "authentication-failed" };
+  }
+  if (findUser.is_deleted) {
+    return await handleDeletedUserRestoration(findUser, { location: { coordinates } }, res);
+  }
+
+  findUser = await User.findByIdAndUpdate(
+    findUser._id,
+    { location: { coordinates } },
+    { new: true }
+  ).exec();
+
+  if (findUser == null) {
+    throw { statusCode: 406, message: "authentication-failed" };
+  }
+
+  return sendSuccessResponseWithTokens(findUser, res);
 };
 
 const authUserWithProvider = async (req, res) => {
-  const isEmail = validator.isEmail(req.body.data.email);
+  const { email, provider, provider_id, coordinates } = req.body.data;
 
-  try {
-    let findUser;
-    if (isEmail) {
-      findUser = await User.findOne({
-        email: req.body.data.email.toLowerCase(),
-      }).exec();
-
-      if (!findUser) {
-        //Create new User
-        let pwdChars =
-          generatePwdCharset(true, true, true, true, false);
-        let pwdLen = 21;
-        let randPassword = Array(pwdLen)
-          .fill(pwdChars)
-          .map(function (x) {
-            return x[Math.floor(Math.random() * x.length)];
-          })
-          .join("");
-
-        const uid = new ShortUniqueId({ length: 12 });
-
-        const createdUser = await User.create({
-          ...req.body.data,
-          password: await bcrypt.hash(randPassword, saltValue),
-          username: "user" + uid,
-          location: {
-            coordinates: req.body.data.coordinates,
-          },
-        });
-
-        if (!createdUser) {
-          return await errorHandler(400, "user-not-created", true, req, res);
-        } else {
-          //   let transporter = nodemailer.createTransport({
-          //   host: process.env.MAIL_HOST_SMTP,
-          //   auth: {
-          //     user: process.env.MAIL_USER,
-          //     pass: process.env.MAIL_PW,
-          //   },
-          // });
-
-          // const jwtInfos = {
-          //   id: createdUser.id,
-          //   email: createdUser.email,
-          // };
-
-          // const jwtToken = jwt.sign(
-          //   jwtInfos,
-          //   process.env.CONFIRM_MAIL_SECRET_KEY,
-          //   {
-          //     expiresIn: "365d",
-          //   },
-          // );
-
-          // const url = process.env.GATEWAY_URL + "/auth/verify?id=" + jwtToken;
-
-          // await transporter.sendMail({
-          //   from: process.env.MAIL_USER,
-          //   to: createdUser.email.trim(),
-          //   subject: "Confirm E-Mail",
-          //   html: confirmEmailTemplate(url),
-          // });
-
-          await res.status(201).json({
-            success: true,
-            data: {
-              user: createdUser,
-              tokens: {
-                token: token.generate(createdUser, tokenDuration),
-                refreshToken: refreshToken.generate(
-                  createdUser,
-                  refreshTokenDuration,
-                ),
-              },
-            },
-          });
-        }
-      } else {
-        if (findUser.is_banned) {
-          return await errorHandler(403, "user-is-banned", true, req, res);
-        } else {
-          if (findUser.is_deleted) {
-            const updatedUser = await User.findByIdAndUpdate(
-              findUser._id,
-              {
-                is_deleted: false,
-                provider: req.body.data.provider,
-                provider_id: req.body.data.provider_id,
-                location: {
-                  coordinates: req.body.data.coordinates,
-                },
-              },
-              { new: true },
-            ).exec();
-            if (!updatedUser) {
-              return await errorHandler(
-                400,
-                "user-update-failed",
-                true,
-                req,
-                res,
-              );
-            } else {
-              await Post.updateMany(
-                { user: updatedUser._id },
-                { is_deleted: false },
-              ).exec();
-
-              await Comment.updateMany(
-                { user: updatedUser._id },
-                { is_deleted: false },
-              ).exec();
-
-              await Report.updateMany(
-                { reported_user: updatedUser._id },
-                { is_deleted: false },
-              ).exec();
-
-              await res.status(200).json({
-                success: true,
-                data: {
-                  user: updatedUser,
-                  tokens: {
-                    token: token.generate(updatedUser, tokenDuration),
-                    refreshToken: refreshToken.generate(
-                      updatedUser,
-                      refreshTokenDuration,
-                    ),
-                  },
-                },
-              });
-            }
-          } else {
-            if (findUser.provider !== req.body.provider) {
-              const updatedUser = await User.findByIdAndUpdate(
-                findUser._id,
-                {
-                  provider: req.body.data.provider,
-                  provider_id: req.body.data.provider_id,
-                  location: {
-                    coordinates: req.body.data.coordinates,
-                  },
-                },
-                { new: true },
-              ).exec();
-              await res.status(200).json({
-                success: true,
-                data: {
-                  user: updatedUser,
-                  tokens: {
-                    token: token.generate(updatedUser, tokenDuration),
-                    refreshToken: refreshToken.generate(
-                      updatedUser,
-                      refreshTokenDuration,
-                    ),
-                  },
-                },
-              });
-            } else {
-              await res.status(200).json({
-                success: true,
-                data: {
-                  user: findUser,
-                  tokens: {
-                    token: token.generate(findUser, tokenDuration),
-                    refreshToken: refreshToken.generate(
-                      findUser,
-                      refreshTokenDuration,
-                    ),
-                  },
-                },
-              });
-            }
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(400, error, false, req, res);
+  if (!validator.isEmail(email)) {
+    throw { statusCode: 400, message: "invalid-email" };
   }
+
+  const normalizedEmail = email.toLowerCase();
+  let findUser = await User.findOne({ email: normalizedEmail }).exec();
+
+  if (findUser == null) {
+    const randomPassword = generateRandomPassword();
+    const hashedPassword = await bcrypt.hash(randomPassword, saltValue);
+
+    const uid = new ShortUniqueId({ length: 12 });
+
+    const createdUser = await User.create({
+      email,
+      username: `user${uid}`,
+      password: hashedPassword,
+      provider,
+      provider_id,
+      location: { coordinates },
+    });
+
+    if (createdUser == null) {
+      throw { statusCode: 400, message: "user-not-created" };
+    }
+    return sendSuccessResponseWithTokens(createdUser, res, 201);
+  }
+
+  if (findUser.is_banned) {
+    throw { statusCode: 403, message: "user-is-banned" };
+  }
+
+  if (findUser.is_deleted) {
+    return await handleDeletedUserRestoration(findUser, { provider, provider_id, location: { coordinates } }, res);
+  }
+
+  if (findUser.provider !== provider) {
+    findUser = await User.findByIdAndUpdate(
+      findUser._id,
+      { provider, provider_id, location: { coordinates } },
+      { new: true }
+    ).exec();
+  }
+  return sendSuccessResponseWithTokens(findUser, res);
 };
 
 const updateUser = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
+  const { id } = req.params;
+  const updateData = {
+    ...req.body.data,
+    location: {
+      coordinates: req.body.coordinates,
+    },
+  };
 
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findreqerId = await User.findById(userId).exec();
-      if (!findreqerId) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findUser = await User.findById(id).exec();
+  const userToUpdate = await User.findById(id).exec();
 
-        if (!findUser) {
-          return await errorHandler(404, "user-not-found", true, req, res);
-        } else {
-          const updatedUser = await User.findByIdAndUpdate(
-            id,
-            {
-              ...req.body.data,
-              location: {
-                coordinates: req.body.coordinates,
-              },
-            },
-            { new: true },
-          ).exec();
-
-          if (!updatedUser) {
-            return await errorHandler(
-              400,
-              "user-update-failed",
-              true,
-              req,
-              res,
-            );
-          } else {
-            if (req.body.data.is_deleted) {
-              await res.status(200).send({
-                success: true,
-                data: updatedUser,
-              });
-            } else {
-              await res.status(200).json({
-                success: true,
-                data: {
-                  user: updatedUser,
-                  tokens: {
-                    token: token.generate(updatedUser, tokenDuration),
-                    refreshToken: refreshToken.generate(
-                      updatedUser,
-                      refreshTokenDuration,
-                    ),
-                  },
-                },
-              });
-            }
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  if (userToUpdate == null) {
+    throw { statusCode: 404, message: "user-not-found" };
   }
+
+  const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true }).exec();
+
+  if (updatedUser == null) {
+    throw { statusCode: 400, message: "user-update-failed" };
+  }
+
+  if (req.body.data.is_deleted) {
+    return res.status(200).send({
+      success: true,
+      data: updatedUser,
+    });
+  }
+
+  return await sendSuccessResponseWithTokens(updatedUser, res);
 };
 
 const updateUserPassword = async (req, res) => {
@@ -1041,6 +681,52 @@ const updatePasswordWebContent = async (req, res) => {
   } catch (error) {
     return await errorHandler(400, "Could not reset password", true, req, res);
   }
+};
+
+// Helper Functions
+const handleDeletedUserRestoration = async (user, updateData, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      user._id,
+      { ...updateData, is_deleted: false },
+      { new: true, session }
+    ).exec();
+
+    if (updatedUser == null) {
+      throw { statusCode: 400, message: "user-update-failed" };
+    }
+
+    await Promise.all([
+      Post.updateMany({ user: updatedUser._id }, { is_deleted: false }, { session }),
+      Comment.updateMany({ user: updatedUser._id }, { is_deleted: false }, { session }),
+      Report.updateMany({ reported_user: updatedUser._id }, { is_deleted: false }, { session }),
+    ]);
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return sendSuccessResponseWithTokens(updatedUser, res);
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
+  }
+};
+
+const sendSuccessResponseWithTokens = (user, res, statusCode = 200) => {
+  return res.status(statusCode).json({
+    success: true,
+    data: {
+      user,
+      tokens: {
+        token: token.generate(user, tokenDuration),
+        refreshToken: refreshToken.generate(user, refreshTokenDuration),
+      },
+    },
+  });
 };
 
 module.exports = {
