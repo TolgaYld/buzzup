@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const authController = require("../controllers/authController");
 const validatorMiddleware = require("../middlewares/newPasswordMiddleware");
+const { catchErrors } = require("@TolgaYld/core-buzzup");
+const errorHandler = require("../errors/errorHandler");
+
 
 router.get(
   "/updatePw/:id/:token",
@@ -12,6 +15,12 @@ router.post(
   validatorMiddleware.validateNewPassword(),
   authController.savePassword,
 );
+
+router.get(
+  "/refreshToken",
+  catchErrors(authController.tokenService, errorHandler),
+);
+
 
 router.get("/passwordsvd", authController.passwordSaved);
 router.get("/tokeninvalid", authController.tokenInvalid);
