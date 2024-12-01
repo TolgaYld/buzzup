@@ -148,7 +148,6 @@ const createUser = async (req, res) => {
   // // send confirmation email
   // await sendConfirmationEmail(
   //   createdUser,
-  //   jwt,
   //   confirmEmailTemplate,
   //   errorHandler
   // );

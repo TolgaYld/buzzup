@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
 const transporter = nodemailer.createTransport({
@@ -10,7 +11,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const sendConfirmationEmail = async (user, jwt, confirmEmailTemplate, errorHandler) => {
+const sendConfirmationEmail = async (user, confirmEmailTemplate, errorHandler) => {
     try {
         const jwtPayload = { id: user.id, email: user.email };
         const token = jwt.sign(jwtPayload, process.env.CONFIRM_MAIL_SECRET_KEY, {
