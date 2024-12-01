@@ -1,341 +1,215 @@
 const { User, Post, Comment } = require("@TolgaYld/core-buzzup");
 const errorHandler = require("../errors/errorHandler");
+const mongoose = require("mongoose");
 
 const findAll = async (req, res) => {
-  try {
-    const id = req.headers.authorization;
-    if (id == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(id).exec();
-
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const findAllComments = await Comment.find().exec();
-        if (!findAllComments) {
-          return await errorHandler(404, "comments-not-found", true, req, res);
-        } else {
-          await res.status(200).json({
-            success: true,
-            data: findAllComments,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const findAllComments = await Comment.find().exec();
+  if (findAllComments == null) {
+    throw { statusCode: 404, message: "comments-not-found" };
   }
+  return res.status(200).json({
+    success: true,
+    data: findAllComments,
+  });
 };
 
 const findOne = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findOneComment = await Comment.findById(id).exec();
+  const { id } = req.params;
 
-        if (!findOneComment) {
-          return await errorHandler(404, "comment-not-found", true, req, res);
-        } else {
-          await res.status(200).json({
-            success: true,
-            data: findOneComment,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const findOneComment = await Comment.findById(id).exec();
+
+  if (findOneComment == null) {
+    throw { statusCode: 404, message: "comment-not-found" };
   }
+
+  return res.status(200).json({
+    success: true,
+    data: findOneComment,
+  });
 };
 
 const findAllCommentsFromUser = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findAllComments = await Comment.find({ user: id }).exec();
+  const { id } = req.params;
 
-        if (!findAllComments) {
-          return await errorHandler(404, "comments-not-found", true, req, res);
-        } else {
-          await res.status(200).json({
-            success: true,
-            data: findAllComments,
-          });
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const findAllComments = await Comment.find({ user: id }).exec();
+
+  if (findAllComments == null) {
+    throw { statusCode: 404, message: "comments-not-found" };
   }
+
+  return res.status(200).json({
+    success: true,
+    data: findAllComments,
+  });
 };
 
 const createComment = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const findPost = await Post.findById(req.body.data.post);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  const { post, ...commentData } = req.body.data;
 
-        if (!findPost) {
-          return await errorHandler(404, "post-not-found", true, req, res);
-        } else {
-          const createdComment = await Comment.create({
-            ...req.body.data,
-            created_by: findUser,
-          });
+  const findPost = await Post.findById(post).session(session).exec();
 
-          if (!createdComment) {
-            return await errorHandler(
-              400,
-              "comment-not-created",
-              true,
-              req,
-              res,
-            );
-          } else {
-            const addCommentToPost = await Post.findByIdAndUpdate(
-              findPost._id,
-              { $push: { comments: createdComment } },
-            ).exec();
-            if (!addCommentToPost) {
-              return await errorHandler(
-                400,
-                "comment-not-created",
-                true,
-                req,
-                res,
-              );
-            } else {
-              await res.status(201).json({
-                success: true,
-                data: createdComment,
-              });
-            }
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(400, error, false, req, res);
+  if (findPost == null) {
+    await session.abortTransaction();
+    session.endSession();
+    throw { statusCode: 404, message: "post-not-found" };
   }
+  const createdComment = await Comment.create(
+    [
+      {
+        ...req.body.data,
+        created_by: req.user._id,
+      },
+    ],
+    { session }
+  );
+
+  if (createdComment == null) {
+    await session.abortTransaction();
+    session.endSession();
+    throw { statusCode: 400, message: "comment-not-created" };
+  }
+  try {
+    findPost.comments.push(createdComment)
+    await findPost.save({ session });
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw { statusCode: 400, message: "comment-not-created" };
+  }
+
+  await session.commitTransaction();
+  await session.endSession();
+
+  await res.status(201).json({
+    success: true,
+    data: createdComment,
+  });
 };
 
 const updateComment = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const findPost = await Post.findById(req.body.data.post).exec();
+    const { id } = req.params;
+    const { post } = req.body.data;
 
-        if (!findPost) {
-          return await errorHandler(404, "post-not-found", true, req, res);
-        } else {
-          const { id } = req.params;
-          const findComment = await Comment.findById(id).exec();
 
-          if (!findComment) {
-            return await errorHandler(404, "comment-not-found", true, req, res);
-          } else {
-            const updatedComment = await Comment.findByIdAndUpdate(
-              id,
-              {
-                ...req.body.data,
-              },
-              { new: true },
-            ).exec();
+    const findPost = await Post.findById(post).session(session).exec();
 
-            if (!updatedComment) {
-              return await errorHandler(
-                400,
-                "comment-update-failed",
-                true,
-                req,
-                res,
-              );
-            } else {
-              await res.status(200).json({
-                success: true,
-                data: updatedComment,
-              });
-            }
-          }
-        }
-      }
+    if (findPost == null) {
+      throw { statusCode: 404, message: "post-not-found" };
     }
+
+    const findComment = await Comment.findById(id).session(session).exec();
+
+    if (findComment == null) {
+      throw { statusCode: 404, message: "comment-not-found" };
+    }
+
+    const updatedComment = await Comment.findByIdAndUpdate(
+      id,
+      {
+        ...req.body.data,
+      },
+      { new: true, session },
+    ).exec();
+
+    if (updatedComment == null) {
+      throw { statusCode: 400, message: "comment-update-failed" };
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    await res.status(200).json({
+      success: true,
+      data: updatedComment,
+    });
+
+
   } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+    await session.abortTransaction();
+    await session.endSession();
+    throw error;
   }
 };
 
 const likeOrDislikeComment = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
+  const { id } = req.params;
+  const { like } = req.body;
+
+  const user = req.user;
+
+  const findComment = await Comment.findById(id).exec();
+
+  if (findComment == null) {
+    throw { statusCode: 404, message: "comment-not-found" };
+  }
+
+  const hasLiked = findComment.likes.includes(user);
+  const hasDisliked = findComment.dislikes.includes(user);
+
+  let updateQuery = {};
+
+  if (like) {
+    // if client liked
+    if (hasLiked) {
+      // remove like
+      updateQuery.$pull = { likes: user };
     } else {
-      const findUser = await User.findById(userId).exec();
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findComment = await Comment.findById(id).exec();
-
-        if (!findComment) {
-          return await errorHandler(404, "comment-not-found", true, req, res);
-        } else {
-          let updatedComment;
-          let hasAlreadyLiked = false;
-          let hasAlreadyDisliked = false;
-
-          findComment.likes.forEach((user) => {
-            if (user._id === userId) {
-              hasAlreadyLiked = true;
-            }
-          });
-          findComment.dislikes.forEach((user) => {
-            if (user._id === userId) {
-              hasAlreadyDisliked = true;
-            }
-          });
-          if (req.body.like) {
-            if (hasAlreadyLiked) {
-              updatedComment = await Comment.findByIdAndUpdate(
-                findComment._id,
-                {
-                  $pull: { likes: findUser },
-                },
-                { new: true },
-              ).exec();
-            } else {
-              if (hasAlreadyDisliked) {
-                updatedComment = await Comment.findByIdAndUpdate(
-                  findComment._id,
-                  {
-                    $push: { likes: findUser },
-                    $pull: { dislikes: findUser },
-                  },
-                  { new: true },
-                ).exec();
-              } else {
-                updatedComment = await Comment.findByIdAndUpdate(
-                  findComment._id,
-                  {
-                    $push: { likes: findUser },
-                  },
-                  { new: true },
-                ).exec();
-              }
-            }
-          } else {
-            if (hasAlreadyLiked) {
-              updatedComment = await Comment.findByIdAndUpdate(
-                findComment._id,
-                {
-                  $pull: { likes: findUser },
-                  $push: { dislikes: findUser },
-                },
-                { new: true },
-              ).exec();
-            } else {
-              if (hasAlreadyDisliked) {
-                updatedComment = await Comment.findByIdAndUpdate(
-                  findComment._id,
-                  {
-                    $pull: { dislikes: findUser },
-                  },
-                  { new: true },
-                ).exec();
-              } else {
-                updatedComment = await Comment.findByIdAndUpdate(
-                  findComment._id,
-                  {
-                    $push: { dislikes: findUser },
-                  },
-                  { new: true },
-                ).exec();
-              }
-            }
-          }
-
-          if (!updatedComment) {
-            return await errorHandler(400, "update-failed", true, req, res);
-          } else {
-            await res.status(200).json({
-              success: true,
-              data: updatedComment,
-            });
-          }
-        }
+      // add like and remove dislike if exists
+      updateQuery.$push = { likes: user };
+      if (hasDisliked) {
+        updateQuery.$pull = { ...updateQuery.$pull, dislikes: user };
       }
     }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  } else {
+    // if client disliked
+    if (hasDisliked) {
+      // Dislike entfernen
+      updateQuery.$pull = { dislikes: user };
+    } else {
+      // add dislike and remove like if exists
+      updateQuery.$push = { dislikes: user };
+      if (hasLiked) {
+        updateQuery.$pull = { ...updateQuery.$pull, likes: user };
+      }
+    }
   }
+
+  const updatedComment = await Comment.findByIdAndUpdate(
+    id,
+    updateQuery,
+    { new: true }
+  ).exec();
+
+  if (updatedComment == null) {
+    throw { statusCode: 400, message: "update-failed" };
+  }
+
+  return res.status(200).json({
+    success: true,
+    data: updatedComment,
+  });
 };
 
 const deleteComment = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
+  const { id } = req.params;
 
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findComment = await Comment.findById(id).exec();
-        if (!findComment) {
-          return await errorHandler(404, "comment-not-found", true, req, res);
-        } else {
-          const deletedComment = await Comment.findByIdAndDelete(id).exec();
-
-          if (!deletedComment) {
-            return await errorHandler(
-              400,
-              "comment-delete-failed",
-              true,
-              req,
-              res,
-            );
-          } else {
-            await res.status(200).json({
-              success: true,
-              data: findComment,
-            });
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const findComment = await Comment.findById(id).exec();
+  if (findComment == null) {
+    throw { statusCode: 404, message: "comment-not-found" };
   }
+  const deletedComment = await Comment.findByIdAndDelete(id).exec();
+  if (deletedComment == null) {
+    throw { statusCode: 400, message: "comment-delete-failed" };
+  }
+  return res.status(200).json({
+    success: true,
+    data: findComment,
+  });
 };
 
 module.exports = {
