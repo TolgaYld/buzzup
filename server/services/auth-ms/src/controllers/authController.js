@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { User, Post, Comment, Report, log } = require("@TolgaYld/core-buzzup");
-const errorHandler = require("../errors/errorHandler");
 const { token, refreshToken } = require("../helpers/token");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
@@ -158,7 +157,7 @@ const createUser = async (req, res) => {
 const signInUser = async (req, res) => {
   const { emailOrUsername, password, coordinates } = req.body.data;
   const isEmail = validator.isEmail(emailOrUsername);
-  const findUser = await User.findOne(
+  let findUser = await User.findOne(
     isEmail ? { email: emailOrUsername } : { username: emailOrUsername }
   ).exec();
 
@@ -179,16 +178,16 @@ const signInUser = async (req, res) => {
     throw { statusCode: 406, message: "authentication-failed" };
   }
   if (findUser.is_deleted) {
-    return await handleDeletedUserRestoration(findUser, { location: { coordinates } }, res);
+    return await handleDeletedUserRestoration(findUser, { location: { type: "Point", coordinates } }, res);
   }
 
   findUser = await User.findByIdAndUpdate(
     findUser._id,
-    { location: { coordinates } },
+    { location: { type: "Point", coordinates } },
     { new: true }
   ).exec();
-
   if (findUser == null) {
+
     throw { statusCode: 406, message: "authentication-failed" };
   }
 
