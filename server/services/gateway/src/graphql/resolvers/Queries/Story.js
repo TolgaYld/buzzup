@@ -2,48 +2,38 @@ const createError = require("http-errors");
 const errorHandler = require("../../../errors/errorHandler");
 const axios = require("axios");
 const { getUserId } = require("@TolgaYld/core-buzzup");
+const { catchGraphQLResolverErrors } = require("../../../core/utils/graphqlUtils");
 
 const Story = {
-  created_by: async (parent, args, { req }) => {
+  created_by: catchGraphQLResolverErrors(async (parent, args, { req }) => {
     const id = await getUserId(req);
-    try {
-      const headers = { Authorization: id };
-      const response = await axios.get(
-        process.env.AUTHSERVICE + "/find/" + parent.user._id,
-        {
-          type: "FindUser",
-          headers,
-        },
-      );
-      if (response.status < 400 && response.data.success) {
-        return response.data.data;
-      } else {
-        errorHandler(response.status, response.data.msg);
-        throw Error(createError(response.status, response.data.msg));
+    if (id == null) {
+      throw { statusCode: 401, message: "Unauthorized" };
+    }
+
+    const response = await axios.get(
+      `${process.env.AUTHSERVICE}/find/${parent.user._id}`,
+      {
+        type: "FindUser",
+        headers: { Authorization: id },
       }
-    } catch (error) {
-      errorHandler(error.response.status, error.response.data.msg);
-      throw Error(error.response.data.msg);
-    }
-  },
+    );
 
-  channels: async (parent, args, { req }) => {
-    try {
-      return await parent.channels;
-    } catch (error) {
-      errorHandler(400, error);
-      throw Error(error);
+    if (response.status < 200 || response.status >= 400 || !response.data.success) {
+      throw { statusCode: response.status, message: response.data.msg };
     }
-  },
 
-  comments: async (parent, args, { req }) => {
-    try {
-      return await parent.comments;
-    } catch (error) {
-      errorHandler(400, error);
-      throw Error(error);
-    }
-  },
+    return response.data.data;
+  }, errorHandler),
+
+
+  channels: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    return parent.channels;
+  }, errorHandler),
+
+  comments: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    return parent.comments;
+  }, errorHandler),
 };
 
 module.exports = Story;
