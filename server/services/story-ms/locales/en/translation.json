@@ -8,5 +8,6 @@
     "authentication-failed": "Wrong e-mail or password",
     "user-is-banned": "User has been banned. Write an email for more information",
     "story-delete-failed": "Couldn't delete story",
-    "unauthorized": "Unauthorized access"
+    "unauthorized": "Unauthorized access",
+    "coordinates-missing": "To use the app, you have to enable your location sharing"
 }

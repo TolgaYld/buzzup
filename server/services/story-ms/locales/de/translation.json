@@ -8,5 +8,6 @@
     "authentication-failed": "E-Mail oder Passwort ist falsch",
     "user-is-banned": "User wurde gebannt. Schreibe eine E-Mail für weitere Informationen",
     "story-delete-failed": "Story konnte nicht gelöscht werden",
-    "unauthorized": "Unautorisierter Zugriff"
+    "unauthorized": "Unautorisierter Zugriff",
+    "coordinates-missing": "Um die App benutzen zu können, musst du deine Standortfreigabe aktivieren"
 }

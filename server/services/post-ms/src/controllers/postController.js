@@ -98,8 +98,8 @@ const likeOrDislikePost = async (req, res) => {
     throw { statusCode: 404, message: "post-not-found" };
   }
 
-  const hasAlreadyLiked = findPost.likes.some((user) => user.toString() === user.toString());
-  const hasAlreadyDisliked = findPost.dislikes.some((user) => user.toString() === user.toString());
+  const hasAlreadyLiked = findPost.likes.includes(user);
+  const hasAlreadyDisliked = findPost.dislikes.includes(user);
 
   let updateQuery = {};
 
@@ -124,7 +124,7 @@ const likeOrDislikePost = async (req, res) => {
   }
 
   const updatedPost = await Post.findByIdAndUpdate(findPost._id, updateQuery, { new: true }).exec();
-  if (!updatedPost) {
+  if (updatedPost == null) {
     throw { statusCode: 400, message: "update-failed" };
   }
 

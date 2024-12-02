@@ -8,5 +8,6 @@
     "authentication-failed": "E-Posta adresi yada parola yanlış",
     "user-is-banned": "Hesabınız erişime engellendi. Daha fazla bilgi için bir e-storya yazın",
     "story-delete-failed": "Story silinemedi",
-    "unauthorized": "İzinsiz erişim"
+    "unauthorized": "İzinsiz erişim",
+    "coordinates-missing": "Uygulamayı kullanabilmek için konum paylaşımınızı etkinleştirmelisiniz"
 }
