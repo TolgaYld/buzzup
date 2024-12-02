@@ -31,7 +31,7 @@ type Post {
 
 type Mutation {
   createPost(data: CreatePostInput!): Post!
-  likeorDislikePost(id: ID!, like: Boolean!): Post!
+  likeOrDislikePost(id: ID!, like: Boolean!): Post!
   updatePost(id: ID, data: UpdatePostInput!): Post!
   deletePostFromDb(id: ID!): Post!
 }

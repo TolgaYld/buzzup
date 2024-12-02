@@ -2,99 +2,82 @@ const { getUserId } = require("@TolgaYld/core-buzzup");
 const createError = require("http-errors");
 const axios = require("axios");
 const errorHandler = require("../../../errors/errorHandler");
+const { catchGraphQLResolverErrors } = require("../../../core/utils/graphqlUtils");
 
 module.exports = {
-  createStory: async (parent, args, { req }) => {
+  createStory: catchGraphQLResolverErrors(async (parent, args, { req }) => {
     const id = await getUserId(req);
 
     if (id == null) {
-      throw Error(createError(401, req.t("unauthorized")));
-    } else {
-      const headers = { Authorization: id };
-      try {
-        const response = await axios.post(
-          process.env.STORYSERVICE + "/create",
-          {
-            type: "CreatePost",
-            data: {
-              ...args.data,
-            },
-          },
-          { headers },
-        );
-
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          errorHandler(response.status, response.data.msg);
-          throw Error(response.data.msg);
-        }
-      } catch (error) {
-        errorHandler(error.response.status, error.response.data.msg);
-        throw Error(error.response.data.msg);
-      }
+      throw { statusCode: 401, message: "Unauthorized" };
     }
-  },
 
-  updateStory: async (parent, args, { req }) => {
+    const headers = { Authorization: id };
+    const response = await axios.post(
+      `${process.env.STORYSERVICE}/create`,
+      {
+        type: "CreateStory",
+        data: args.data,
+      },
+      { headers }
+    );
+
+    if (response.data.success) {
+      return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
+
+
+  updateStory: catchGraphQLResolverErrors(async (parent, args, { req }) => {
     const id = await getUserId(req);
 
     if (id == null) {
-      throw Error(createError(401, req.t("unauthorized")));
-    } else {
-      const headers = { Authorization: id };
-      try {
-        const response = await axios.patch(
-          process.env.STORYSERVICE + "/update/" + args.id,
-          {
-            type: "UpdatePost",
-            data: {
-              ...args.data,
-              last_update_from_user: id,
-            },
-          },
-          { headers },
-        );
-
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          errorHandler(response.status, response.data.msg);
-          throw Error(createError(response.status, response.data.msg));
-        }
-      } catch (error) {
-        errorHandler(error.response.status, error.response.data.msg);
-        throw Error(error.response.data.msg);
-      }
+      throw { statusCode: 401, message: "Unauthorized" };
     }
-  },
 
-  deleteStoryFromDb: async (parent, args, { req }) => {
+    const headers = { Authorization: id };
+    const response = await axios.patch(
+      `${process.env.STORYSERVICE}/update/${args.id}`,
+      {
+        type: "UpdateStory",
+        data: {
+          ...args.data,
+          last_update_from_user: id,
+        },
+      },
+      { headers }
+    );
+
+    if (response.data.success) {
+      return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
+
+
+  deleteStoryFromDb: catchGraphQLResolverErrors(async (parent, args, { req }) => {
     const id = await getUserId(req);
 
     if (id == null) {
-      throw Error(createError(401, req.t("unauthorized")));
-    } else {
-      const headers = { Authorization: id };
-      try {
-        const response = await axios.delete(
-          process.env.STORYSERVICE + "/delete/" + args.id,
-          {
-            type: "DeletePostFromDb",
-          },
-          { headers },
-        );
-
-        if (response.data.success) {
-          return response.data.data;
-        } else {
-          errorHandler(response.status, response.data.msg);
-          throw Error(createError(response.status, response.data.msg));
-        }
-      } catch (error) {
-        errorHandler(error.response.status, error.response.data.msg);
-        throw Error(error.response.data.msg);
-      }
+      throw { statusCode: 401, message: "Unauthorized" };
     }
-  },
+
+    const headers = { Authorization: id };
+    const response = await axios.delete(
+      `${process.env.STORYSERVICE}/delete/${args.id}`,
+      {
+        type: "DeleteStoryFromDb",
+      },
+      { headers }
+    );
+
+    if (response.data.success) {
+      return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
 };

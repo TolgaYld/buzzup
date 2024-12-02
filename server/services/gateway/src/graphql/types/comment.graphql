@@ -24,7 +24,7 @@ type Comment {
 
 type Mutation{
     createComment(data: CreateCommentInput!): Comment!
-    likeorDislikeComment(id: ID!, like: Boolean!): Comment!
+    likeOrDislikeComment(id: ID!, like: Boolean!): Comment!
     updateComment(id: ID, data: UpdateCommentInput!):Comment
     deleteCommentFromDb(id: ID!):Comment!
 }

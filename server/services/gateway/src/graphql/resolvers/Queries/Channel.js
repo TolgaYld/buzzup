@@ -1,23 +1,14 @@
 const errorHandler = require("../../../errors/errorHandler");
+const { catchGraphQLResolverErrors } = require("../../../core/utils/graphqlUtils");
 
 const Channel = {
-  subscriptions: async (parent, args, { req }) => {
-    try {
-      return await parent.users;
-    } catch (error) {
-      errorHandler(400, error);
-      throw Error(error);
-    }
-  },
+  subscriptions: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    return parent.users;
+  }, errorHandler),
 
-  posts: async (parent, args, { req }) => {
-    try {
-      return await parent.posts;
-    } catch (error) {
-      errorHandler(400, error);
-      throw Error(error);
-    }
-  },
+  posts: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    return parent.posts;
+  }, errorHandler),
 };
 
 module.exports = Channel;
