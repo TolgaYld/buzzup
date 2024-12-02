@@ -90,6 +90,7 @@ input updatePasswordInput {
 input SignInUserInput {
   emailOrUsername: String
   password: String!
+  coordinates: [Float!]!
 }
 
 type AuthUser {

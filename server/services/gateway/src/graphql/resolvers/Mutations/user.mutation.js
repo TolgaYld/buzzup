@@ -43,12 +43,13 @@ module.exports = {
 
 
   signInUser: catchGraphQLResolverErrors(
-    async (parent, { data: { emailOrUsername, password } }, { req }) => {
+    async (parent, { data: { emailOrUsername, password, coordinates } }, { req }) => {
       const response = await axios.post(`${AUTHSERVICE}/signIn`, {
         type: "signInUser",
         data: {
           emailOrUsername,
           password,
+          coordinates,
         },
       });
 
