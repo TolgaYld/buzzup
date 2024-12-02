@@ -8,19 +8,24 @@ class SignInUsecase extends UsecaseWithParams<
     ({
       String emailOrUsername,
       String password,
+      List<double> coordinates,
     })> {
   const SignInUsecase(this._repo);
 
   final AuthRepo _repo;
   @override
   ResultFuture<User> call(
-    ({String emailOrUsername, String password}) params,
+    ({String emailOrUsername, String password, List<double> coordinates}) params,
   ) async =>
       await _repo.signIn(
         emailOrUsername: params.emailOrUsername,
         password: params.password,
+        coordinates: params.coordinates,
       );
 
-  static ({String emailOrUsername, String password}) get emptyParams =>
-      (emailOrUsername: "empty", password: "empty");
+  static ({
+    String emailOrUsername,
+    String password,
+    List<double> coordinates,
+  }) get emptyParams => (emailOrUsername: "empty", password: "empty", coordinates: [3.69, 3.69]);
 }

@@ -22,6 +22,7 @@ abstract interface class AuthRepo {
   ResultFuture<User> signIn({
     required String emailOrUsername,
     required String password,
+    required List<double> coordinates,
   });
 
   ResultFuture<void> updateUser(User updateUser);

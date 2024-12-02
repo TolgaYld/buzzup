@@ -25,6 +25,7 @@ void main() {
         repo.signIn(
           emailOrUsername: anyNamed('emailOrUsername'),
           password: anyNamed('password'),
+          coordinates: anyNamed('coordinates'),
         ),
       ).thenAnswer(
         (_) async => Right(tUser),
@@ -39,6 +40,7 @@ void main() {
         repo.signIn(
           emailOrUsername: tParams.emailOrUsername,
           password: tParams.password,
+          coordinates: tParams.coordinates,
         ),
       ).called(1);
       verifyNoMoreInteractions(repo);
@@ -49,6 +51,7 @@ void main() {
         repo.signIn(
           emailOrUsername: anyNamed('emailOrUsername'),
           password: anyNamed('password'),
+          coordinates: anyNamed('coordinates'),
         ),
       ).thenAnswer(
         (_) async => Left(tFailure),
@@ -63,6 +66,7 @@ void main() {
         repo.signIn(
           emailOrUsername: tParams.emailOrUsername,
           password: tParams.password,
+          coordinates: tParams.coordinates,
         ),
       ).called(1);
       verifyNoMoreInteractions(repo);

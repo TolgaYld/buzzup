@@ -62,11 +62,13 @@ class AuthRepoImpl implements AuthRepo {
   ResultFuture<User> signIn({
     required String emailOrUsername,
     required String password,
+    required List<double> coordinates,
   }) async {
     try {
       final result = await _remoteDatasrc.signIn(
         emailOrUsername: emailOrUsername,
         password: password,
+        coordinates: coordinates,
       );
       if (result.tokens case final tkns?) {
         await _localDatasrc.setTokens(

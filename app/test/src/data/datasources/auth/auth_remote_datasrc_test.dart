@@ -30,8 +30,7 @@ void main() {
     final data = jsonDecode(
       fixture('user/sign_up/user_raw_with_tokens_from_server.json'),
     ) as DataMap;
-    test('should return [User] when call to remote source is successful',
-        () async {
+    test('should return [User] when call to remote source is successful', () async {
       if (tUserModel.location case final location?) {
         final options = MutationOptions(
           document: gql(GqlMutation.signUpMutation),
@@ -132,6 +131,7 @@ void main() {
       final result = await datasrc.signIn(
         emailOrUsername: tUserModel.username ?? "",
         password: '',
+        coordinates: [],
       );
 
       expect(result, tUserModel);
@@ -161,6 +161,7 @@ void main() {
         () => methodCall(
           emailOrUsername: tUserModel.username ?? "",
           password: '',
+          coordinates: [],
         ),
         throwsA(
           ApiException(message: "Couldn't create user"),
@@ -398,8 +399,7 @@ void main() {
         final options = MutationOptions(
           document: gql(GqlMutation.updateUserMutation),
           variables: {
-            'coordinates':
-                location.copyWith(coordinates: [9.36, 9.36]).coordinates,
+            'coordinates': location.copyWith(coordinates: [9.36, 9.36]).coordinates,
             'username': tUserModel.username,
           },
         );
@@ -437,8 +437,7 @@ void main() {
         final options = MutationOptions(
           document: gql(GqlMutation.updateUserMutation),
           variables: {
-            'coordinates':
-                location.copyWith(coordinates: [9.36, 9.36]).coordinates,
+            'coordinates': location.copyWith(coordinates: [9.36, 9.36]).coordinates,
             'username': tUserModel.username,
           },
         );

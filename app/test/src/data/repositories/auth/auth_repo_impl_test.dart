@@ -181,8 +181,7 @@ void main() {
     final tException = ApiException(
       message: "Can't reset password",
     );
-    test('should return [void] when call to remote source is successful',
-        () async {
+    test('should return [void] when call to remote source is successful', () async {
       when(
         remoteDatasrc.forgotPassword(
           any,
@@ -250,6 +249,7 @@ void main() {
         remoteDatasrc.signIn(
           emailOrUsername: anyNamed('emailOrUsername'),
           password: anyNamed('password'),
+          coordinates: anyNamed('coordinates'),
         ),
       ).thenAnswer((_) async => tUser);
 
@@ -263,6 +263,7 @@ void main() {
       final result = await repo.signIn(
         emailOrUsername: 'test123@test.com',
         password: 'aaaaaaaaaaaa',
+        coordinates: [3.69, 3.69],
       );
 
       expect(result, Right<dynamic, User>(tUser.copyWith(tokens: null)));
@@ -271,6 +272,7 @@ void main() {
         remoteDatasrc.signIn(
           emailOrUsername: 'test123@test.com',
           password: 'aaaaaaaaaaaa',
+          coordinates: [3.69, 3.69],
         ),
       ).called(1);
 
@@ -291,6 +293,7 @@ void main() {
         remoteDatasrc.signIn(
           emailOrUsername: anyNamed('emailOrUsername'),
           password: anyNamed('password'),
+          coordinates: anyNamed('coordinates'),
         ),
       ).thenThrow(tApiException);
 
@@ -304,6 +307,7 @@ void main() {
       final result = await repo.signIn(
         emailOrUsername: tUser.email ?? "",
         password: 'aaaaaaaaaaaa',
+        coordinates: [3.69, 3.69],
       );
 
       expect(
@@ -319,6 +323,7 @@ void main() {
         remoteDatasrc.signIn(
           emailOrUsername: tUser.email,
           password: 'aaaaaaaaaaaa',
+          coordinates: [3.69, 3.69],
         ),
       ).called(1);
 
@@ -332,6 +337,7 @@ void main() {
         remoteDatasrc.signIn(
           emailOrUsername: anyNamed('emailOrUsername'),
           password: anyNamed('password'),
+          coordinates: anyNamed('coordinates'),
         ),
       ).thenAnswer((_) async => tUser);
 
@@ -345,6 +351,7 @@ void main() {
       final result = await repo.signIn(
         emailOrUsername: tUser.email ?? "",
         password: 'aaaaaaaaaaaa',
+        coordinates: [3.69, 3.69],
       );
 
       expect(
@@ -360,6 +367,7 @@ void main() {
         remoteDatasrc.signIn(
           emailOrUsername: tUser.email,
           password: 'aaaaaaaaaaaa',
+          coordinates: [3.69, 3.69],
         ),
       ).called(1);
 
@@ -375,8 +383,7 @@ void main() {
     final tCacheException = CacheException(message: "Can't cache tokens");
 
     final tTokenModel = Token.empty();
-    test('should return [void] when call to remote source is successful',
-        () async {
+    test('should return [void] when call to remote source is successful', () async {
       when(
         remoteDatasrc.updatePassword(
           password: anyNamed('password'),
@@ -669,8 +676,7 @@ void main() {
     final tException = ApiException(
       message: "Can't update password",
     );
-    test('should return [void] when call to remote source is successful',
-        () async {
+    test('should return [void] when call to remote source is successful', () async {
       when(
         remoteDatasrc.updateUser(
           any,

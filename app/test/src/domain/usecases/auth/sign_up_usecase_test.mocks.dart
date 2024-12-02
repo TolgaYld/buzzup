@@ -108,6 +108,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
   _i3.Future<_i4.Either<_i5.Failure, _i6.User>> signIn({
     required String? emailOrUsername,
     required String? password,
+    required List<double>? coordinates,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -116,6 +117,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
           {
             #emailOrUsername: emailOrUsername,
             #password: password,
+            #coordinates: coordinates,
           },
         ),
         returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.User>>.value(
@@ -127,6 +129,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
             {
               #emailOrUsername: emailOrUsername,
               #password: password,
+              #coordinates: coordinates,
             },
           ),
         )),

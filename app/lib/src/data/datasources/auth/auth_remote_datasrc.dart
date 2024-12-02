@@ -18,6 +18,7 @@ abstract interface class AuthRemoteDatasrc {
   Future<User> signIn({
     required String emailOrUsername,
     required String password,
+    required List<double> coordinates,
   });
 
   Future<User> signUp({
@@ -115,6 +116,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   Future<User> signIn({
     required String emailOrUsername,
     required String password,
+    required List<double> coordinates,
   }) async {
     try {
       final response = await _client.mutate(
@@ -124,6 +126,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
             "data": {
               'emailOrUsername': emailOrUsername,
               'password': password,
+              'coordinates': coordinates,
             },
           },
         ),

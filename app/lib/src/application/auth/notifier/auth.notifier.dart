@@ -40,6 +40,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       (
         emailOrUsername: event.emailOrUsername,
         password: event.password,
+        coordinates: event.coordinates,
       ),
     );
 
