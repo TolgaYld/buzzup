@@ -49,15 +49,14 @@ class CustomTextFormFieldWidget extends HookConsumerWidget {
         errorText: errorText,
         contentPadding: EdgeInsets.zero,
         prefixIcon: Container(
-          padding: const EdgeInsets.only(top: 16, bottom: 16),
+          padding: const EdgeInsets.symmetric(vertical: Spacers.s),
           margin: const EdgeInsets.only(right: Spacers.s),
           decoration: BoxDecoration(
             color: theme.colorScheme.primary,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(30),
-              bottomLeft: Radius.circular(30),
-              topRight: Radius.circular(10),
-              bottomRight: Radius.circular(30),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(Spacers.s),
+              bottomLeft: Radius.circular(Spacers.s),
+              bottomRight: Radius.circular(Spacers.s),
             ),
           ),
           child: Icon(

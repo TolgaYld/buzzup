@@ -1,3 +1,4 @@
+import 'package:buzzup/core/design/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -47,19 +48,19 @@ class AppTheme {
   static final InputDecorationTheme _inputDecorationTheme = InputDecorationTheme(
     floatingLabelStyle: const TextStyle(color: _lightTextColorPrimary),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(Spacers.xl),
       borderSide: const BorderSide(color: _lightTextColorPrimary, width: 2),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(Spacers.xl),
       borderSide: const BorderSide(color: _lightPrimaryColor),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(Spacers.xl),
       borderSide: const BorderSide(color: Colors.red, width: 2),
     ),
     focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(30),
+      borderRadius: BorderRadius.circular(Spacers.xl),
       borderSide: const BorderSide(color: Colors.red, width: 2),
     ),
     errorStyle: GoogleFonts.dmSans(
