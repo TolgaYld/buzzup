@@ -108,6 +108,42 @@ class AppTheme {
     bodyLarge: _darkThemeBodyTextStyle,
   );
 
+  static final SwitchThemeData _lightSwitchTheme = SwitchThemeData(
+    thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
+      if (states.contains(WidgetState.selected)) {
+        return const Icon(Icons.person_add, color: _lightOnPrimaryColor); // Icon für aktiv (Sign Up)
+      }
+      return const Icon(Icons.login, color: _lightOnPrimaryColor); // Icon für inaktiv (Sign In)
+    }),
+    thumbColor: WidgetStateProperty.resolveWith<Color>(
+      (states) => states.contains(WidgetState.selected) ? _lightPrimaryColor : _lightPrimaryColor,
+    ),
+    trackColor: WidgetStateProperty.resolveWith<Color>(
+      (states) => states.contains(WidgetState.selected)
+          ? _lightPrimaryColor.withOpacity(0.5) // Track-Farbe für aktiv
+          : _lightPrimaryColor.withOpacity(0.5), // Track-Farbe für inaktiv
+    ),
+    trackOutlineColor: WidgetStateProperty.all(Colors.transparent), // Keine Border
+  );
+
+  static final SwitchThemeData _darkSwitchTheme = SwitchThemeData(
+    thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
+      if (states.contains(WidgetState.selected)) {
+        return const Icon(Icons.person_add, color: _darkOnPrimaryColor); // Icon für aktiv (Sign Up)
+      }
+      return const Icon(Icons.login, color: _darkOnPrimaryColor); // Icon für inaktiv (Sign In)
+    }),
+    thumbColor: WidgetStateProperty.resolveWith<Color>(
+      (states) => states.contains(WidgetState.selected) ? _darkOnPrimaryColor : _darkPrimaryColor,
+    ),
+    trackColor: WidgetStateProperty.resolveWith<Color>(
+      (states) => states.contains(WidgetState.selected)
+          ? _darkPrimaryVariantColor.withOpacity(0.5) // Track-Farbe für aktiv
+          : _darkPrimaryVariantColor.withOpacity(0.5), // Track-Farbe für inaktiv
+    ),
+    trackOutlineColor: WidgetStateProperty.all(Colors.transparent), // Keine Border
+  );
+
   static final ThemeData lightTheme = ThemeData(
     elevatedButtonTheme: _elevatedButtonTheme,
     textButtonTheme: _textButtonTheme,
@@ -127,11 +163,12 @@ class AppTheme {
       onSurface: _lightTextColorPrimary,
       onSecondary: _lightTextColorPrimary,
       primary: _lightPrimaryColor,
-      onPrimary: _lightPrimaryVariantColor,
+      onPrimary: _lightOnPrimaryColor,
       secondary: _lightPrimaryVariantColor,
       primaryContainer: _lightPrimaryVariantColor,
       tertiary: Colors.black87,
     ),
+    switchTheme: _lightSwitchTheme,
     textTheme: _lightTextTheme,
   );
 
@@ -153,6 +190,7 @@ class AppTheme {
       onPrimary: _darkOnPrimaryColor,
       primaryContainer: _darkPrimaryVariantColor,
     ),
+    switchTheme: _darkSwitchTheme,
     textTheme: _darkTextTheme,
   );
 }

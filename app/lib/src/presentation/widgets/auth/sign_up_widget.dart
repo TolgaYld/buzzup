@@ -1,10 +1,15 @@
 import 'package:buzzup/core/common/widgets/custom_text_form_field_widget.dart';
+import 'package:buzzup/core/common/widgets/loading_indicator.dart';
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
+import 'package:buzzup/src/application/auth/provider/auth.provider.dart';
+import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
+import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
 import 'package:buzzup/src/presentation/pages/auth/validation/auth_validation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SignUpWidget extends HookConsumerWidget {
@@ -37,9 +42,10 @@ class SignUpWidget extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = useTheme();
     final l10n = useL10n();
+    final authState = ref.watch(authProvider);
+    final notifier = ref.read(authProvider.notifier);
     final passwordIsVisible = useState(false);
     final repeatPasswordIsVisible = useState(false);
-
     final username = useState(const UsernameInput.pure());
     final email = useState(const EmailInput.pure());
     final password = useState(const PasswordInput.pure());
@@ -170,6 +176,32 @@ class SignUpWidget extends HookConsumerWidget {
                 color: theme.colorScheme.primary,
               ),
               onPressed: () => repeatPasswordIsVisible.value = !repeatPasswordIsVisible.value,
+            ),
+          ),
+          const VSpace.m(),
+          ElevatedButton(
+            onPressed: () async {
+              if (signUpFormKey.currentState?.validate() ?? false) {
+                final coordinates = await Geolocator.getCurrentPosition();
+                await notifier.event(
+                  SignUpEvent(
+                    username: usernameController.text,
+                    email: emailController.text,
+                    password: passwordController.text,
+                    repeatPassword: repeatPasswordController.text,
+                    coordinates: [coordinates.longitude, coordinates.latitude],
+                  ),
+                );
+              }
+            },
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (authState is LoadingState) const LoadingIndicator(),
+                Flexible(
+                  child: Text(l10n.sign_up),
+                ),
+              ],
             ),
           ),
         ],
