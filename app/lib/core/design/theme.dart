@@ -111,37 +111,33 @@ class AppTheme {
   static final SwitchThemeData _lightSwitchTheme = SwitchThemeData(
     thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
       if (states.contains(WidgetState.selected)) {
-        return const Icon(Icons.person_add, color: _lightOnPrimaryColor); // Icon für aktiv (Sign Up)
+        return const Icon(Icons.person_add, color: _lightOnPrimaryColor);
       }
-      return const Icon(Icons.login, color: _lightOnPrimaryColor); // Icon für inaktiv (Sign In)
+      return const Icon(Icons.login, color: _lightOnPrimaryColor);
     }),
     thumbColor: WidgetStateProperty.resolveWith<Color>(
       (states) => states.contains(WidgetState.selected) ? _lightPrimaryColor : _lightPrimaryColor,
     ),
     trackColor: WidgetStateProperty.resolveWith<Color>(
-      (states) => states.contains(WidgetState.selected)
-          ? _lightPrimaryColor.withOpacity(0.5) // Track-Farbe für aktiv
-          : _lightPrimaryColor.withOpacity(0.5), // Track-Farbe für inaktiv
+      (states) => states.contains(WidgetState.selected) ? _lightPrimaryColor.withOpacity(0.5) : _lightPrimaryColor.withOpacity(0.5),
     ),
-    trackOutlineColor: WidgetStateProperty.all(Colors.transparent), // Keine Border
+    trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
   );
 
   static final SwitchThemeData _darkSwitchTheme = SwitchThemeData(
     thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
       if (states.contains(WidgetState.selected)) {
-        return const Icon(Icons.person_add, color: _darkOnPrimaryColor); // Icon für aktiv (Sign Up)
+        return const Icon(Icons.person_add, color: _darkOnPrimaryColor);
       }
-      return const Icon(Icons.login, color: _darkOnPrimaryColor); // Icon für inaktiv (Sign In)
+      return const Icon(Icons.login, color: _darkOnPrimaryColor);
     }),
     thumbColor: WidgetStateProperty.resolveWith<Color>(
       (states) => states.contains(WidgetState.selected) ? _darkOnPrimaryColor : _darkPrimaryColor,
     ),
     trackColor: WidgetStateProperty.resolveWith<Color>(
-      (states) => states.contains(WidgetState.selected)
-          ? _darkPrimaryVariantColor.withOpacity(0.5) // Track-Farbe für aktiv
-          : _darkPrimaryVariantColor.withOpacity(0.5), // Track-Farbe für inaktiv
+      (states) => states.contains(WidgetState.selected) ? _darkPrimaryVariantColor.withOpacity(0.5) : _darkPrimaryVariantColor.withOpacity(0.5),
     ),
-    trackOutlineColor: WidgetStateProperty.all(Colors.transparent), // Keine Border
+    trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
   );
 
   static final ThemeData lightTheme = ThemeData(
