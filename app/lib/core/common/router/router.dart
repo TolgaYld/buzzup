@@ -6,22 +6,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class NavigationManager {
-  NavigationManager._();
-
-  static GoRouter createRouter(WidgetRef ref) => GoRouter(
-        initialLocation: '/',
-        routes: [
-          GoRoute(path: '/', builder: (context, state) => AuthPage()),
-          GoRoute(path: '/home', builder: (context, state) => HomePage()),
-          GoRoute(path: LocationServiceDisabledPage.routeName, builder: (context, state) => const LocationServiceDisabledPage()),
-        ],
-        redirect: (context, state) async {
-          final gpsStatusState = ref.watch(gpsStatusNotifierProvider);
-          if (gpsStatusState.permission == LocationPermission.deniedForever || gpsStatusState.permission == LocationPermission.unableToDetermine) {
-            return LocationServiceDisabledPage.routeName;
-          }
-          return null;
-        },
-      );
-}
+final navigationManagerProvider = Provider<GoRouter>((ref) {
+  return GoRouter(
+    initialLocation: '/',
+    routes: [
+      GoRoute(path: '/', builder: (context, state) => AuthPage()),
+      GoRoute(path: '/home', builder: (context, state) => HomePage()),
+      GoRoute(path: LocationServiceDisabledPage.routeName, builder: (context, state) => const LocationServiceDisabledPage()),
+    ],
+    redirect: (context, state) async {
+      final gpsStatusState = ref.watch(gpsStatusNotifierProvider);
+      if (gpsStatusState.permission == LocationPermission.deniedForever || gpsStatusState.permission == LocationPermission.unableToDetermine) {
+        return LocationServiceDisabledPage.routeName;
+      }
+      return null;
+    },
+  );
+});

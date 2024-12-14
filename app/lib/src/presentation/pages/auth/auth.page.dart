@@ -65,116 +65,118 @@ class AuthPage extends HookConsumerWidget {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: SvgPicture.asset(
             Assets.images.logoipsum285,
           ).animate().fade(duration: Durations.short4).then().shimmer(duration: Durations.short4),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: Spacers.x2l,
-                left: Spacers.xs,
-                right: Spacers.xs,
-              ),
-              child: Column(
-                children: [
-                  AnimatedSwitcher(
-                    duration: Durations.short3,
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(opacity: animation, child: child);
-                    },
-                    child: switch (authModeState) {
-                      SignInAuthModeState() || SignUpAuthModeState() => Align(
-                          alignment: Alignment.topLeft,
-                          child: Row(
-                            children: [
-                              Switch(
-                                value: authModeState is SignUpAuthModeState,
-                                activeColor: theme.colorScheme.primary,
-                                inactiveThumbColor: theme.colorScheme.primary,
-                                inactiveTrackColor: theme.colorScheme.primary.withOpacity(0.5),
-                                activeTrackColor: theme.colorScheme.primary.withOpacity(0.5),
-                                trackOutlineColor: WidgetStatePropertyAll(Colors.transparent),
-                                thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
-                                  if (states.contains(WidgetState.selected)) {
-                                    return Icon(Icons.person_add, color: theme.colorScheme.onPrimary);
-                                  }
-                                  return Icon(Icons.login, color: theme.colorScheme.onPrimary);
-                                }),
-                                onChanged: (s) {
-                                  if (s) {
-                                    authModeNotifier.signUp();
-                                  } else {
-                                    authModeNotifier.signIn();
-                                  }
-                                },
-                              ),
-                              const HSpace.xxs(),
-                              AnimatedSizeSwitcher(
-                                child: Text(
-                                  switch (authModeState) {
-                                    SignInAuthModeState() => l10n.sign_in,
-                                    SignUpAuthModeState() => l10n.sign_up,
-                                    ForgotPasswordAuthModeState() => l10n.forgot_password,
-                                  },
-                                  style: theme.textTheme.titleMedium,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ForgotPasswordAuthModeState() => const SizedBox(),
-                    },
-                  ),
-                  const VSpace.xl(),
-                  AnimatedSize(
-                    duration: Durations.short3,
-                    curve: Curves.linear,
-                    child: AnimatedSwitcher(
+        body: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: Spacers.x2l,
+                  left: Spacers.xs,
+                  right: Spacers.xs,
+                ),
+                child: Column(
+                  children: [
+                    AnimatedSwitcher(
                       duration: Durations.short3,
-                      transitionBuilder: (Widget child, Animation<double> animation) {
+                      transitionBuilder: (child, animation) {
                         return FadeTransition(opacity: animation, child: child);
                       },
                       child: switch (authModeState) {
-                        SignInAuthModeState() => SignInWidget(
-                            key: signInKey,
-                            signInFormKey: signInFormKey,
-                            emailOrUsernameController: signInEmailOrUsernameController,
-                            emailOrUsernameFocusNode: signInEmailOrUsernameFocusNode,
-                            passwordController: signInPasswordController,
-                            passwordFocusNode: signInPasswordFocusNode,
+                        SignInAuthModeState() || SignUpAuthModeState() => Align(
+                            alignment: Alignment.topLeft,
+                            child: Row(
+                              children: [
+                                Switch(
+                                  value: authModeState is SignUpAuthModeState,
+                                  activeColor: theme.colorScheme.primary,
+                                  inactiveThumbColor: theme.colorScheme.primary,
+                                  inactiveTrackColor: theme.colorScheme.primary.withOpacity(0.5),
+                                  activeTrackColor: theme.colorScheme.primary.withOpacity(0.5),
+                                  trackOutlineColor: WidgetStatePropertyAll(Colors.transparent),
+                                  thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
+                                    if (states.contains(WidgetState.selected)) {
+                                      return Icon(Icons.person_add, color: theme.colorScheme.onPrimary);
+                                    }
+                                    return Icon(Icons.login, color: theme.colorScheme.onPrimary);
+                                  }),
+                                  onChanged: (s) {
+                                    if (s) {
+                                      authModeNotifier.signUp();
+                                    } else {
+                                      authModeNotifier.signIn();
+                                    }
+                                  },
+                                ),
+                                const HSpace.xxs(),
+                                AnimatedSizeSwitcher(
+                                  child: Text(
+                                    switch (authModeState) {
+                                      SignInAuthModeState() => l10n.sign_in,
+                                      SignUpAuthModeState() => l10n.sign_up,
+                                      ForgotPasswordAuthModeState() => l10n.forgot_password,
+                                    },
+                                    style: theme.textTheme.titleMedium,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        SignUpAuthModeState() => SignUpWidget(
-                            validateMode: validateModeSignUp.value,
-                            key: signUpKey,
-                            signUpFormKey: signUpFormKey,
-                            emailController: signUpEmailController,
-                            emailFocusNode: signUpEmailFocusNode,
-                            passwordController: signUpPasswordController,
-                            passwordFocusNode: signUpPasswordFocusNode,
-                            repeatPasswordController: signUpRepeatPasswordController,
-                            repeatPasswordFocusNode: signUpRepeatPasswordFocusNode,
-                            usernameController: signUpUsernameController,
-                            usernameFocusNode: signUpUsernameFocusNode,
-                          ),
-                        ForgotPasswordAuthModeState() => ForgotPasswordWidget(
-                            key: forgotPasswordKey,
-                            formKey: forgotPasswordFormKey,
-                            validateMode: validateModeForgotPassword.value,
-                            emailController: forgotPasswordController,
-                            emailFocusNode: forgotPasswordFocusNode,
-                          ),
+                        ForgotPasswordAuthModeState() => const SizedBox(),
                       },
                     ),
-                  ),
-                ],
+                    const VSpace.xl(),
+                    AnimatedSize(
+                      duration: Durations.short3,
+                      curve: Curves.linear,
+                      child: AnimatedSwitcher(
+                        duration: Durations.short3,
+                        transitionBuilder: (Widget child, Animation<double> animation) {
+                          return FadeTransition(opacity: animation, child: child);
+                        },
+                        child: switch (authModeState) {
+                          SignInAuthModeState() => SignInWidget(
+                              key: signInKey,
+                              signInFormKey: signInFormKey,
+                              emailOrUsernameController: signInEmailOrUsernameController,
+                              emailOrUsernameFocusNode: signInEmailOrUsernameFocusNode,
+                              passwordController: signInPasswordController,
+                              passwordFocusNode: signInPasswordFocusNode,
+                            ),
+                          SignUpAuthModeState() => SignUpWidget(
+                              validateMode: validateModeSignUp.value,
+                              key: signUpKey,
+                              signUpFormKey: signUpFormKey,
+                              emailController: signUpEmailController,
+                              emailFocusNode: signUpEmailFocusNode,
+                              passwordController: signUpPasswordController,
+                              passwordFocusNode: signUpPasswordFocusNode,
+                              repeatPasswordController: signUpRepeatPasswordController,
+                              repeatPasswordFocusNode: signUpRepeatPasswordFocusNode,
+                              usernameController: signUpUsernameController,
+                              usernameFocusNode: signUpUsernameFocusNode,
+                            ),
+                          ForgotPasswordAuthModeState() => ForgotPasswordWidget(
+                              key: forgotPasswordKey,
+                              formKey: forgotPasswordFormKey,
+                              validateMode: validateModeForgotPassword.value,
+                              emailController: forgotPasswordController,
+                              emailFocusNode: forgotPasswordFocusNode,
+                            ),
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

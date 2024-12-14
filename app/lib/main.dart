@@ -28,6 +28,7 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final themeModeState = ref.watch(themeModeProvider);
+    final routerConfig = ref.watch(navigationManagerProvider);
 
     final themeMode = switch (themeModeState) {
       final ThemeModeChangedState state when state.useSystemTheme => ThemeMode.system,
@@ -53,7 +54,7 @@ class MyApp extends HookConsumerWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: themeMode,
       supportedLocales: L10n.supportedLocales,
-      routerConfig: NavigationManager.createRouter(ref),
+      routerConfig: routerConfig,
     );
   }
 }
