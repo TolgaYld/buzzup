@@ -1,7 +1,7 @@
 import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/models/user.dart';
 import 'package:buzzup/core/utils/either.dart';
-import 'package:buzzup/src/domain/usecases/auth/sign_in_usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/sign_in.usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 

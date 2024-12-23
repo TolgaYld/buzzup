@@ -27,7 +27,6 @@ dependencies:
   permission_handler: ^11.3.1
   intl: ^0.19.0
   graphql_flutter: ^5.1.2
-  jwt_decoder: ^2.0.1
   json_annotation: ^4.9.0
   shared_preferences: ^2.3.2
   rxdart: ^0.28.0
@@ -52,7 +51,6 @@ flutter:
   generate: true
   assets:
     - assets/images/
-    - assets/lottie/
   # fonts:
   #   - family: Josefin
   #     fonts:

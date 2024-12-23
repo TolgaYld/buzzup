@@ -6,7 +6,7 @@ import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
 import 'package:buzzup/core/utils/extensions/iterable.extension.dart';
-import 'package:buzzup/src/application/auth/provider/auth.provider.dart';
+import 'package:buzzup/core/common/provider/auth.provider.dart';
 import 'package:buzzup/src/application/auth/provider/auth_mode.provider.dart';
 import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
@@ -102,6 +102,7 @@ class SignInWidget extends HookConsumerWidget {
           const VSpace.x3l(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            spacing: Spacers.s,
             children: <Widget>[
               _SignInViaProviderButton(
                 l10n.login_via_google,
@@ -119,7 +120,7 @@ class SignInWidget extends HookConsumerWidget {
                   button: Buttons.apple,
                   onPressed: () {},
                 ),
-            ].intersperse(const VSpace.s()).toList(),
+            ],
           ),
         ],
       ),

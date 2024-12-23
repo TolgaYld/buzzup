@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:buzzup/src/domain/usecases/auth/refresh_token.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/sign_out.usecase.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:buzzup/core/common/constants.dart';
@@ -8,14 +10,14 @@ import 'package:buzzup/src/data/datasources/auth/auth_local_datasrc.dart';
 import 'package:buzzup/src/data/datasources/auth/auth_remote_datasrc.dart';
 import 'package:buzzup/src/data/repositories/auth/auth_repo_impl.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth_repo.dart';
-import 'package:buzzup/src/domain/usecases/auth/auth_with_provider_usecase.dart';
-import 'package:buzzup/src/domain/usecases/auth/check_email_exists_usecase.dart';
-import 'package:buzzup/src/domain/usecases/auth/check_username_exists_usecase.dart';
-import 'package:buzzup/src/domain/usecases/auth/forgot_password_usecase.dart';
-import 'package:buzzup/src/domain/usecases/auth/sign_in_usecase.dart';
-import 'package:buzzup/src/domain/usecases/auth/sign_up_usecase.dart';
-import 'package:buzzup/src/domain/usecases/auth/update_password_usecase.dart';
-import 'package:buzzup/src/domain/usecases/auth/update_user_usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/auth_with_provider.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/check_email_exists.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/check_username_exists.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/forgot_password.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/sign_in.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/sign_up.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/update_password.usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/update_user.usecase.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Providers for External Dependencies
@@ -33,14 +35,13 @@ final refreshTokenProvider = FutureProvider<String?>((ref) async {
   return await storage.read(key: kCachedRefreshTokenKey);
 });
 
-// GraphQL Client Provider
 final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
   final box = await HiveStore.openBox(kGraphqlHiveBoxName);
   final link = AuthLink(
     getToken: () async => "Bearer ${await ref.read(tokenProvider.future)}",
   ).concat(
     HttpLink(
-      switch (Environment.environment == "test") {
+      switch (Environment.type == EnvironmentType.test) {
         true => switch (Platform.isAndroid) {
             true => "http://10.0.2.2:8000/graphql",
             false => Environment.baseUrl,
@@ -48,7 +49,7 @@ final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
         false => Environment.baseUrl,
       },
       defaultHeaders: {
-        "refreshToken": await ref.read(refreshTokenProvider.future) ?? "",
+        "refresh": "Bearer ${await ref.read(refreshTokenProvider.future)}",
       },
     ),
   );
@@ -89,9 +90,19 @@ final checkUsernameExistsUsecaseProvider = FutureProvider<CheckUsernameExistsUse
   return CheckUsernameExistsUsecase(authRepo);
 });
 
+final refreshTokenUsecaseProvider = FutureProvider<RefreshTokenUsecase>((ref) async {
+  final authRepo = await ref.read(authRepoProvider.future);
+  return RefreshTokenUsecase(authRepo);
+});
+
 final signInUsecaseProvider = FutureProvider<SignInUsecase>((ref) async {
   final authRepo = await ref.read(authRepoProvider.future);
   return SignInUsecase(authRepo);
+});
+
+final signOutUsecaseProvider = FutureProvider<SignOutUsecase>((ref) async {
+  final authRepo = await ref.read(authRepoProvider.future);
+  return SignOutUsecase(authRepo);
 });
 
 final signUpUsecaseProvider = FutureProvider<SignUpUsecase>((ref) async {

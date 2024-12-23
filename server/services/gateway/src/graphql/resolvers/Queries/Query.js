@@ -1,4 +1,4 @@
-const { getUserId } = require("@TolgaYld/core-buzzup");
+const { getUserId, AUTHSERVICE, CHANNELSERVICE, COMMENTSERVICE, POSTSERVICE, REPORTSERVICE, STORYSERVICE } = require("@TolgaYld/core-buzzup");
 const createError = require("http-errors");
 const errorHandler = require("../../../errors/errorHandler");
 const axios = require("axios");
@@ -15,10 +15,10 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.AUTHSERVICE}/find/${args.id}`,
+      `${AUTHSERVICE}/find/${args.id}`,
       {
         type: "FindUser",
-        headers,
+        headers
       },
     );
 
@@ -38,7 +38,7 @@ const Query = {
 
     const headers = { Authorization: id };
 
-    const response = await axios.get(process.env.AUTHSERVICE + "/findAll", {
+    const response = await axios.get(AUTHSERVICE + "/findAll", {
       type: "FindAllUsers",
       headers,
     });
@@ -61,7 +61,7 @@ const Query = {
     const headers = { Authorization: id };
 
     const response = await axios.get(
-      `${process.env.AUTHSERVICE}/findWithUsername/${args.username}`,
+      `${AUTHSERVICE}/findWithUsername/${args.username}`,
       {
         type: "FindUserWithUsername",
         headers,
@@ -85,7 +85,7 @@ const Query = {
     const headers = { Authorization: id };
 
     const response = await axios.get(
-      `${process.env.AUTHSERVICE}/findWithEmail/${args.email}`,
+      `${AUTHSERVICE}/findWithEmail/${args.email}`,
       {
         type: "FindUserWithEmail",
         headers,
@@ -103,7 +103,7 @@ const Query = {
     const headers = req.headers;
 
     const response = await axios.get(
-      `${process.env.AUTHSERVICE}/checkEmail/${args.email}`,
+      `${AUTHSERVICE}/checkEmail/${args.email}`,
       {
         type: "CheckIfEmailExists",
         headers,
@@ -120,7 +120,7 @@ const Query = {
 
   checkIfUsernameExists: catchGraphQLResolverErrors(async (parent, args, { req }) => {
     const response = await axios.get(
-      `${process.env.AUTHSERVICE}/checkUsername/${args.username}`,
+      `${AUTHSERVICE}/checkUsername/${args.username}`,
       {
         type: "CheckIfUsernameExists",
       }
@@ -128,6 +128,51 @@ const Query = {
 
     if (response.status >= 200 && response.status < 400 && response.data.success) {
       return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
+
+
+  signOut: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    const headers = req.headers;
+
+    const response = await axios.get(`${AUTHSERVICE}/signOut`, {
+      type: "SignOut",
+      headers: {
+        authorization: headers.authorization,
+        refresh: headers.refresh,
+      },
+    });
+
+    if (response.status >= 200 && response.status < 400 && response.data.success) {
+      return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
+
+
+  refreshToken: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    const id = await getUserId(req);
+
+    if (id == null) {
+      throw { statusCode: 401, message: "Unauthorized" };
+    }
+    const headers = req.headers;
+
+    const response = await axios.get(`${AUTHSERVICE}/refreshToken`, {
+      type: "RefreshToken",
+      headers: {
+        authorization: headers.authorization,
+        refresh: headers.refresh,
+      },
+    });
+
+
+    if (response.status >= 200 && response.status < 400 && response.data.success) {
+      console.log(response.data);
+      return response.data;
     }
 
     throw { statusCode: response.status, message: response.data.msg };
@@ -144,7 +189,7 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.CHANNELSERVICE}/find/${args.id}`,
+      `${CHANNELSERVICE}/find/${args.id}`,
       {
         type: "FindChannel",
         headers,
@@ -166,7 +211,7 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.CHANNELSERVICE}/findAll`,
+      `${CHANNELSERVICE}/findAll`,
       {
         type: "FindAllChannels",
         headers,
@@ -190,7 +235,7 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.POSTSERVICE}/find/${args.id}`,
+      `${POSTSERVICE}/find/${args.id}`,
       {
         type: "FindPost",
         headers,
@@ -212,7 +257,7 @@ const Query = {
     }
 
     const headers = { Authorization: id };
-    const response = await axios.get(`${process.env.POSTSERVICE}/findAll`, {
+    const response = await axios.get(`${POSTSERVICE}/findAll`, {
       type: "FindAllPosts",
       headers,
     });
@@ -233,7 +278,7 @@ const Query = {
     const headers = { Authorization: id };
 
     const postsResponse = await axios.post(
-      `${process.env.POSTSERVICE}/findInRadius`,
+      `${POSTSERVICE}/findInRadius`,
       {
         type: "FindPostsInMyRadius",
         data: args.data,
@@ -248,7 +293,7 @@ const Query = {
     const posts = postsResponse.data.data;
 
     const storyResponse = await axios.post(
-      `${process.env.STORYSERVICE}/findInRadius`,
+      `${STORYSERVICE}/findInRadius`,
       {
         type: "FindStorysInMyRadius",
         data: args.data,
@@ -276,7 +321,7 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.COMMENTSERVICE}/find/${args.id}`,
+      `${COMMENTSERVICE}/find/${args.id}`,
       {
         type: "FindComment",
         headers,
@@ -300,7 +345,7 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.COMMENTSERVICE}/findAll`,
+      `${COMMENTSERVICE}/findAll`,
       {
         type: "FindAllComments",
         headers,
@@ -326,7 +371,7 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.STORYSERVICE}/find/${args.id}`,
+      `${STORYSERVICE}/find/${args.id}`,
       {
         type: "FindStory",
         headers,
@@ -348,7 +393,7 @@ const Query = {
     }
 
     const headers = { Authorization: id };
-    const response = await axios.get(`${process.env.STORYSERVICE}/findAll`, {
+    const response = await axios.get(`${STORYSERVICE}/findAll`, {
       type: "FindAllStorys",
       headers,
     });
@@ -371,7 +416,7 @@ const Query = {
 
     const headers = { Authorization: id };
     const response = await axios.get(
-      `${process.env.REPORTSERVICE}/find/${args.id}`,
+      `${REPORTSERVICE}/find/${args.id}`,
       {
         type: "FindReport",
         headers,
@@ -393,7 +438,7 @@ const Query = {
     }
 
     const headers = { Authorization: id };
-    const response = await axios.get(`${process.env.REPORTSERVICE}/findAll`, {
+    const response = await axios.get(`${REPORTSERVICE}/findAll`, {
       type: "FindAllReports",
       headers,
     });

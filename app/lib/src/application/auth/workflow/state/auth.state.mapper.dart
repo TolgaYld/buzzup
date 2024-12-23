@@ -16,6 +16,7 @@ class AuthStateMapper extends ClassMapperBase<AuthState> {
       InitialStateMapper.ensureInitialized();
       SignedInStateMapper.ensureInitialized();
       SignedUpStateMapper.ensureInitialized();
+      SignedOutStateMapper.ensureInitialized();
       AuthenticatedWithProviderStateMapper.ensureInitialized();
       UserUpdatedStateMapper.ensureInitialized();
       PasswordChangedStateMapper.ensureInitialized();
@@ -174,7 +175,7 @@ class SignedInStateMapper extends ClassMapperBase<SignedInState> {
   @override
   final String id = 'SignedInState';
 
-  static User _$user(SignedInState v) => v.user;
+  static User? _$user(SignedInState v) => v.user;
   static const Field<SignedInState, User> _f$user = Field('user', _$user);
 
   @override
@@ -239,7 +240,7 @@ extension SignedInStateValueCopy<$R, $Out>
 
 abstract class SignedInStateCopyWith<$R, $In extends SignedInState, $Out>
     implements AuthStateCopyWith<$R, $In, $Out> {
-  UserCopyWith<$R, User, User> get user;
+  UserCopyWith<$R, User, User>? get user;
   @override
   $R call({User? user});
   SignedInStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -254,11 +255,11 @@ class _SignedInStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SignedInState> $mapper =
       SignedInStateMapper.ensureInitialized();
   @override
-  UserCopyWith<$R, User, User> get user =>
-      $value.user.copyWith.$chain((v) => call(user: v));
+  UserCopyWith<$R, User, User>? get user =>
+      $value.user?.copyWith.$chain((v) => call(user: v));
   @override
-  $R call({User? user}) =>
-      $apply(FieldCopyWithData({if (user != null) #user: user}));
+  $R call({Object? user = $none}) =>
+      $apply(FieldCopyWithData({if (user != $none) #user: user}));
   @override
   SignedInState $make(CopyWithData data) =>
       SignedInState(data.get(#user, or: $value.user));
@@ -378,6 +379,106 @@ class _SignedUpStateCopyWithImpl<$R, $Out>
   SignedUpStateCopyWith<$R2, SignedUpState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
       _SignedUpStateCopyWithImpl($value, $cast, t);
+}
+
+class SignedOutStateMapper extends ClassMapperBase<SignedOutState> {
+  SignedOutStateMapper._();
+
+  static SignedOutStateMapper? _instance;
+  static SignedOutStateMapper ensureInitialized() {
+    if (_instance == null) {
+      MapperContainer.globals.use(_instance = SignedOutStateMapper._());
+      AuthStateMapper.ensureInitialized();
+    }
+    return _instance!;
+  }
+
+  @override
+  final String id = 'SignedOutState';
+
+  @override
+  final MappableFields<SignedOutState> fields = const {};
+
+  static SignedOutState _instantiate(DecodingData data) {
+    return SignedOutState();
+  }
+
+  @override
+  final Function instantiate = _instantiate;
+
+  static SignedOutState fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<SignedOutState>(map);
+  }
+
+  static SignedOutState fromJson(String json) {
+    return ensureInitialized().decodeJson<SignedOutState>(json);
+  }
+}
+
+mixin SignedOutStateMappable {
+  String toJson() {
+    return SignedOutStateMapper.ensureInitialized()
+        .encodeJson<SignedOutState>(this as SignedOutState);
+  }
+
+  Map<String, dynamic> toMap() {
+    return SignedOutStateMapper.ensureInitialized()
+        .encodeMap<SignedOutState>(this as SignedOutState);
+  }
+
+  SignedOutStateCopyWith<SignedOutState, SignedOutState, SignedOutState>
+      get copyWith => _SignedOutStateCopyWithImpl(
+          this as SignedOutState, $identity, $identity);
+  @override
+  String toString() {
+    return SignedOutStateMapper.ensureInitialized()
+        .stringifyValue(this as SignedOutState);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return SignedOutStateMapper.ensureInitialized()
+        .equalsValue(this as SignedOutState, other);
+  }
+
+  @override
+  int get hashCode {
+    return SignedOutStateMapper.ensureInitialized()
+        .hashValue(this as SignedOutState);
+  }
+}
+
+extension SignedOutStateValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, SignedOutState, $Out> {
+  SignedOutStateCopyWith<$R, SignedOutState, $Out> get $asSignedOutState =>
+      $base.as((v, t, t2) => _SignedOutStateCopyWithImpl(v, t, t2));
+}
+
+abstract class SignedOutStateCopyWith<$R, $In extends SignedOutState, $Out>
+    implements AuthStateCopyWith<$R, $In, $Out> {
+  @override
+  $R call();
+  SignedOutStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
+}
+
+class _SignedOutStateCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, SignedOutState, $Out>
+    implements SignedOutStateCopyWith<$R, SignedOutState, $Out> {
+  _SignedOutStateCopyWithImpl(super.value, super.then, super.then2);
+
+  @override
+  late final ClassMapperBase<SignedOutState> $mapper =
+      SignedOutStateMapper.ensureInitialized();
+  @override
+  $R call() => $apply(FieldCopyWithData({}));
+  @override
+  SignedOutState $make(CopyWithData data) => SignedOutState();
+
+  @override
+  SignedOutStateCopyWith<$R2, SignedOutState, $Out2> $chain<$R2, $Out2>(
+          Then<$Out2, $R2> t) =>
+      _SignedOutStateCopyWithImpl($value, $cast, t);
 }
 
 class AuthenticatedWithProviderStateMapper

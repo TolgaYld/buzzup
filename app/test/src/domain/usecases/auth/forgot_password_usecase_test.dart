@@ -1,6 +1,6 @@
 import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
-import 'package:buzzup/src/domain/usecases/auth/forgot_password_usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/forgot_password.usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
@@ -17,8 +17,7 @@ void main() {
   group('ForgotPasswordUsecase', () {
     const tEmail = 'test123@test.com';
     final tFailure = ApiFailure(message: "Couldn't Update User");
-    test('should call [AuthRepo] and send [User] an Reset-Password-Email',
-        () async {
+    test('should call [AuthRepo] and send [User] an Reset-Password-Email', () async {
       when(
         repo.forgotPassword(
           any,

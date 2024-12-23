@@ -1,7 +1,7 @@
 import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:buzzup/src/domain/usecases/auth/check_email_exists_usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/check_email_exists.usecase.dart';
 import 'package:mockito/mockito.dart';
 
 import 'sign_up_usecase_test.mocks.dart';
@@ -16,10 +16,8 @@ void main() {
   });
 
   group('CheckEmailExistsUsecase', () {
-    test('should return a bool when call to [AuthRepo] is successful',
-        () async {
-      when(repo.checkIfEmailExists(any))
-          .thenAnswer((_) async => const Right(true));
+    test('should return a bool when call to [AuthRepo] is successful', () async {
+      when(repo.checkIfEmailExists(any)).thenAnswer((_) async => const Right(true));
 
       final result = await usecase('test123@test.com');
 
@@ -29,13 +27,11 @@ void main() {
       verifyNoMoreInteractions(repo);
     });
 
-    test('should return a [ApiFailure] when call to [AuthRepo] is unsuccessful',
-        () async {
+    test('should return a [ApiFailure] when call to [AuthRepo] is unsuccessful', () async {
       final tFailure = ApiFailure(
         message: "Couldn't check if email exists",
       );
-      when(repo.checkIfEmailExists(any))
-          .thenAnswer((_) async => Left(tFailure));
+      when(repo.checkIfEmailExists(any)).thenAnswer((_) async => Left(tFailure));
 
       final result = await usecase('test123@test.com');
 

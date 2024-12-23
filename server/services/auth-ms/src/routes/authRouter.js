@@ -46,5 +46,11 @@ router.delete(
   "/deleteFromDb/:id", authorize,
   catchErrors(authController.deleteUserFromDb, errorHandler),
 );
+router.get(
+  "/signOut",
+  catchErrors(authController.signOut, errorHandler),
+);
+
+router.get("/refreshToken", catchErrors(authController.tokenService, errorHandler));
 
 module.exports = router;

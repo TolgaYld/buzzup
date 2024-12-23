@@ -17,7 +17,7 @@ class InitialState extends AuthState with InitialStateMappable {
 class SignedInState extends AuthState with SignedInStateMappable {
   const SignedInState(this.user);
 
-  final User user;
+  final User? user;
 }
 
 @MappableClass()
@@ -25,6 +25,11 @@ class SignedUpState extends AuthState with SignedUpStateMappable {
   const SignedUpState(this.user);
 
   final User user;
+}
+
+@MappableClass()
+class SignedOutState extends AuthState with SignedOutStateMappable {
+  const SignedOutState();
 }
 
 @MappableClass()

@@ -1,5 +1,6 @@
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
+import 'package:buzzup/core/models/token.dart';
 import 'package:buzzup/core/models/user.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
@@ -170,6 +171,33 @@ class AuthRepoImpl implements AuthRepo {
       final result = await _remoteDatasrc.checkIfUsernameExists(username);
 
       return Right(result);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<Token> refreshToken() async {
+    try {
+      final result = await _remoteDatasrc.refreshToken();
+
+      await _localDatasrc.setTokens(
+        token: result.token,
+        refreshToken: result.refreshToken,
+      );
+      return Right(result);
+    } on ApiException catch (e) {
+      await _localDatasrc.deleteTokens();
+      return Left(ApiFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<void> signOut() async {
+    try {
+      await _localDatasrc.deleteTokens();
+      await _remoteDatasrc.signOut();
+      return const Right(null);
     } on ApiException catch (e) {
       return Left(ApiFailure.fromException(e));
     }

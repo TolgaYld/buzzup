@@ -11,4 +11,22 @@ query Query(\$username: String!) {
 
 }
 ''';
+
+  static const String signOut = '''
+query Query {
+  signOut {
+   _id, 
+  }
+}
+''';
+
+  static const String refreshToken = '''
+query Query {
+  refreshToken {
+    token
+    refreshToken
+
+  }
+}
+''';
 }

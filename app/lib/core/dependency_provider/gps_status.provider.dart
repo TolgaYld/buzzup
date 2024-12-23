@@ -1,5 +1,3 @@
-import 'package:buzzup/src/application/gps_status/notifier/gps_status.notifier.dart';
-import 'package:buzzup/src/application/gps_status/workflow/state/gps_status.state.dart';
 import 'package:buzzup/src/data/datasources/gps_status/gps_status_local_datasrc.dart';
 import 'package:buzzup/src/data/repositories/gps_status/gps_status_repo_impl.dart';
 import 'package:buzzup/src/domain/repositories/gps_status/gps_status_repo.dart';
@@ -31,15 +29,3 @@ final watchGpsStatusUsecaseProvider = Provider<WatchGpsStatusUsecase>((ref) {
 final getGpsStatusUsecaseProvider = Provider<GetGpsStatusUsecase>((ref) {
   return GetGpsStatusUsecase(ref.read(gpsStatusRepoProvider));
 });
-
-// Notifier provider
-final gpsStatusNotifierProvider = StateNotifierProvider<GpsStatusNotifier, GpsStatusState>((ref) {
-  return GpsStatusNotifier(
-    watchGpsStatusUsecase: ref.read(watchGpsStatusUsecaseProvider),
-    getGpsStatusUsecase: ref.read(getGpsStatusUsecaseProvider),
-  );
-});
-
-final gpsStatusInitProvider = FutureProvider<void>(
-  (ref) async => await ref.read(gpsStatusNotifierProvider.notifier).updateLocationStatus(),
-);

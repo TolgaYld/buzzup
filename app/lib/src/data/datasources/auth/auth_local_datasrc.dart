@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 abstract interface class AuthLocalDatasrc {
   Future<void> setTokens({required String token, required String refreshToken});
+  Future<void> deleteTokens();
 }
 
 class AuthLocalDatasrcImpl implements AuthLocalDatasrc {
@@ -25,6 +26,16 @@ class AuthLocalDatasrcImpl implements AuthLocalDatasrc {
         key: kCachedRefreshTokenKey,
         value: refreshToken,
       );
+    } catch (e) {
+      throw CacheException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<void> deleteTokens() async {
+    try {
+      await _secureStorage.delete(key: kCachedTokenKey);
+      await _secureStorage.delete(key: kCachedRefreshTokenKey);
     } catch (e) {
       throw CacheException(message: e.toString());
     }

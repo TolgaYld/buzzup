@@ -3,7 +3,7 @@ import 'package:buzzup/core/models/user.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth_repo.dart';
-import 'package:buzzup/src/domain/usecases/auth/sign_up_usecase.dart';
+import 'package:buzzup/src/domain/usecases/auth/sign_up.usecase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

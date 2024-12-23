@@ -39,6 +39,10 @@ abstract interface class AuthRemoteDatasrc {
   Future<bool> checkIfEmailExists(String email);
 
   Future<bool> checkIfUsernameExists(String username);
+
+  Future<void> signOut();
+
+  Future<Token> refreshToken();
 }
 
 class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
@@ -326,6 +330,60 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
             message: 'An error occurred',
           );
         }
+      }
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw ApiException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<Token> refreshToken() async {
+    try {
+      final response = await _client.query(
+        QueryOptions(
+          document: gql(GqlQuerys.refreshToken),
+        ),
+      );
+
+      if (response.data case final d? when response.hasException == false) {
+        return TokenMapper.fromMap(d['refreshToken']);
+      } else {
+        if (response.exception case final exc?) {
+          print(exc.graphqlErrors.first.message);
+          throw ApiException(
+            message: exc.graphqlErrors.first.message,
+          );
+        } else {
+          throw ApiException(
+            message: 'An error occurred',
+          );
+        }
+      }
+    } on ApiException {
+      rethrow;
+    } catch (e) {
+      throw ApiException(message: e.toString());
+    }
+  }
+
+  @override
+  Future<void> signOut() async {
+    try {
+      final response = await _client.query(
+        QueryOptions(
+          document: gql(GqlQuerys.signOut),
+        ),
+      );
+      if (response.exception case final exc?) {
+        throw ApiException(
+          message: exc.graphqlErrors.first.message,
+        );
+      } else {
+        throw ApiException(
+          message: 'An error occurred',
+        );
       }
     } on ApiException {
       rethrow;

@@ -2,7 +2,7 @@ import 'package:buzzup/core/common/widgets/custom_text_form_field_widget.dart';
 import 'package:buzzup/core/common/widgets/loading_indicator.dart';
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
-import 'package:buzzup/src/application/auth/provider/auth.provider.dart';
+import 'package:buzzup/core/common/provider/auth.provider.dart';
 import 'package:buzzup/src/application/auth/provider/auth_mode.provider.dart';
 import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';

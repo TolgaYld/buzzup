@@ -350,6 +350,7 @@ const deleteUserFromDb = async (req, res) => {
 };
 
 const tokenService = async (req, res) => {
+  console.log('tokenService')
   const refresh = req.headers.refresh;
   const authorization = req.headers.authorization;
 
@@ -367,10 +368,19 @@ const tokenService = async (req, res) => {
   }
   return res.status(200).json({
     success: true,
-    tokens: {
-      token: token.generate(findUser, tokenDuration),
-      refreshToken: refreshToken.generate(findUser, refreshTokenDuration),
-    },
+    token: token.generate(findUser, tokenDuration),
+    refreshToken: refreshToken.generate(findUser, refreshTokenDuration),
+  });
+};
+
+const signOut = async (req, res) => {
+
+  const id = req.user._id;
+  const findOneUser = await User.findById(id).exec();
+
+  return res.status(200).json({
+    success: true,
+    data: findOneUser,
   });
 };
 
@@ -511,6 +521,7 @@ module.exports = {
   updateUserPassword,
   deleteUser,
   deleteUserFromDb,
+  signOut,
   tokenService,
   resetPassword,
   verifyEmail,

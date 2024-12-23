@@ -218,6 +218,31 @@ class MockAuthRemoteDatasrc extends _i1.Mock implements _i4.AuthRemoteDatasrc {
         ),
         returnValue: _i5.Future<bool>.value(false),
       ) as _i5.Future<bool>);
+
+  @override
+  _i5.Future<void> signOut() => (super.noSuchMethod(
+        Invocation.method(
+          #signOut,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<_i3.Token> refreshToken() => (super.noSuchMethod(
+        Invocation.method(
+          #refreshToken,
+          [],
+        ),
+        returnValue: _i5.Future<_i3.Token>.value(_FakeToken_1(
+          this,
+          Invocation.method(
+            #refreshToken,
+            [],
+          ),
+        )),
+      ) as _i5.Future<_i3.Token>);
 }
 
 /// A class which mocks [AuthLocalDatasrc].
@@ -241,6 +266,16 @@ class MockAuthLocalDatasrc extends _i1.Mock implements _i6.AuthLocalDatasrc {
             #token: token,
             #refreshToken: refreshToken,
           },
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> deleteTokens() => (super.noSuchMethod(
+        Invocation.method(
+          #deleteTokens,
+          [],
         ),
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),

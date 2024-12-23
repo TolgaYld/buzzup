@@ -67,3 +67,7 @@ class ForgotPasswordEvent extends AuthEvent {
 
   final String email;
 }
+
+class RefreshTokenEvent extends AuthEvent {
+  const RefreshTokenEvent();
+}
