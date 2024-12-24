@@ -9,8 +9,8 @@ sealed class AuthState with AuthStateMappable {
 }
 
 @MappableClass()
-class InitialState extends AuthState with InitialStateMappable {
-  const InitialState();
+class AuthInitialState extends AuthState with AuthInitialStateMappable {
+  const AuthInitialState();
 }
 
 @MappableClass()

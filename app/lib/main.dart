@@ -4,6 +4,7 @@ import 'package:buzzup/core/common/router/router.dart';
 import 'package:buzzup/core/localization/localizations.dart';
 import 'package:buzzup/core/design/theme.dart';
 import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
+import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
 import 'package:buzzup/src/application/theme_mode/provider/theme_mode.provider.dart';
 import 'package:buzzup/src/application/theme_mode/workflow/state/theme_mode.state.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,12 @@ class MyApp extends HookConsumerWidget {
         WidgetsBinding.instance.addObserver(observer);
         Future.microtask(() async {
           await ref.read(gpsStatusNotifierProvider.notifier).updateLocationStatus();
+          final authState = ref.read(authProvider);
           final notifier = ref.read(authProvider.notifier);
 
-          await notifier.event(RefreshTokenEvent());
+          if (authState is AuthInitialState) {
+            await notifier.event(const RefreshTokenEvent());
+          }
         });
 
         return () => WidgetsBinding.instance.removeObserver(observer);

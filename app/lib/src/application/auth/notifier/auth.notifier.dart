@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:buzzup/core/dependency_provider/auth.provider.dart';
-import 'package:buzzup/core/models/token.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/jwt_helper.dart';
 import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
@@ -9,7 +8,7 @@ import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier(this.ref) : super(const InitialState());
+  AuthNotifier(this.ref) : super(const AuthInitialState());
 
   final Ref ref;
   Timer? _tokenTimer;
@@ -33,7 +32,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (expiryDate != null) {
       final duration = expiryDate.difference(DateTime.now().subtract(const Duration(minutes: 3)));
       _tokenTimer = Timer(duration, () async {
-        await _refreshToken();
+        print('Token expired');
+        await _signOut();
       });
     }
   }

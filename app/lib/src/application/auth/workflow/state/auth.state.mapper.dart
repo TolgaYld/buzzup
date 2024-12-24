@@ -13,7 +13,7 @@ class AuthStateMapper extends ClassMapperBase<AuthState> {
   static AuthStateMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = AuthStateMapper._());
-      InitialStateMapper.ensureInitialized();
+      AuthInitialStateMapper.ensureInitialized();
       SignedInStateMapper.ensureInitialized();
       SignedUpStateMapper.ensureInitialized();
       SignedOutStateMapper.ensureInitialized();
@@ -61,102 +61,105 @@ abstract class AuthStateCopyWith<$R, $In extends AuthState, $Out>
   AuthStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
-class InitialStateMapper extends ClassMapperBase<InitialState> {
-  InitialStateMapper._();
+class AuthInitialStateMapper extends ClassMapperBase<AuthInitialState> {
+  AuthInitialStateMapper._();
 
-  static InitialStateMapper? _instance;
-  static InitialStateMapper ensureInitialized() {
+  static AuthInitialStateMapper? _instance;
+  static AuthInitialStateMapper ensureInitialized() {
     if (_instance == null) {
-      MapperContainer.globals.use(_instance = InitialStateMapper._());
+      MapperContainer.globals.use(_instance = AuthInitialStateMapper._());
       AuthStateMapper.ensureInitialized();
     }
     return _instance!;
   }
 
   @override
-  final String id = 'InitialState';
+  final String id = 'AuthInitialState';
 
   @override
-  final MappableFields<InitialState> fields = const {};
+  final MappableFields<AuthInitialState> fields = const {};
 
-  static InitialState _instantiate(DecodingData data) {
-    return InitialState();
+  static AuthInitialState _instantiate(DecodingData data) {
+    return AuthInitialState();
   }
 
   @override
   final Function instantiate = _instantiate;
 
-  static InitialState fromMap(Map<String, dynamic> map) {
-    return ensureInitialized().decodeMap<InitialState>(map);
+  static AuthInitialState fromMap(Map<String, dynamic> map) {
+    return ensureInitialized().decodeMap<AuthInitialState>(map);
   }
 
-  static InitialState fromJson(String json) {
-    return ensureInitialized().decodeJson<InitialState>(json);
+  static AuthInitialState fromJson(String json) {
+    return ensureInitialized().decodeJson<AuthInitialState>(json);
   }
 }
 
-mixin InitialStateMappable {
+mixin AuthInitialStateMappable {
   String toJson() {
-    return InitialStateMapper.ensureInitialized()
-        .encodeJson<InitialState>(this as InitialState);
+    return AuthInitialStateMapper.ensureInitialized()
+        .encodeJson<AuthInitialState>(this as AuthInitialState);
   }
 
   Map<String, dynamic> toMap() {
-    return InitialStateMapper.ensureInitialized()
-        .encodeMap<InitialState>(this as InitialState);
+    return AuthInitialStateMapper.ensureInitialized()
+        .encodeMap<AuthInitialState>(this as AuthInitialState);
   }
 
-  InitialStateCopyWith<InitialState, InitialState, InitialState> get copyWith =>
-      _InitialStateCopyWithImpl(this as InitialState, $identity, $identity);
+  AuthInitialStateCopyWith<AuthInitialState, AuthInitialState, AuthInitialState>
+      get copyWith => _AuthInitialStateCopyWithImpl(
+          this as AuthInitialState, $identity, $identity);
   @override
   String toString() {
-    return InitialStateMapper.ensureInitialized()
-        .stringifyValue(this as InitialState);
+    return AuthInitialStateMapper.ensureInitialized()
+        .stringifyValue(this as AuthInitialState);
   }
 
   @override
   bool operator ==(Object other) {
-    return InitialStateMapper.ensureInitialized()
-        .equalsValue(this as InitialState, other);
+    return AuthInitialStateMapper.ensureInitialized()
+        .equalsValue(this as AuthInitialState, other);
   }
 
   @override
   int get hashCode {
-    return InitialStateMapper.ensureInitialized()
-        .hashValue(this as InitialState);
+    return AuthInitialStateMapper.ensureInitialized()
+        .hashValue(this as AuthInitialState);
   }
 }
 
-extension InitialStateValueCopy<$R, $Out>
-    on ObjectCopyWith<$R, InitialState, $Out> {
-  InitialStateCopyWith<$R, InitialState, $Out> get $asInitialState =>
-      $base.as((v, t, t2) => _InitialStateCopyWithImpl(v, t, t2));
+extension AuthInitialStateValueCopy<$R, $Out>
+    on ObjectCopyWith<$R, AuthInitialState, $Out> {
+  AuthInitialStateCopyWith<$R, AuthInitialState, $Out>
+      get $asAuthInitialState =>
+          $base.as((v, t, t2) => _AuthInitialStateCopyWithImpl(v, t, t2));
 }
 
-abstract class InitialStateCopyWith<$R, $In extends InitialState, $Out>
+abstract class AuthInitialStateCopyWith<$R, $In extends AuthInitialState, $Out>
     implements AuthStateCopyWith<$R, $In, $Out> {
   @override
   $R call();
-  InitialStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
+  AuthInitialStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
+      Then<$Out2, $R2> t);
 }
 
-class _InitialStateCopyWithImpl<$R, $Out>
-    extends ClassCopyWithBase<$R, InitialState, $Out>
-    implements InitialStateCopyWith<$R, InitialState, $Out> {
-  _InitialStateCopyWithImpl(super.value, super.then, super.then2);
+class _AuthInitialStateCopyWithImpl<$R, $Out>
+    extends ClassCopyWithBase<$R, AuthInitialState, $Out>
+    implements AuthInitialStateCopyWith<$R, AuthInitialState, $Out> {
+  _AuthInitialStateCopyWithImpl(super.value, super.then, super.then2);
 
   @override
-  late final ClassMapperBase<InitialState> $mapper =
-      InitialStateMapper.ensureInitialized();
+  late final ClassMapperBase<AuthInitialState> $mapper =
+      AuthInitialStateMapper.ensureInitialized();
   @override
   $R call() => $apply(FieldCopyWithData({}));
   @override
-  InitialState $make(CopyWithData data) => InitialState();
+  AuthInitialState $make(CopyWithData data) => AuthInitialState();
 
   @override
-  InitialStateCopyWith<$R2, InitialState, $Out2> $chain<$R2, $Out2>(
+  AuthInitialStateCopyWith<$R2, AuthInitialState, $Out2> $chain<$R2, $Out2>(
           Then<$Out2, $R2> t) =>
-      _InitialStateCopyWithImpl($value, $cast, t);
+      _AuthInitialStateCopyWithImpl($value, $cast, t);
 }
 
 class SignedInStateMapper extends ClassMapperBase<SignedInState> {

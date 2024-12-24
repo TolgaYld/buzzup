@@ -150,6 +150,7 @@ class AppTheme {
     scaffoldBackgroundColor: _lightBackgroundColor,
     appBarTheme: const AppBarTheme(
       color: _appBarColorLight,
+      titleTextStyle: TextStyle(color: _lightOnPrimaryColor),
       iconTheme: IconThemeData(color: _iconColor),
     ),
     bottomAppBarTheme: const BottomAppBarTheme(color: _appBarColorLight),
