@@ -14,10 +14,20 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+enum RoutePath {
+  root(path: '/'),
+  signIn(path: 'signIn'),
+  home(path: 'home'),
+  locationServiceDisabled(path: "location_service_disabled");
+
+  const RoutePath({required this.path});
+  final String path;
+}
+
 final navigationManagerProvider = Provider<GoRouter>((ref) {
   final routerNotifier = RouterNotifier(ref);
   return GoRouter(
-    initialLocation: '/loading',
+    initialLocation: RoutePath.root.path,
     debugLogDiagnostics: Environment.type == EnvironmentType.test,
     refreshListenable: routerNotifier,
     routes: routerNotifier._routes,
@@ -36,37 +46,40 @@ class RouterNotifier extends ChangeNotifier {
     final authState = _ref.read(authProvider);
     final gpsStatusState = _ref.read(gpsStatusNotifierProvider);
     if (gpsStatusState.permission == LocationPermission.deniedForever || gpsStatusState.permission == LocationPermission.unableToDetermine) {
-      return LocationServiceDisabledPage.routeName;
+      return "${RoutePath.root.path}${RoutePath.locationServiceDisabled.path}";
     }
 
     if (authState is SignedInState) {
-      return '/home';
+      return "${RoutePath.root.path}${RoutePath.home.path}";
     }
     if (authState is SignedOutState) {
-      return '/';
+      return "${RoutePath.root.path}${RoutePath.signIn.path}";
     }
     return null;
   }
 
   List<GoRoute> get _routes => [
         GoRoute(
-          path: "/loading",
+          path: RoutePath.root.path,
+          name: RoutePath.root.name,
           builder: (context, state) => SplashPage(),
-        ),
-        GoRoute(
-          path: '/',
-          builder: (context, state) => AuthPage(),
-        ),
-        GoRoute(
-          path: '/home',
-          pageBuilder: (context, state) => CustomTransitionPage(
-            child: HomePage(),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
-          ),
-        ),
-        GoRoute(
-          path: LocationServiceDisabledPage.routeName,
-          builder: (context, state) => const LocationServiceDisabledPage(),
+          routes: [
+            GoRoute(
+              path: RoutePath.signIn.path,
+              builder: (context, state) => AuthPage(),
+            ),
+            GoRoute(
+              path: RoutePath.home.path,
+              pageBuilder: (context, state) => CustomTransitionPage(
+                child: HomePage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) => FadeTransition(opacity: animation, child: child),
+              ),
+            ),
+            GoRoute(
+              path: RoutePath.locationServiceDisabled.path,
+              builder: (context, state) => const LocationServiceDisabledPage(),
+            ),
+          ],
         ),
       ];
 }
