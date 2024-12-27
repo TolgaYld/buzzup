@@ -46,6 +46,10 @@ class AuthWithProviderEvent extends AuthEvent {
   final List<double> coordinates;
 }
 
+class SignOutEvent extends AuthEvent {
+  const SignOutEvent();
+}
+
 class UpdatePasswordEvent extends AuthEvent {
   const UpdatePasswordEvent({
     required this.password,

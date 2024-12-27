@@ -344,14 +344,16 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
       final response = await _client.query(
         QueryOptions(
           document: gql(GqlQuerys.refreshToken),
+          fetchPolicy: FetchPolicy.noCache,
         ),
       );
+
+      print(response.data);
 
       if (response.data case final d? when response.hasException == false) {
         return TokenMapper.fromMap(d['refreshToken']);
       } else {
         if (response.exception case final exc?) {
-          print(exc.graphqlErrors.first.message);
           throw ApiException(
             message: exc.graphqlErrors.first.message,
           );

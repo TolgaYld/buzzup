@@ -1,4 +1,5 @@
 import 'package:buzzup/core/common/gen/assets.gen.dart';
+import 'package:buzzup/core/common/router/router.dart';
 import 'package:buzzup/core/common/widgets/animated_size_switcher.dart';
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
@@ -15,6 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthPage extends HookConsumerWidget {
@@ -35,10 +37,9 @@ class AuthPage extends HookConsumerWidget {
 
     ref.listen<AuthState>(authProvider, (previous, next) {
       if (next is SignedInState) {
-        // Handle SignedInState
-        print("SignedInState");
+        context.go(RoutePath.home.path);
       } else if (next is SignedUpState) {
-        print("SignedUpState");
+        context.go(RoutePath.home.path);
       } else if (next is ErrorAuthState) {
         CoreUtils.showSnackBar(context, next.message);
       }

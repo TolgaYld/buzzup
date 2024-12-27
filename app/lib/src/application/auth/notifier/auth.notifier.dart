@@ -19,6 +19,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
       SignInEvent() => await _signInHandler(event),
       SignUpEvent() => await _signUpHandler(event),
       AuthWithProviderEvent() => await _authWithProviderHandler(event),
+      SignOutEvent() => await _signOut(),
       UpdateUserEvent() => await _updateUserHandler(event),
       UpdatePasswordEvent() => await _updatePasswordHandler(event),
       ForgotPasswordEvent() => await _forgotPasswordHandler(event),
@@ -31,10 +32,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     final expiryDate = JwtHelper.getExpiryDate(token);
     if (expiryDate != null) {
       final duration = expiryDate.difference(DateTime.now().subtract(const Duration(minutes: 3)));
-      _tokenTimer = Timer(duration, () async {
-        print('Token expired');
-        await _signOut();
-      });
+      _tokenTimer = Timer(duration, () async => await _signOut());
     }
   }
 
@@ -44,6 +42,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (getToken != null && getRefreshToken != null) {
       final refreshTokenUseCase = await ref.read(refreshTokenUsecaseProvider.future);
       final result = await refreshTokenUseCase();
+      print(result);
       if (result case Right(value: final newTokens)) {
         _startTokenTimer(newTokens.token);
         state = SignedInState(null);
