@@ -1,6 +1,6 @@
 import 'package:buzzup/core/utils/typedefs.dart';
 
-abstract class ThemeModeRepo {
+abstract interface class ThemeModeRepo {
   const ThemeModeRepo();
 
   ResultFuture<bool> getThemeMode();
