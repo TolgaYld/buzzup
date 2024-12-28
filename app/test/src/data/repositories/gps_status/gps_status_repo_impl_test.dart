@@ -3,7 +3,7 @@ import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/src/data/datasources/gps_status/gps_status_local_datasrc.dart';
 import 'package:buzzup/src/data/repositories/gps_status/gps_status_repo_impl.dart';
-import 'package:buzzup/src/domain/repositories/gps_status/gps_status_repo.dart';
+import 'package:buzzup/src/domain/repositories/gps_status/gps_status.repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mockito/annotations.dart';
@@ -23,8 +23,7 @@ void main() {
   group('watchGpsStatus', () {
     const tGpsStatus = ServiceStatus.enabled;
     test('should emit a [ServiceStatus] when stream is successful', () {
-      when(datasrc.getGeneralServiceStatusStream())
-          .thenAnswer((_) => Stream.fromIterable([tGpsStatus]));
+      when(datasrc.getGeneralServiceStatusStream()).thenAnswer((_) => Stream.fromIterable([tGpsStatus]));
 
       final expected = [const Right<dynamic, ServiceStatus>(tGpsStatus)];
 
@@ -37,8 +36,7 @@ void main() {
     });
 
     test('should emit a [GpsStatusFailure] when stream is unsuccessful', () {
-      when(datasrc.getGeneralServiceStatusStream())
-          .thenAnswer((_) => Stream.error(Error()));
+      when(datasrc.getGeneralServiceStatusStream()).thenAnswer((_) => Stream.error(Error()));
 
       final stream = repo.watchGpsStatus();
 
@@ -70,8 +68,7 @@ void main() {
     const tGpsStatus = LocationPermission.always;
 
     final tException = GpsException(message: "Can't get LocationPermissions");
-    test('should return [LocationPermission] when call is successful',
-        () async {
+    test('should return [LocationPermission] when call is successful', () async {
       when(datasrc.getServiceStatus()).thenAnswer((_) async => tGpsStatus);
 
       final result = await repo.getGpsStatus();
@@ -82,8 +79,7 @@ void main() {
       verifyNoMoreInteractions(datasrc);
     });
 
-    test('should return a [GpsStatusFailure] when call is unsuccessful',
-        () async {
+    test('should return a [GpsStatusFailure] when call is unsuccessful', () async {
       // Simuliere einen Fehler im Stream
       when(datasrc.getServiceStatus()).thenThrow(tException);
 

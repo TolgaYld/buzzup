@@ -361,7 +361,6 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
       final response = await _client.query(
         QueryOptions(
           document: gql(GqlQuerys.refreshToken),
-          fetchPolicy: FetchPolicy.noCache,
         ),
       );
 

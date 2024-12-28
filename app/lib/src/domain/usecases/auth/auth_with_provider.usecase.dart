@@ -1,28 +1,16 @@
 import 'package:buzzup/core/models/user.dart';
 import 'package:buzzup/core/usecases/usecases.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
-import 'package:buzzup/src/domain/repositories/auth/auth_repo.dart';
+import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
 
-class AuthWithProviderUsecase extends UsecaseWithParams<
-    User,
-    ({
-      String provider,
-      String email,
-      String providerId,
-      List<double> coordinates
-    })> {
+class AuthWithProviderUsecase extends UsecaseWithParams<User, ({String provider, String email, String providerId, List<double> coordinates})> {
   const AuthWithProviderUsecase(this._repo);
 
   final AuthRepo _repo;
 
   @override
   ResultFuture<User> call(
-    ({
-      String provider,
-      String email,
-      String providerId,
-      List<double> coordinates
-    }) params,
+    ({String provider, String email, String providerId, List<double> coordinates}) params,
   ) async =>
       await _repo.authWithProvider(
         provider: params.provider,

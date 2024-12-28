@@ -1,7 +1,7 @@
 import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode_repo.dart';
+import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode.repo.dart';
 import 'package:buzzup/src/domain/usecases/theme_mode/get_theme_mode_usecase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';

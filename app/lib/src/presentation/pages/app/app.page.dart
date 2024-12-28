@@ -37,14 +37,14 @@ class AppPage extends HookConsumerWidget {
               children: [
                 Icon(
                   icon,
-                  color: navigationShell.currentIndex == index ? theme.colorScheme.secondary : Colors.white,
+                  color: navigationShell.currentIndex == index ? theme.colorScheme.primary : Colors.grey,
                 ),
                 if (label != null)
                   Text(
                     label,
                     style: TextStyle(
                       fontSize: 12,
-                      color: navigationShell.currentIndex == index ? theme.colorScheme.secondary : Colors.white,
+                      color: navigationShell.currentIndex == index ? theme.colorScheme.primary : Colors.grey,
                     ),
                   ),
               ],
@@ -56,19 +56,6 @@ class AppPage extends HookConsumerWidget {
 
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(
-        title: const Text('Home Page'),
-        actions: [
-          Transform.rotate(
-            angle: 0.3,
-            child: IconButton(
-              icon: const Icon(Icons.notifications),
-              onPressed: () {},
-            ),
-          ),
-          IconButton(onPressed: () async => await notifier.event(SignOutEvent()), icon: Icon(Icons.logout)),
-        ],
-      ),
       body: navigationShell,
       floatingActionButton: FloatingActionButton(
         backgroundColor: theme.colorScheme.primary,
@@ -78,7 +65,7 @@ class AppPage extends HookConsumerWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         padding: EdgeInsets.zero,
-        color: theme.colorScheme.primary,
+        color: Colors.white,
         shadowColor: Colors.black,
         elevation: 3,
         height: kBottomNavigationBarHeight,

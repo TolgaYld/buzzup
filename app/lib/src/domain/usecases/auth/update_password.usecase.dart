@@ -1,9 +1,8 @@
 import 'package:buzzup/core/usecases/usecases.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
-import 'package:buzzup/src/domain/repositories/auth/auth_repo.dart';
+import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
 
-class UpdatePasswordUsecase extends UsecaseWithParams<void,
-    ({String password, String repeatPassword})> {
+class UpdatePasswordUsecase extends UsecaseWithParams<void, ({String password, String repeatPassword})> {
   const UpdatePasswordUsecase(this._repo);
 
   final AuthRepo _repo;
@@ -16,6 +15,5 @@ class UpdatePasswordUsecase extends UsecaseWithParams<void,
         repeatPassword: params.repeatPassword,
       );
 
-  static ({String password, String repeatPassword}) get emptyParams =>
-      (password: "", repeatPassword: "");
+  static ({String password, String repeatPassword}) get emptyParams => (password: "", repeatPassword: "");
 }

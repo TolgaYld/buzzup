@@ -2,7 +2,7 @@ import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:buzzup/src/domain/repositories/gps_status/gps_status_repo.dart';
+import 'package:buzzup/src/domain/repositories/gps_status/gps_status.repo.dart';
 import 'package:buzzup/src/domain/usecases/gps_status/get_gps_status_usecase.dart';
 import 'package:mockito/mockito.dart';
 
@@ -18,8 +18,7 @@ void main() {
   });
 
   group('GetGpsStatusUsecase', () {
-    test('should return a [LocationPermission] enum, whenn call is successful',
-        () async {
+    test('should return a [LocationPermission] enum, whenn call is successful', () async {
       when(repo.getGpsStatus()).thenAnswer(
         (_) async => const Right(LocationPermission.whileInUse),
       );
@@ -34,8 +33,7 @@ void main() {
       verify(repo.getGpsStatus()).called(1);
       verifyNoMoreInteractions(repo);
     });
-    test('should return a [GpsStatusFailure], whenn call is unsuccessful',
-        () async {
+    test('should return a [GpsStatusFailure], whenn call is unsuccessful', () async {
       final tFailure = GpsFailure(
         message: "Can't get LocationPermission",
       );

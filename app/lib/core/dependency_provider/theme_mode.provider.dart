@@ -1,6 +1,6 @@
 import 'package:buzzup/src/data/datasources/theme_mode/theme_mode_local_datasrc.dart';
 import 'package:buzzup/src/data/repositories/theme_mode/theme_mode_repo_impl.dart';
-import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode_repo.dart';
+import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode.repo.dart';
 import 'package:buzzup/src/domain/usecases/theme_mode/get_theme_mode_usecase.dart';
 import 'package:buzzup/src/domain/usecases/theme_mode/get_use_system_theme_usecase.dart';
 import 'package:buzzup/src/domain/usecases/theme_mode/set_theme_mode_usecase.dart';
@@ -31,8 +31,7 @@ final getThemeModeUsecaseProvider = Provider<GetThemeModeUsecase>((ref) {
   return GetThemeModeUsecase(repo);
 });
 
-final getUseSystemThemeUsecaseProvider =
-    Provider<GetUseSystemThemeUsecase>((ref) {
+final getUseSystemThemeUsecaseProvider = Provider<GetUseSystemThemeUsecase>((ref) {
   final repo = ref.read(themeModeRepoProvider);
   return GetUseSystemThemeUsecase(repo);
 });
@@ -42,8 +41,7 @@ final setThemeModeUsecaseProvider = Provider<SetThemeModeUsecase>((ref) {
   return SetThemeModeUsecase(repo);
 });
 
-final setUseSystemThemeUsecaseProvider =
-    Provider<SetUseSystemThemeUsecase>((ref) {
+final setUseSystemThemeUsecaseProvider = Provider<SetUseSystemThemeUsecase>((ref) {
   final repo = ref.read(themeModeRepoProvider);
   return SetUseSystemThemeUsecase(repo);
 });

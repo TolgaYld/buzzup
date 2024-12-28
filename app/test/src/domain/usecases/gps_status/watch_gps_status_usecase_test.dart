@@ -2,7 +2,7 @@ import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:buzzup/src/domain/repositories/gps_status/gps_status_repo.dart';
+import 'package:buzzup/src/domain/repositories/gps_status/gps_status.repo.dart';
 import 'package:buzzup/src/domain/usecases/gps_status/watch_gps_status_usecase.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -22,8 +22,7 @@ void main() {
   group('WatchGpsStatusUsecase', () {
     const tGpsStatus = ServiceStatus.enabled;
     test('should emit a [GpsStatus] if call is successful', () async {
-      when(repo.watchGpsStatus())
-          .thenAnswer((_) => Stream.fromIterable([const Right(tGpsStatus)]));
+      when(repo.watchGpsStatus()).thenAnswer((_) => Stream.fromIterable([const Right(tGpsStatus)]));
 
       final result = usecase();
 

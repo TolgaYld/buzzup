@@ -9,7 +9,7 @@ import 'package:buzzup/core/errors/failure.dart' as _i5;
 import 'package:buzzup/core/models/token.dart' as _i8;
 import 'package:buzzup/core/models/user.dart' as _i6;
 import 'package:buzzup/core/utils/either.dart' as _i4;
-import 'package:buzzup/src/domain/repositories/auth/auth_repo.dart' as _i2;
+import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
 
@@ -55,8 +55,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
             #coordinates: coordinates,
           },
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.User>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, _i6.User>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.User>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, _i6.User>>(
           this,
           Invocation.method(
             #signUp,
@@ -90,8 +89,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
             #coordinates: coordinates,
           },
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.User>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, _i6.User>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.User>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, _i6.User>>(
           this,
           Invocation.method(
             #authWithProvider,
@@ -122,8 +120,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
             #coordinates: coordinates,
           },
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.User>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, _i6.User>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.User>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, _i6.User>>(
           this,
           Invocation.method(
             #signIn,
@@ -138,14 +135,12 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, _i6.User>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> updateUser(_i6.User? updateUser) =>
-      (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, void>> updateUser(_i6.User? updateUser) => (super.noSuchMethod(
         Invocation.method(
           #updateUser,
           [updateUser],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #updateUser,
@@ -168,8 +163,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
             #repeatPassword: repeatPassword,
           },
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #updatePassword,
@@ -183,14 +177,12 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> forgotPassword(String? email) =>
-      (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, void>> forgotPassword(String? email) => (super.noSuchMethod(
         Invocation.method(
           #forgotPassword,
           [email],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #forgotPassword,
@@ -200,15 +192,12 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, bool>> checkIfUsernameExists(
-          String? username) =>
-      (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, bool>> checkIfUsernameExists(String? username) => (super.noSuchMethod(
         Invocation.method(
           #checkIfUsernameExists,
           [username],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, bool>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, bool>>(
           this,
           Invocation.method(
             #checkIfUsernameExists,
@@ -218,14 +207,12 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, bool>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, bool>> checkIfEmailExists(String? email) =>
-      (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, bool>> checkIfEmailExists(String? email) => (super.noSuchMethod(
         Invocation.method(
           #checkIfEmailExists,
           [email],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, bool>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, bool>>(
           this,
           Invocation.method(
             #checkIfEmailExists,
@@ -240,8 +227,7 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
           #signOut,
           [],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, void>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #signOut,
@@ -251,14 +237,12 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, _i8.Token>> refreshToken() =>
-      (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, _i8.Token>> refreshToken() => (super.noSuchMethod(
         Invocation.method(
           #refreshToken,
           [],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i8.Token>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, _i8.Token>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i8.Token>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, _i8.Token>>(
           this,
           Invocation.method(
             #refreshToken,

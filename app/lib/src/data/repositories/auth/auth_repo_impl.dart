@@ -6,7 +6,7 @@ import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/data/datasources/auth/auth_local_datasrc.dart';
 import 'package:buzzup/src/data/datasources/auth/auth_remote_datasrc.dart';
-import 'package:buzzup/src/domain/repositories/auth/auth_repo.dart';
+import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
 
 class AuthRepoImpl implements AuthRepo {
   const AuthRepoImpl({
