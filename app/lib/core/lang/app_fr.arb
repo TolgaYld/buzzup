@@ -38,5 +38,7 @@
     "or": "Ou",
     "login_via_google": "Connexion via Google",
     "login_via_facebook": "Connexion via Facebook",
-    "login_via_apple": "Connexion via Apple"
+    "login_via_apple": "Connexion via Apple",
+    "login_failed": "Échec de la connexion",
+    "oopsMessage": "Oups ! Ça n’a pas marché. Essaie plus tard."
 }

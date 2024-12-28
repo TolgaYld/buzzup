@@ -38,5 +38,7 @@
     "or": "Veya",
     "login_via_google": "Google ile giriş yap",
     "login_via_facebook": "Facebook ile giriş yap",
-    "login_via_apple": "Apple ile giriş yap"
+    "login_via_apple": "Apple ile giriş yap",
+    "login_failed": "Giriş başarısız",
+    "oopsMessage": "Tüh, olmadı yaa. Daha sonra tekrar dene."
 }

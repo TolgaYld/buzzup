@@ -18,9 +18,40 @@ class AppPage extends HookConsumerWidget {
     final theme = useTheme();
     final notifier = ref.read(authProvider.notifier);
 
-    void _onTabSelected(int index) {
-      print('Tab selected: $index');
-      navigationShell.goBranch(index, initialLocation: index == navigationShell.currentIndex);
+    void onTabSelected(int index) => navigationShell.goBranch(index, initialLocation: index == navigationShell.currentIndex);
+
+    Widget navbarItem({
+      required IconData icon,
+      required String? label,
+      required int index,
+    }) {
+      return Expanded(
+        child: InkWell(
+          splashFactory: NoSplash.splashFactory,
+          highlightColor: Colors.transparent,
+          onTap: () => onTabSelected(index),
+          child: Container(
+            padding: const EdgeInsets.only(top: Spacers.s),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  color: navigationShell.currentIndex == index ? theme.colorScheme.secondary : Colors.white,
+                ),
+                if (label != null)
+                  Text(
+                    label,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: navigationShell.currentIndex == index ? theme.colorScheme.secondary : Colors.white,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
     }
 
     return Scaffold(
@@ -46,10 +77,11 @@ class AppPage extends HookConsumerWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
-        color: theme.colorScheme.onPrimary,
+        padding: EdgeInsets.zero,
+        color: theme.colorScheme.primary,
         shadowColor: Colors.black,
         elevation: 3,
-        height: kToolbarHeight,
+        height: kBottomNavigationBarHeight,
         shape: AutomaticNotchedShape(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
@@ -63,48 +95,28 @@ class AppPage extends HookConsumerWidget {
         ),
         notchMargin: 3,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
-            Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                height: VSpace.x2l().height,
-                child: IconButton(
-                  icon: Icon(
-                    Icons.home,
-                    color: navigationShell.currentIndex == 0 ? theme.colorScheme.primary : Colors.grey,
-                  ),
-                  onPressed: () => _onTabSelected(0),
-                ),
-              ),
+            navbarItem(
+              icon: Icons.home_rounded,
+              label: "Home",
+              index: 0,
             ),
-            Expanded(
-              child: IconButton(
-                icon: Icon(
-                  Icons.apps_rounded,
-                  color: navigationShell.currentIndex == 1 ? theme.colorScheme.primary : Colors.grey,
-                ),
-                onPressed: () => _onTabSelected(1),
-              ),
+            navbarItem(
+              icon: Icons.apps_rounded,
+              label: "Channels",
+              index: 1,
             ),
-            SizedBox(width: 48), // Platz für das Floating Action Button
-            Expanded(
-              child: IconButton(
-                icon: Icon(
-                  Icons.forum_rounded,
-                  color: navigationShell.currentIndex == 2 ? theme.colorScheme.primary : Colors.grey,
-                ),
-                onPressed: () => _onTabSelected(2),
-              ),
+            HSpace.x2l(),
+            navbarItem(
+              icon: Icons.forum_rounded,
+              label: "Chats",
+              index: 2,
             ),
-            Expanded(
-              child: IconButton(
-                icon: Icon(
-                  Icons.person_rounded,
-                  color: navigationShell.currentIndex == 3 ? theme.colorScheme.primary : Colors.grey,
-                ),
-                onPressed: () => _onTabSelected(3),
-              ),
+            navbarItem(
+              icon: Icons.person_rounded,
+              label: "Profile",
+              index: 3,
             ),
           ],
         ),

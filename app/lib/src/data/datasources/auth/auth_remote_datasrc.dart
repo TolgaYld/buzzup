@@ -85,7 +85,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -112,7 +115,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -141,19 +147,18 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
         return user.copyWith(tokens: tokens);
       } else {
         if (response.exception case final exc?) {
-          throw ApiException(
-            message: exc.graphqlErrors.first.message,
-          );
+          throw ApiException(message: exc.graphqlErrors.first.message);
         } else {
-          throw ApiException(
-            message: 'An error occurred',
-          );
+          throw ApiException(message: 'An error occurred');
         }
       }
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -235,7 +240,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -270,7 +278,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on GpsException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -302,7 +313,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -334,7 +348,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -347,8 +364,6 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
           fetchPolicy: FetchPolicy.noCache,
         ),
       );
-
-      print(response.data);
 
       if (response.data case final d? when response.hasException == false) {
         return TokenMapper.fromMap(d['refreshToken']);
@@ -366,7 +381,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 
@@ -390,7 +408,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     } on ApiException {
       rethrow;
     } catch (e) {
-      throw ApiException(message: e.toString());
+      throw ApiException(
+        message: e.toString(),
+        isUnknownException: true,
+      );
     }
   }
 }

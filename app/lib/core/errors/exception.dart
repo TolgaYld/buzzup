@@ -6,10 +6,12 @@ part 'exception.mapper.dart';
 class ApiException with ApiExceptionMappable implements Exception {
   ApiException({
     required this.message,
+    this.isUnknownException = false,
     this.statusCode,
   });
 
   final String message;
+  final bool isUnknownException;
   final int? statusCode;
 }
 

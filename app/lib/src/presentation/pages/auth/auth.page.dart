@@ -41,7 +41,17 @@ class AuthPage extends HookConsumerWidget {
       } else if (next is SignedUpState) {
         context.go(RoutePath.home.path);
       } else if (next is ErrorAuthState) {
-        CoreUtils.showSnackBar(context, next.message);
+        if (next.isUnknownException == false) {
+          CoreUtils.showSnackBar(
+            context,
+            next.message,
+          );
+        } else {
+          CoreUtils.showSnackBar(
+            context,
+            l10n.oopsMessage,
+          );
+        }
       }
     });
 
@@ -98,8 +108,8 @@ class AuthPage extends HookConsumerWidget {
                                   value: authModeState is SignUpAuthModeState,
                                   activeColor: theme.colorScheme.primary,
                                   inactiveThumbColor: theme.colorScheme.primary,
-                                  inactiveTrackColor: theme.colorScheme.primary.withOpacity(0.5),
-                                  activeTrackColor: theme.colorScheme.primary.withOpacity(0.5),
+                                  inactiveTrackColor: theme.colorScheme.primary.withValues(alpha: 0.5),
+                                  activeTrackColor: theme.colorScheme.primary.withValues(alpha: 0.5),
                                   trackOutlineColor: WidgetStatePropertyAll(Colors.transparent),
                                   thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
                                     if (states.contains(WidgetState.selected)) {

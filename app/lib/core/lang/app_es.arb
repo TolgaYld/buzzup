@@ -38,5 +38,7 @@
     "or": "O",
     "login_via_google": "Iniciar sesión con Google",
     "login_via_facebook": "Iniciar sesión con Facebook",
-    "login_via_apple": "Iniciar sesión con Apple"
+    "login_via_apple": "Iniciar sesión con Apple",
+    "login_failed": "Error al iniciar sesión",
+    "oopsMessage": "¡Uy! No ha salido bien. Inténtalo más tarde."
 }

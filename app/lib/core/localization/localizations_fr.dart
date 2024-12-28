@@ -127,4 +127,10 @@ class L10nFr extends L10n {
 
   @override
   String get login_via_apple => 'Connexion via Apple';
+
+  @override
+  String get login_failed => 'Échec de la connexion';
+
+  @override
+  String get oopsMessage => 'Oups ! Ça n’a pas marché. Essaie plus tard.';
 }

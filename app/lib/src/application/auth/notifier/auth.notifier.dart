@@ -42,7 +42,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (getToken != null && getRefreshToken != null) {
       final refreshTokenUseCase = await ref.read(refreshTokenUsecaseProvider.future);
       final result = await refreshTokenUseCase();
-      print(result);
+
       if (result case Right(value: final newTokens)) {
         _startTokenTimer(newTokens.token);
         state = SignedInState(null);
@@ -77,7 +77,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
-        state = ErrorAuthState(failure.message);
+        state = ErrorAuthState(
+          message: failure.message,
+          isUnknownException: failure.isUnknownException,
+        );
         break;
       case Right(value: final user):
         state = SignedInState(user);
@@ -100,7 +103,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
-        state = ErrorAuthState(failure.message);
+        state = ErrorAuthState(
+          message: failure.message,
+          isUnknownException: failure.isUnknownException,
+        );
         break;
       case Right(value: final user):
         state = SignedUpState(user);
@@ -122,7 +128,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
-        state = ErrorAuthState(failure.message);
+        state = ErrorAuthState(
+          message: failure.message,
+          isUnknownException: failure.isUnknownException,
+        );
         break;
       case Right(value: final user):
         state = AuthenticatedWithProviderState(user);
@@ -137,7 +146,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
-        state = ErrorAuthState(failure.message);
+        state = ErrorAuthState(
+          message: failure.message,
+          isUnknownException: failure.isUnknownException,
+        );
         break;
       case Right():
         state = const UserUpdatedState();
@@ -157,7 +169,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
-        state = ErrorAuthState(failure.message);
+        state = ErrorAuthState(
+          message: failure.message,
+          isUnknownException: failure.isUnknownException,
+        );
         break;
       case Right():
         state = const PasswordChangedState();
@@ -172,7 +187,10 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
     switch (result) {
       case Left(value: final failure):
-        state = ErrorAuthState(failure.message);
+        state = ErrorAuthState(
+          message: failure.message,
+          isUnknownException: failure.isUnknownException,
+        );
         break;
       case Right():
         state = const PasswordResettedState();

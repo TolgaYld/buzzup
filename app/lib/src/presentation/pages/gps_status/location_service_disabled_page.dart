@@ -27,7 +27,7 @@ class LocationServiceDisabledPage extends HookConsumerWidget {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              theme.colorScheme.onSurface.withOpacity(0.7),
+              theme.colorScheme.onSurface.withValues(alpha: 0.7),
               theme.colorScheme.onSurface,
             ],
             begin: Alignment.topCenter,

@@ -127,4 +127,10 @@ class L10nEn extends L10n {
 
   @override
   String get login_via_apple => 'Login via Apple';
+
+  @override
+  String get login_failed => 'Login failed';
+
+  @override
+  String get oopsMessage => 'Oops, that didn\'t work. Try again later.';
 }

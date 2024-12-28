@@ -127,4 +127,10 @@ class L10nTr extends L10n {
 
   @override
   String get login_via_apple => 'Apple ile giriş yap';
+
+  @override
+  String get login_failed => 'Giriş başarısız';
+
+  @override
+  String get oopsMessage => 'Tüh, olmadı yaa. Daha sonra tekrar dene.';
 }

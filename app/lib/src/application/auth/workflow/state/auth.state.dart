@@ -61,7 +61,10 @@ class LoadingState extends AuthState with LoadingStateMappable {
 
 @MappableClass()
 class ErrorAuthState extends AuthState with ErrorAuthStateMappable {
-  const ErrorAuthState(this.message);
-
+  const ErrorAuthState({
+    required this.message,
+    this.isUnknownException = false,
+  });
+  final bool isUnknownException;
   final String message;
 }

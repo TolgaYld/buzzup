@@ -127,4 +127,10 @@ class L10nEs extends L10n {
 
   @override
   String get login_via_apple => 'Iniciar sesión con Apple';
+
+  @override
+  String get login_failed => 'Error al iniciar sesión';
+
+  @override
+  String get oopsMessage => '¡Uy! No ha salido bien. Inténtalo más tarde.';
 }

@@ -1,5 +1,4 @@
 const { getUserId } = require("@TolgaYld/core-buzzup");
-const createError = require("http-errors");
 const axios = require("axios");
 const errorHandler = require("../../../errors/errorHandler");
 const { User, AUTHSERVICE } = require("@TolgaYld/core-buzzup");

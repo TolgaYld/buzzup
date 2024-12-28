@@ -1,5 +1,4 @@
 const { getUserId, AUTHSERVICE, CHANNELSERVICE, COMMENTSERVICE, POSTSERVICE, REPORTSERVICE, STORYSERVICE } = require("@TolgaYld/core-buzzup");
-const createError = require("http-errors");
 const errorHandler = require("../../../errors/errorHandler");
 const axios = require("axios");
 const { catchGraphQLResolverErrors } = require("../../../core/utils/graphqlUtils");
@@ -171,7 +170,6 @@ const Query = {
 
 
     if (response.status >= 200 && response.status < 400 && response.data.success) {
-      console.log(response.data);
       return response.data;
     }
 

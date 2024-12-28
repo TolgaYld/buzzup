@@ -7,10 +7,12 @@ part 'failure.mapper.dart';
 sealed class Failure with FailureMappable {
   Failure({
     required this.message,
+    this.isUnknownException = false,
     this.statusCode,
   });
 
   final String message;
+  final bool isUnknownException;
   final int? statusCode;
 }
 
@@ -24,6 +26,7 @@ class ApiFailure extends Failure with ApiFailureMappable {
   ApiFailure.fromException(ApiException exception)
       : super(
           message: exception.message,
+          isUnknownException: exception.isUnknownException,
           statusCode: exception.statusCode,
         );
 }

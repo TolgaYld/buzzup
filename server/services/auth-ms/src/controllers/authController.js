@@ -350,7 +350,6 @@ const deleteUserFromDb = async (req, res) => {
 };
 
 const tokenService = async (req, res) => {
-  console.log('tokenService')
   const refresh = req.headers.refresh;
   const authorization = req.headers.authorization;
 

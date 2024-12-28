@@ -38,5 +38,7 @@
     "or": "Oder",
     "login_via_google": "Mit Google anmelden",
     "login_via_facebook": "Mit Facebook anmelden",
-    "login_via_apple": "Mit Apple anmelden"
+    "login_via_apple": "Mit Apple anmelden",
+    "login_failed": "Anmeldung fehlgeschlagen",
+    "oopsMessage": "Ups, das hat nicht geklappt. Versuch’s später nochmal."
 }

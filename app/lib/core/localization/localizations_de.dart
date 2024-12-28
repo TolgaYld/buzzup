@@ -127,4 +127,10 @@ class L10nDe extends L10n {
 
   @override
   String get login_via_apple => 'Mit Apple anmelden';
+
+  @override
+  String get login_failed => 'Anmeldung fehlgeschlagen';
+
+  @override
+  String get oopsMessage => 'Ups, das hat nicht geklappt. Versuch’s später nochmal.';
 }

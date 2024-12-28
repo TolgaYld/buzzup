@@ -25,6 +25,9 @@ class FailureMapper extends ClassMapperBase<Failure> {
 
   static String _$message(Failure v) => v.message;
   static const Field<Failure, String> _f$message = Field('message', _$message);
+  static bool _$isUnknownException(Failure v) => v.isUnknownException;
+  static const Field<Failure, bool> _f$isUnknownException =
+      Field('isUnknownException', _$isUnknownException, opt: true, def: false);
   static int? _$statusCode(Failure v) => v.statusCode;
   static const Field<Failure, int> _f$statusCode =
       Field('statusCode', _$statusCode, opt: true);
@@ -32,6 +35,7 @@ class FailureMapper extends ClassMapperBase<Failure> {
   @override
   final MappableFields<Failure> fields = const {
     #message: _f$message,
+    #isUnknownException: _f$isUnknownException,
     #statusCode: _f$statusCode,
   };
 
@@ -84,11 +88,15 @@ class ApiFailureMapper extends ClassMapperBase<ApiFailure> {
   static int? _$statusCode(ApiFailure v) => v.statusCode;
   static const Field<ApiFailure, int> _f$statusCode =
       Field('statusCode', _$statusCode, opt: true);
+  static bool _$isUnknownException(ApiFailure v) => v.isUnknownException;
+  static const Field<ApiFailure, bool> _f$isUnknownException =
+      Field('isUnknownException', _$isUnknownException, mode: FieldMode.member);
 
   @override
   final MappableFields<ApiFailure> fields = const {
     #message: _f$message,
     #statusCode: _f$statusCode,
+    #isUnknownException: _f$isUnknownException,
   };
 
   static ApiFailure _instantiate(DecodingData data) {
@@ -198,11 +206,15 @@ class CacheFailureMapper extends ClassMapperBase<CacheFailure> {
   static int? _$statusCode(CacheFailure v) => v.statusCode;
   static const Field<CacheFailure, int> _f$statusCode =
       Field('statusCode', _$statusCode, opt: true);
+  static bool _$isUnknownException(CacheFailure v) => v.isUnknownException;
+  static const Field<CacheFailure, bool> _f$isUnknownException =
+      Field('isUnknownException', _$isUnknownException, mode: FieldMode.member);
 
   @override
   final MappableFields<CacheFailure> fields = const {
     #message: _f$message,
     #statusCode: _f$statusCode,
+    #isUnknownException: _f$isUnknownException,
   };
 
   static CacheFailure _instantiate(DecodingData data) {
@@ -313,11 +325,15 @@ class GpsFailureMapper extends ClassMapperBase<GpsFailure> {
   static int? _$statusCode(GpsFailure v) => v.statusCode;
   static const Field<GpsFailure, int> _f$statusCode =
       Field('statusCode', _$statusCode, opt: true);
+  static bool _$isUnknownException(GpsFailure v) => v.isUnknownException;
+  static const Field<GpsFailure, bool> _f$isUnknownException =
+      Field('isUnknownException', _$isUnknownException, mode: FieldMode.member);
 
   @override
   final MappableFields<GpsFailure> fields = const {
     #message: _f$message,
     #statusCode: _f$statusCode,
+    #isUnknownException: _f$isUnknownException,
   };
 
   static GpsFailure _instantiate(DecodingData data) {

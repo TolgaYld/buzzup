@@ -23,6 +23,9 @@ class ApiExceptionMapper extends ClassMapperBase<ApiException> {
   static String _$message(ApiException v) => v.message;
   static const Field<ApiException, String> _f$message =
       Field('message', _$message);
+  static bool _$isUnknownException(ApiException v) => v.isUnknownException;
+  static const Field<ApiException, bool> _f$isUnknownException =
+      Field('isUnknownException', _$isUnknownException, opt: true, def: false);
   static int? _$statusCode(ApiException v) => v.statusCode;
   static const Field<ApiException, int> _f$statusCode =
       Field('statusCode', _$statusCode, opt: true);
@@ -30,12 +33,15 @@ class ApiExceptionMapper extends ClassMapperBase<ApiException> {
   @override
   final MappableFields<ApiException> fields = const {
     #message: _f$message,
+    #isUnknownException: _f$isUnknownException,
     #statusCode: _f$statusCode,
   };
 
   static ApiException _instantiate(DecodingData data) {
     return ApiException(
-        message: data.dec(_f$message), statusCode: data.dec(_f$statusCode));
+        message: data.dec(_f$message),
+        isUnknownException: data.dec(_f$isUnknownException),
+        statusCode: data.dec(_f$statusCode));
   }
 
   @override
@@ -90,7 +96,7 @@ extension ApiExceptionValueCopy<$R, $Out>
 
 abstract class ApiExceptionCopyWith<$R, $In extends ApiException, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? message, int? statusCode});
+  $R call({String? message, bool? isUnknownException, int? statusCode});
   ApiExceptionCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -103,14 +109,20 @@ class _ApiExceptionCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ApiException> $mapper =
       ApiExceptionMapper.ensureInitialized();
   @override
-  $R call({String? message, Object? statusCode = $none}) =>
+  $R call(
+          {String? message,
+          bool? isUnknownException,
+          Object? statusCode = $none}) =>
       $apply(FieldCopyWithData({
         if (message != null) #message: message,
+        if (isUnknownException != null) #isUnknownException: isUnknownException,
         if (statusCode != $none) #statusCode: statusCode
       }));
   @override
   ApiException $make(CopyWithData data) => ApiException(
       message: data.get(#message, or: $value.message),
+      isUnknownException:
+          data.get(#isUnknownException, or: $value.isUnknownException),
       statusCode: data.get(#statusCode, or: $value.statusCode));
 
   @override

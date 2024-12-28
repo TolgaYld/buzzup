@@ -1036,14 +1036,20 @@ class ErrorAuthStateMapper extends ClassMapperBase<ErrorAuthState> {
   static String _$message(ErrorAuthState v) => v.message;
   static const Field<ErrorAuthState, String> _f$message =
       Field('message', _$message);
+  static bool _$isUnknownException(ErrorAuthState v) => v.isUnknownException;
+  static const Field<ErrorAuthState, bool> _f$isUnknownException =
+      Field('isUnknownException', _$isUnknownException, opt: true, def: false);
 
   @override
   final MappableFields<ErrorAuthState> fields = const {
     #message: _f$message,
+    #isUnknownException: _f$isUnknownException,
   };
 
   static ErrorAuthState _instantiate(DecodingData data) {
-    return ErrorAuthState(data.dec(_f$message));
+    return ErrorAuthState(
+        message: data.dec(_f$message),
+        isUnknownException: data.dec(_f$isUnknownException));
   }
 
   @override
@@ -1100,7 +1106,7 @@ extension ErrorAuthStateValueCopy<$R, $Out>
 abstract class ErrorAuthStateCopyWith<$R, $In extends ErrorAuthState, $Out>
     implements AuthStateCopyWith<$R, $In, $Out> {
   @override
-  $R call({String? message});
+  $R call({String? message, bool? isUnknownException});
   ErrorAuthStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -1114,11 +1120,16 @@ class _ErrorAuthStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<ErrorAuthState> $mapper =
       ErrorAuthStateMapper.ensureInitialized();
   @override
-  $R call({String? message}) =>
-      $apply(FieldCopyWithData({if (message != null) #message: message}));
+  $R call({String? message, bool? isUnknownException}) =>
+      $apply(FieldCopyWithData({
+        if (message != null) #message: message,
+        if (isUnknownException != null) #isUnknownException: isUnknownException
+      }));
   @override
-  ErrorAuthState $make(CopyWithData data) =>
-      ErrorAuthState(data.get(#message, or: $value.message));
+  ErrorAuthState $make(CopyWithData data) => ErrorAuthState(
+      message: data.get(#message, or: $value.message),
+      isUnknownException:
+          data.get(#isUnknownException, or: $value.isUnknownException));
 
   @override
   ErrorAuthStateCopyWith<$R2, ErrorAuthState, $Out2> $chain<$R2, $Out2>(

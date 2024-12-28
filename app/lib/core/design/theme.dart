@@ -70,7 +70,7 @@ class AppTheme {
     ),
     prefixIconColor: _iconColor,
     filled: true,
-    fillColor: Colors.black.withOpacity(0.063),
+    fillColor: Colors.black.withValues(alpha: 0.063),
   );
 
   static final ElevatedButtonThemeData _elevatedButtonTheme = ElevatedButtonThemeData(
@@ -78,7 +78,7 @@ class AppTheme {
       backgroundColor: _lightPrimaryColor,
       foregroundColor: _lightOnPrimaryColor,
       splashFactory: NoSplash.splashFactory,
-      disabledBackgroundColor: _lightPrimaryColor.withOpacity(0.3),
+      disabledBackgroundColor: _lightPrimaryColor.withValues(alpha: 0.3),
       disabledForegroundColor: _lightOnPrimaryColor,
       disabledIconColor: _lightPrimaryColor,
     ),
@@ -119,7 +119,7 @@ class AppTheme {
       (states) => states.contains(WidgetState.selected) ? _lightPrimaryColor : _lightPrimaryColor,
     ),
     trackColor: WidgetStateProperty.resolveWith<Color>(
-      (states) => states.contains(WidgetState.selected) ? _lightPrimaryColor.withOpacity(0.5) : _lightPrimaryColor.withOpacity(0.5),
+      (states) => states.contains(WidgetState.selected) ? _lightPrimaryColor.withValues(alpha: 0.5) : _lightPrimaryColor.withValues(alpha: 0.5),
     ),
     trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
   );
@@ -135,7 +135,7 @@ class AppTheme {
       (states) => states.contains(WidgetState.selected) ? _darkOnPrimaryColor : _darkPrimaryColor,
     ),
     trackColor: WidgetStateProperty.resolveWith<Color>(
-      (states) => states.contains(WidgetState.selected) ? _darkPrimaryVariantColor.withOpacity(0.5) : _darkPrimaryVariantColor.withOpacity(0.5),
+      (states) => states.contains(WidgetState.selected) ? _darkPrimaryVariantColor.withValues(alpha: 0.5) : _darkPrimaryVariantColor.withValues(alpha: 0.5),
     ),
     trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
   );
@@ -171,9 +171,7 @@ class AppTheme {
 
   static final ThemeData darkTheme = ThemeData(
     useMaterial3: true,
-    inputDecorationTheme: _inputDecorationTheme.copyWith(
-      fillColor: Colors.black.withOpacity(0.2),
-    ),
+    inputDecorationTheme: _inputDecorationTheme.copyWith(fillColor: Colors.black.withValues(alpha: 0.2)),
     textSelectionTheme: const TextSelectionThemeData(cursorColor: _darkTextColorPrimary),
     scaffoldBackgroundColor: _darkBackgroundColor,
     appBarTheme: AppBarTheme(

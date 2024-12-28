@@ -340,6 +340,18 @@ abstract class L10n {
   /// In de, this message translates to:
   /// **'Mit Apple anmelden'**
   String get login_via_apple;
+
+  /// No description provided for @login_failed.
+  ///
+  /// In de, this message translates to:
+  /// **'Anmeldung fehlgeschlagen'**
+  String get login_failed;
+
+  /// No description provided for @oopsMessage.
+  ///
+  /// In de, this message translates to:
+  /// **'Ups, das hat nicht geklappt. Versuch’s später nochmal.'**
+  String get oopsMessage;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {
