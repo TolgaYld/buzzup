@@ -353,15 +353,15 @@ const tokenService = async (req, res) => {
   const refresh = req.headers.refresh;
   const authorization = req.headers.authorization;
 
+
   if (refresh == null || authorization == null) {
     throw { statusCode: 401, message: "unauthorized" };
   }
-
-  const refreshToken = refresh.split(" ")[1];
+  const refrToken = refresh.split(" ")[1];
   const accessToken = authorization.split(" ")[1];
 
   try {
-    const decodedRefresh = jwt.verify(refreshToken, SECRET_KEY_REFRESH);
+    const decodedRefresh = jwt.verify(refrToken, SECRET_KEY_REFRESH);
     const { id } = decodedRefresh;
     try {
       jwt.verify(accessToken, SECRET_KEY);
@@ -372,19 +372,14 @@ const tokenService = async (req, res) => {
         throw { statusCode: 401, message: "unauthorized" };
       }
     }
-
     const findUser = await User.findById(id).exec();
     if (findUser == null) {
       throw { statusCode: 401, message: "unauthorized" };
     }
-
-    const newAccessToken = token.generate(findUser, tokenDuration);
-    const newRefreshToken = refreshToken.generate(findUser, refreshTokenDuration);
-
     return res.status(200).json({
       success: true,
-      token: newAccessToken,
-      refreshToken: newRefreshToken,
+      token: token.generate(findUser, tokenDuration),
+      refreshToken: refreshToken.generate(findUser, refreshTokenDuration),
     });
   } catch (err) {
     throw { statusCode: 401, message: "unauthorized" };

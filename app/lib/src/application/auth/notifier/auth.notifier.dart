@@ -27,12 +27,14 @@ class AuthNotifier extends StateNotifier<AuthState> {
     };
   }
 
-  void _startTokenTimer(String token) {
+  void _startTokenTimer({required String token, required String refreshToken}) {
     _tokenTimer?.cancel();
     final expiryDate = JwtHelper.getExpiryDate(token);
     if (expiryDate != null) {
       final duration = expiryDate.difference(DateTime.now().subtract(const Duration(minutes: 3)));
-      _tokenTimer = Timer(duration, () async => await _signOut());
+      _tokenTimer = Timer(duration, () async {
+        await _refreshToken();
+      });
     }
   }
 
@@ -42,9 +44,13 @@ class AuthNotifier extends StateNotifier<AuthState> {
     if (getToken != null && getRefreshToken != null) {
       final refreshTokenUseCase = await ref.read(refreshTokenUsecaseProvider.future);
       final result = await refreshTokenUseCase();
-
-      if (result case Right(value: final newTokens)) {
-        _startTokenTimer(newTokens.token);
+      if (JwtHelper.isExpired(getRefreshToken)) {
+        await _signOut();
+      } else if (result case Right(value: final newTokens)) {
+        _startTokenTimer(
+          token: newTokens.token,
+          refreshToken: newTokens.refreshToken,
+        );
         state = SignedInState(null);
       } else if (result is Left) {
         await _signOut();
