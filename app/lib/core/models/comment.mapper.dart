@@ -36,8 +36,8 @@ class CommentMapper extends ClassMapperBase<Comment> {
   static DateTime _$createdAt(Comment v) => v.createdAt;
   static const Field<Comment, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt, key: 'created_at');
-  static PostType _$type(Comment v) => v.type;
-  static const Field<Comment, PostType> _f$type = Field('type', _$type);
+  static ContentType _$type(Comment v) => v.type;
+  static const Field<Comment, ContentType> _f$type = Field('type', _$type);
   static Post _$post(Comment v) => v.post;
   static const Field<Comment, Post> _f$post = Field('post', _$post);
   static List<User>? _$likes(Comment v) => v.likes;
@@ -143,7 +143,7 @@ abstract class CommentCopyWith<$R, $In extends Comment, $Out>
       bool? isDeleted,
       User? createdBy,
       DateTime? createdAt,
-      PostType? type,
+      ContentType? type,
       Post? post,
       List<User>? likes,
       List<User>? dislikes,
@@ -191,7 +191,7 @@ class _CommentCopyWithImpl<$R, $Out>
           bool? isDeleted,
           User? createdBy,
           DateTime? createdAt,
-          PostType? type,
+          ContentType? type,
           Post? post,
           Object? likes = $none,
           Object? dislikes = $none,

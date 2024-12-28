@@ -7,7 +7,8 @@ import 'dart:async' as _i3;
 
 import 'package:buzzup/core/errors/failure.dart' as _i5;
 import 'package:buzzup/core/utils/either.dart' as _i4;
-import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode.repo.dart' as _i2;
+import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode.repo.dart'
+    as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
 
@@ -34,12 +35,14 @@ class MockThemeModeRepo extends _i1.Mock implements _i2.ThemeModeRepo {
   }
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, bool>> getThemeMode() => (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, bool>> getThemeMode() =>
+      (super.noSuchMethod(
         Invocation.method(
           #getThemeMode,
           [],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(_i6.dummyValue<_i4.Either<_i5.Failure, bool>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(
+            _i6.dummyValue<_i4.Either<_i5.Failure, bool>>(
           this,
           Invocation.method(
             #getThemeMode,
@@ -49,13 +52,16 @@ class MockThemeModeRepo extends _i1.Mock implements _i2.ThemeModeRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, bool>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> setThemeMode({required bool? mode}) => (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, void>> setThemeMode(
+          {required bool? mode}) =>
+      (super.noSuchMethod(
         Invocation.method(
           #setThemeMode,
           [],
           {#mode: mode},
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(_i6.dummyValue<_i4.Either<_i5.Failure, void>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+            _i6.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #setThemeMode,
@@ -66,12 +72,14 @@ class MockThemeModeRepo extends _i1.Mock implements _i2.ThemeModeRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, bool>> getUseSystemTheme() => (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, bool>> getUseSystemTheme() =>
+      (super.noSuchMethod(
         Invocation.method(
           #getUseSystemTheme,
           [],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(_i6.dummyValue<_i4.Either<_i5.Failure, bool>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, bool>>.value(
+            _i6.dummyValue<_i4.Either<_i5.Failure, bool>>(
           this,
           Invocation.method(
             #getUseSystemTheme,
@@ -81,13 +89,16 @@ class MockThemeModeRepo extends _i1.Mock implements _i2.ThemeModeRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, bool>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, void>> setUseSystemTheme({required bool? useSystemTheme}) => (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, void>> setUseSystemTheme(
+          {required bool? useSystemTheme}) =>
+      (super.noSuchMethod(
         Invocation.method(
           #setUseSystemTheme,
           [],
           {#useSystemTheme: useSystemTheme},
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(_i6.dummyValue<_i4.Either<_i5.Failure, void>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, void>>.value(
+            _i6.dummyValue<_i4.Either<_i5.Failure, void>>(
           this,
           Invocation.method(
             #setUseSystemTheme,

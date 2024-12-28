@@ -5,7 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:buzzup/src/data/datasources/theme_mode/theme_mode.local.datasrc.dart' as _i2;
+import 'package:buzzup/src/data/datasources/theme_mode/theme_mode.local.datasrc.dart'
+    as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -25,7 +26,8 @@ import 'package:mockito/mockito.dart' as _i1;
 /// A class which mocks [ThemeModeLocalDatasrc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockThemeModeLocalDatasrc extends _i1.Mock implements _i2.ThemeModeLocalDatasrc {
+class MockThemeModeLocalDatasrc extends _i1.Mock
+    implements _i2.ThemeModeLocalDatasrc {
   MockThemeModeLocalDatasrc() {
     _i1.throwOnMissingStub(this);
   }
@@ -60,7 +62,8 @@ class MockThemeModeLocalDatasrc extends _i1.Mock implements _i2.ThemeModeLocalDa
       ) as _i3.Future<void>);
 
   @override
-  _i3.Future<void> cacheUseSystemTheme({required bool? useSystemTheme}) => (super.noSuchMethod(
+  _i3.Future<void> cacheUseSystemTheme({required bool? useSystemTheme}) =>
+      (super.noSuchMethod(
         Invocation.method(
           #cacheUseSystemTheme,
           [],

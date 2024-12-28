@@ -1,9 +1,8 @@
 import 'package:buzzup/core/models/channel.dart';
 import 'package:buzzup/core/models/comment.dart';
+import 'package:buzzup/core/models/content.dart';
 import 'package:buzzup/core/models/location.dart';
-import 'package:buzzup/core/models/post.dart';
 import 'package:buzzup/core/models/report.dart';
-import 'package:buzzup/core/models/story.dart';
 import 'package:buzzup/core/models/token.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 import 'package:buzzup/core/utils/datetime_converter.dart';

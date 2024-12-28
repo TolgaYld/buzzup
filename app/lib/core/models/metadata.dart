@@ -1,27 +1,23 @@
-import 'package:buzzup/core/models/content.dart';
 import 'package:buzzup/core/models/user.dart';
-import 'package:dart_mappable/dart_mappable.dart';
 import 'package:buzzup/core/utils/datetime_converter.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 
-part 'channel.mapper.dart';
+part "metadata.mapper.dart";
 
 @MappableClass()
-class Channel with ChannelMappable {
-  Channel({
+class Metadata with MetadataMappable {
+  const Metadata({
     required this.id,
-    required this.name,
     required this.isActive,
     required this.isDeleted,
     required this.createdAt,
-    this.subscriptions,
-    this.createdBy,
-    this.posts,
-    this.storys,
+    required this.createdBy,
+    this.updatedAt,
+    this.updatedBy,
   });
 
-  factory Channel.empty() => Channel(
+  factory Metadata.empty() => Metadata(
         id: 'empty',
-        name: 'empty',
         isActive: true,
         isDeleted: false,
         createdAt: DateTime.parse('2024-02-10T14:38:36.936Z'),
@@ -30,7 +26,6 @@ class Channel with ChannelMappable {
 
   @MappableField(key: '_id')
   final String id;
-  final String name;
   @MappableField(key: 'is_active')
   final bool isActive;
   @MappableField(key: 'is_deleted')
@@ -38,9 +33,10 @@ class Channel with ChannelMappable {
   @DateTimeConverter()
   @MappableField(key: 'created_at')
   final DateTime createdAt;
-  final List<User>? subscriptions;
   @MappableField(key: 'created_by')
-  final User? createdBy;
-  final List<Post>? posts;
-  final List<Story>? storys;
+  final User createdBy;
+  @MappableField(key: 'updated_at')
+  final DateTime? updatedAt;
+  @MappableField(key: 'updated_by')
+  final User? updatedBy;
 }

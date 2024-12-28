@@ -5,7 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:buzzup/src/data/datasources/gps_status/gps_status.local.datasrc.dart' as _i2;
+import 'package:buzzup/src/data/datasources/gps_status/gps_status.local.datasrc.dart'
+    as _i2;
 import 'package:geolocator/geolocator.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -26,13 +27,15 @@ import 'package:mockito/mockito.dart' as _i1;
 /// A class which mocks [GpsStatusLocalDatasrc].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockGpsStatusLocalDatasrc extends _i1.Mock implements _i2.GpsStatusLocalDatasrc {
+class MockGpsStatusLocalDatasrc extends _i1.Mock
+    implements _i2.GpsStatusLocalDatasrc {
   MockGpsStatusLocalDatasrc() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i3.Stream<_i4.ServiceStatus> getGeneralServiceStatusStream() => (super.noSuchMethod(
+  _i3.Stream<_i4.ServiceStatus> getGeneralServiceStatusStream() =>
+      (super.noSuchMethod(
         Invocation.method(
           #getGeneralServiceStatusStream,
           [],
@@ -46,6 +49,7 @@ class MockGpsStatusLocalDatasrc extends _i1.Mock implements _i2.GpsStatusLocalDa
           #getServiceStatus,
           [],
         ),
-        returnValue: _i3.Future<_i4.LocationPermission>.value(_i4.LocationPermission.denied),
+        returnValue: _i3.Future<_i4.LocationPermission>.value(
+            _i4.LocationPermission.denied),
       ) as _i3.Future<_i4.LocationPermission>);
 }

@@ -7,7 +7,8 @@ import 'dart:async' as _i3;
 
 import 'package:buzzup/core/errors/failure.dart' as _i5;
 import 'package:buzzup/core/utils/either.dart' as _i4;
-import 'package:buzzup/src/domain/repositories/gps_status/gps_status.repo.dart' as _i2;
+import 'package:buzzup/src/domain/repositories/gps_status/gps_status.repo.dart'
+    as _i2;
 import 'package:geolocator/geolocator.dart' as _i6;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i7;
@@ -35,21 +36,26 @@ class MockGpsStatusRepo extends _i1.Mock implements _i2.GpsStatusRepo {
   }
 
   @override
-  _i3.Stream<_i4.Either<_i5.Failure, _i6.ServiceStatus>> watchGpsStatus() => (super.noSuchMethod(
+  _i3.Stream<_i4.Either<_i5.Failure, _i6.ServiceStatus>> watchGpsStatus() =>
+      (super.noSuchMethod(
         Invocation.method(
           #watchGpsStatus,
           [],
         ),
-        returnValue: _i3.Stream<_i4.Either<_i5.Failure, _i6.ServiceStatus>>.empty(),
+        returnValue:
+            _i3.Stream<_i4.Either<_i5.Failure, _i6.ServiceStatus>>.empty(),
       ) as _i3.Stream<_i4.Either<_i5.Failure, _i6.ServiceStatus>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, _i6.LocationPermission>> getGpsStatus() => (super.noSuchMethod(
+  _i3.Future<_i4.Either<_i5.Failure, _i6.LocationPermission>> getGpsStatus() =>
+      (super.noSuchMethod(
         Invocation.method(
           #getGpsStatus,
           [],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.LocationPermission>>.value(_i7.dummyValue<_i4.Either<_i5.Failure, _i6.LocationPermission>>(
+        returnValue:
+            _i3.Future<_i4.Either<_i5.Failure, _i6.LocationPermission>>.value(
+                _i7.dummyValue<_i4.Either<_i5.Failure, _i6.LocationPermission>>(
           this,
           Invocation.method(
             #getGpsStatus,
