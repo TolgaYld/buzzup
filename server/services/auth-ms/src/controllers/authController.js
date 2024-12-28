@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { User, Post, Comment, Report, log } = require("@TolgaYld/core-buzzup");
+const { User, Post, Comment, Report, log, SECRET_KEY, SECRET_KEY_REFRESH } = require("@TolgaYld/core-buzzup");
 const { token, refreshToken } = require("../helpers/token");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
@@ -357,20 +357,40 @@ const tokenService = async (req, res) => {
     throw { statusCode: 401, message: "unauthorized" };
   }
 
-  const reftoken = refresh.split(" ")[1]; //split or u can use replace('Bearer', '')
-  const decoded = jwt.verify(reftoken, process.env.SECRET_KEY_REFRESH);
-  const { id } = decoded;
-  const findUser = await User.findById(id).exec();
+  const refreshToken = refresh.split(" ")[1];
+  const accessToken = authorization.split(" ")[1];
 
-  if (findUser == null) {
+  try {
+    const decodedRefresh = jwt.verify(refreshToken, SECRET_KEY_REFRESH);
+    const { id } = decodedRefresh;
+    try {
+      jwt.verify(accessToken, SECRET_KEY);
+    } catch (err) {
+      if (err.name === "TokenExpiredError") {
+        log("access token expired but refresh token is valid");
+      } else {
+        throw { statusCode: 401, message: "unauthorized" };
+      }
+    }
+
+    const findUser = await User.findById(id).exec();
+    if (findUser == null) {
+      throw { statusCode: 401, message: "unauthorized" };
+    }
+
+    const newAccessToken = token.generate(findUser, tokenDuration);
+    const newRefreshToken = refreshToken.generate(findUser, refreshTokenDuration);
+
+    return res.status(200).json({
+      success: true,
+      token: newAccessToken,
+      refreshToken: newRefreshToken,
+    });
+  } catch (err) {
     throw { statusCode: 401, message: "unauthorized" };
   }
-  return res.status(200).json({
-    success: true,
-    token: token.generate(findUser, tokenDuration),
-    refreshToken: refreshToken.generate(findUser, refreshTokenDuration),
-  });
 };
+
 
 const signOut = async (req, res) => {
 
