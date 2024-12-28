@@ -133,4 +133,16 @@ class L10nTr extends L10n {
 
   @override
   String get oopsMessage => 'Tüh, olmadı yaa. Daha sonra tekrar dene.';
+
+  @override
+  String get home => 'Anasayfa';
+
+  @override
+  String get channels => 'Kanallar';
+
+  @override
+  String get chats => 'Sohbetler';
+
+  @override
+  String get profile => 'Profil';
 }

@@ -1,7 +1,6 @@
-import 'package:buzzup/core/common/provider/auth.provider.dart';
 import 'package:buzzup/core/design/spacing.dart';
+import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
-import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,7 +15,7 @@ class AppPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = useTheme();
-    final notifier = ref.read(authProvider.notifier);
+    final l10n = useL10n();
 
     void onTabSelected(int index) => navigationShell.goBranch(index, initialLocation: index == navigationShell.currentIndex);
 
@@ -86,23 +85,23 @@ class AppPage extends HookConsumerWidget {
           children: <Widget>[
             navbarItem(
               icon: Icons.home_rounded,
-              label: "Home",
+              label: l10n.home,
               index: 0,
             ),
             navbarItem(
               icon: Icons.apps_rounded,
-              label: "Channels",
+              label: l10n.channels,
               index: 1,
             ),
             HSpace.x2l(),
             navbarItem(
               icon: Icons.forum_rounded,
-              label: "Chats",
+              label: l10n.chats,
               index: 2,
             ),
             navbarItem(
               icon: Icons.person_rounded,
-              label: "Profile",
+              label: l10n.profile,
               index: 3,
             ),
           ],

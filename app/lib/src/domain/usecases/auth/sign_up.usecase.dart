@@ -3,30 +3,21 @@ import 'package:buzzup/core/usecases/usecases.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
 
-class SignUpUsecase extends UsecaseWithParams<
-    User,
-    ({
-      String email,
-      String password,
-      String repeatPassword,
-      String username,
-      List<double> coordinates,
-    })> {
+typedef SignUpParams = ({
+  String email,
+  String password,
+  String repeatPassword,
+  String username,
+  List<double> coordinates,
+});
+
+class SignUpUsecase extends UsecaseWithParams<User, SignUpParams> {
   const SignUpUsecase(this._repo);
 
   final AuthRepo _repo;
 
   @override
-  ResultFuture<User> call(
-    ({
-      String email,
-      String password,
-      String repeatPassword,
-      String username,
-      List<double> coordinates,
-    }) params,
-  ) async =>
-      await _repo.signUp(
+  ResultFuture<User> call(SignUpParams params) async => await _repo.signUp(
         username: params.username,
         email: params.email,
         password: params.password,
@@ -34,13 +25,7 @@ class SignUpUsecase extends UsecaseWithParams<
         coordinates: params.coordinates,
       );
 
-  static ({
-    String email,
-    String password,
-    String repeatPassword,
-    String username,
-    List<double> coordinates,
-  }) get emptyParams => (
+  static SignUpParams get emptyParams => (
         email: "",
         password: "",
         username: "",

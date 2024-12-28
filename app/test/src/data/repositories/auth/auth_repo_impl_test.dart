@@ -5,7 +5,7 @@ import 'package:buzzup/core/models/user.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/src/data/datasources/auth/auth_local_datasrc.dart';
 import 'package:buzzup/src/data/datasources/auth/auth_remote_datasrc.dart';
-import 'package:buzzup/src/data/repositories/auth/auth_repo_impl.dart';
+import 'package:buzzup/src/data/repositories/auth/auth_repo.impl.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';

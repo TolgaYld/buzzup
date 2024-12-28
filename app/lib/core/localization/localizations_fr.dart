@@ -133,4 +133,16 @@ class L10nFr extends L10n {
 
   @override
   String get oopsMessage => 'Oups ! Ça n’a pas marché. Essaie plus tard.';
+
+  @override
+  String get home => 'Accueil';
+
+  @override
+  String get channels => 'Canaux';
+
+  @override
+  String get chats => 'Chats';
+
+  @override
+  String get profile => 'Profil';
 }

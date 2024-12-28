@@ -133,4 +133,16 @@ class L10nEn extends L10n {
 
   @override
   String get oopsMessage => 'Oops, that didn\'t work. Try again later.';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get channels => 'Channels';
+
+  @override
+  String get chats => 'Chats';
+
+  @override
+  String get profile => 'Profile';
 }

@@ -352,6 +352,30 @@ abstract class L10n {
   /// In de, this message translates to:
   /// **'Ups, das hat nicht geklappt. Versuch’s später nochmal.'**
   String get oopsMessage;
+
+  /// No description provided for @home.
+  ///
+  /// In de, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @channels.
+  ///
+  /// In de, this message translates to:
+  /// **'Channels'**
+  String get channels;
+
+  /// No description provided for @chats.
+  ///
+  /// In de, this message translates to:
+  /// **'Chats'**
+  String get chats;
+
+  /// No description provided for @profile.
+  ///
+  /// In de, this message translates to:
+  /// **'Profil'**
+  String get profile;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

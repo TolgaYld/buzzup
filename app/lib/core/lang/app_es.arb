@@ -40,5 +40,9 @@
     "login_via_facebook": "Iniciar sesión con Facebook",
     "login_via_apple": "Iniciar sesión con Apple",
     "login_failed": "Error al iniciar sesión",
-    "oopsMessage": "¡Uy! No ha salido bien. Inténtalo más tarde."
+    "oopsMessage": "¡Uy! No ha salido bien. Inténtalo más tarde.",
+    "home": "Inicio",
+    "channels": "Canales",
+    "chats": "Chats",
+    "profile": "Perfil"
 }

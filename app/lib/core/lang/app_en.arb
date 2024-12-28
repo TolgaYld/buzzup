@@ -40,5 +40,9 @@
     "login_via_facebook": "Login via Facebook",
     "login_via_apple": "Login via Apple",
     "login_failed": "Login failed",
-    "oopsMessage": "Oops, that didn't work. Try again later."
+    "oopsMessage": "Oops, that didn't work. Try again later.",
+    "home": "Home",
+    "channels": "Channels",
+    "chats": "Chats",
+    "profile": "Profile"
 }

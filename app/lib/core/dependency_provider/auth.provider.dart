@@ -8,7 +8,7 @@ import 'package:buzzup/core/common/constants.dart';
 import 'package:buzzup/core/common/env/environment.dart';
 import 'package:buzzup/src/data/datasources/auth/auth_local_datasrc.dart';
 import 'package:buzzup/src/data/datasources/auth/auth_remote_datasrc.dart';
-import 'package:buzzup/src/data/repositories/auth/auth_repo_impl.dart';
+import 'package:buzzup/src/data/repositories/auth/auth_repo.impl.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
 import 'package:buzzup/src/domain/usecases/auth/auth_with_provider.usecase.dart';
 import 'package:buzzup/src/domain/usecases/auth/check_email_exists.usecase.dart';

@@ -40,5 +40,9 @@
     "login_via_facebook": "Facebook ile giriş yap",
     "login_via_apple": "Apple ile giriş yap",
     "login_failed": "Giriş başarısız",
-    "oopsMessage": "Tüh, olmadı yaa. Daha sonra tekrar dene."
+    "oopsMessage": "Tüh, olmadı yaa. Daha sonra tekrar dene.",
+    "home": "Anasayfa",
+    "channels": "Kanallar",
+    "chats": "Sohbetler",
+    "profile": "Profil"
 }

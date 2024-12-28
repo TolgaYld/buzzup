@@ -40,5 +40,9 @@
     "login_via_facebook": "Connexion via Facebook",
     "login_via_apple": "Connexion via Apple",
     "login_failed": "Échec de la connexion",
-    "oopsMessage": "Oups ! Ça n’a pas marché. Essaie plus tard."
+    "oopsMessage": "Oups ! Ça n’a pas marché. Essaie plus tard.",
+    "home": "Accueil",
+    "channels": "Canaux",
+    "chats": "Chats",
+    "profile": "Profil"
 }
