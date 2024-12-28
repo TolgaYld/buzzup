@@ -19,6 +19,11 @@ router.patch(
   authorize,
   catchErrors(storyController.likeOrDislikeStory, errorHandler),
 );
+router.patch(
+  "/togglePublicVote/:id",
+  authorize,
+  catchErrors(storyController.togglePublicVote, errorHandler),
+);
 router.delete("/delete/:id", authorize, catchErrors(storyController.deleteStory, errorHandler));
 
 module.exports = router;

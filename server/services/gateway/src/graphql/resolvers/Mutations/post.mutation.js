@@ -1,4 +1,4 @@
-const { getUserId } = require("@TolgaYld/core-buzzup");
+const { getUserId, POSTSERVICE } = require("@TolgaYld/core-buzzup");
 const createError = require("http-errors");
 const axios = require("axios");
 const errorHandler = require("../../../errors/errorHandler");
@@ -14,7 +14,7 @@ module.exports = {
 
     const headers = { Authorization: id };
     const response = await axios.post(
-      `${process.env.POSTSERVICE}/create`,
+      `${POSTSERVICE}/create`,
       {
         type: "CreatePost",
         data: {
@@ -41,7 +41,7 @@ module.exports = {
 
     const headers = { Authorization: id };
     const response = await axios.patch(
-      `${process.env.POSTSERVICE}/update/${args.id}`,
+      `${POSTSERVICE}/update/${args.id}`,
       {
         type: "UpdatePost",
         data: {
@@ -69,11 +69,37 @@ module.exports = {
 
     const headers = { Authorization: id };
     const response = await axios.patch(
-      `${process.env.POSTSERVICE}/likeOrDislike/${args.id}`,
+      `${POSTSERVICE}/likeOrDislike/${args.id}`,
       {
-        type: "UpdatePost",
+        type: "LikeOrDislikePost",
         data: {
           like: args.like,
+        },
+      },
+      { headers }
+    );
+
+    if (response.data.success) {
+      return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
+
+  togglePublicVotePost: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    const id = await getUserId(req);
+
+    if (id == null) {
+      throw { statusCode: 401, message: "Unauthorized" };
+    }
+
+    const headers = { Authorization: id };
+    const response = await axios.patch(
+      `${POSTSERVICE}/togglePublicVote/${args.id}`,
+      {
+        type: "TogglePublicVotePost",
+        data: {
+          vote: args.vote,
         },
       },
       { headers }
@@ -95,7 +121,7 @@ module.exports = {
 
     const headers = { Authorization: id };
     const response = await axios.delete(
-      `${process.env.POSTSERVICE}/delete/${args.id}`,
+      `${POSTSERVICE}/delete/${args.id}`,
       {
         headers,
         data: {

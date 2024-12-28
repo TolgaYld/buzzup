@@ -13,13 +13,16 @@ type Story {
   _id: ID!
   text: String
   media: [String]
+  created_by: User!
   user: User!
   location: Location!
   city: String
   channels: [Channel!]!
+  comments: [Comment]
   type: String!
   likes: [User!]
   dislikes: [User!]
+  public_votes: [User!]
   is_active: Boolean!
   is_deleted: Boolean!
   created_at: String
@@ -28,7 +31,8 @@ type Story {
 
 type Mutation {
   createStory(data: CreateStoryInput!): Story!
-  likeorDislikeStory(story_id: ID!, like: Boolean!): Story!
+  likeOrDislikeStory(story_id: ID!, like: Boolean!): Story!
+  togglePublicVoteStory(story_id: ID!, like: Boolean!): Story!
   updateStory(id: ID, data: UpdateStoryInput!): Story!
   deleteStoryFromDb(id: ID!): Story!
 }

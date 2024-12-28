@@ -42,6 +42,16 @@ const PostSchema = new Schema(
         ref: "Users",
       },
     ],
+    public_votes: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Users",
+      },
+    ],
+    end_date: {
+      type: SchemaTypes.Date,
+      default: null,
+    },
     is_deleted: {
       type: SchemaTypes.Boolean,
       default: false,

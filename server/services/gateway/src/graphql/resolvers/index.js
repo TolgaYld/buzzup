@@ -3,6 +3,7 @@ const Query = require("./Queries/Query");
 const User = require("./Queries/User");
 const Channel = require("./Queries/Channel");
 const Post = require("./Queries/Post");
+const Story = require("./Queries/Story");
 const Comment = require("./Queries/Comment");
 
 //Mutation Resolvers
@@ -17,6 +18,7 @@ module.exports = {
   User,
   Channel,
   Post,
+  Story,
   Comment,
   Subscription,
 };

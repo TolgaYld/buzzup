@@ -43,6 +43,12 @@ const StorySchema = new Schema(
         ref: "Users",
       },
     ],
+    public_votes: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Users",
+      },
+    ],
     is_deleted: {
       type: SchemaTypes.Boolean,
       default: false,

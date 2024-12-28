@@ -18,6 +18,11 @@ router.patch(
   authorize,
   catchErrors(postController.likeOrDislikePost, errorHandler),
 );
+router.patch(
+  "/togglePublicVote/:id",
+  authorize,
+  catchErrors(postController.togglePublicVote, errorHandler),
+);
 router.delete("/delete/:id", authorize, catchErrors(postController.deletePost, errorHandler));
 
 module.exports = router;

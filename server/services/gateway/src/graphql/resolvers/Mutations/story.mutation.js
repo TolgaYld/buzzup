@@ -1,4 +1,4 @@
-const { getUserId } = require("@TolgaYld/core-buzzup");
+const { getUserId, STORYSERVICE } = require("@TolgaYld/core-buzzup");
 const createError = require("http-errors");
 const axios = require("axios");
 const errorHandler = require("../../../errors/errorHandler");
@@ -14,7 +14,7 @@ module.exports = {
 
     const headers = { Authorization: id };
     const response = await axios.post(
-      `${process.env.STORYSERVICE}/create`,
+      `${STORYSERVICE}/create`,
       {
         type: "CreateStory",
         data: args.data,
@@ -39,12 +39,64 @@ module.exports = {
 
     const headers = { Authorization: id };
     const response = await axios.patch(
-      `${process.env.STORYSERVICE}/update/${args.id}`,
+      `${STORYSERVICE}/update/${args.id}`,
       {
         type: "UpdateStory",
         data: {
           ...args.data,
           last_update_from_user: id,
+        },
+      },
+      { headers }
+    );
+
+    if (response.data.success) {
+      return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
+
+  likeOrDislikeStory: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    const id = await getUserId(req);
+
+    if (id == null) {
+      throw { statusCode: 401, message: "Unauthorized" };
+    }
+
+    const headers = { Authorization: id };
+    const response = await axios.patch(
+      `${STORYSERVICE}/likeOrDislike/${args.id}`,
+      {
+        type: "LikeOrDislikeStory",
+        data: {
+          like: args.like,
+        },
+      },
+      { headers }
+    );
+
+    if (response.data.success) {
+      return response.data.data;
+    }
+
+    throw { statusCode: response.status, message: response.data.msg };
+  }, errorHandler),
+
+  togglePublicVoteStory: catchGraphQLResolverErrors(async (parent, args, { req }) => {
+    const id = await getUserId(req);
+
+    if (id == null) {
+      throw { statusCode: 401, message: "Unauthorized" };
+    }
+
+    const headers = { Authorization: id };
+    const response = await axios.patch(
+      `${STORYSERVICE}/togglePublicVote/${args.id}`,
+      {
+        type: "TogglePublicVoteStory",
+        data: {
+          vote: args.vote,
         },
       },
       { headers }
@@ -67,7 +119,7 @@ module.exports = {
 
     const headers = { Authorization: id };
     const response = await axios.delete(
-      `${process.env.STORYSERVICE}/delete/${args.id}`,
+      `${STORYSERVICE}/delete/${args.id}`,
       {
         type: "DeleteStoryFromDb",
       },

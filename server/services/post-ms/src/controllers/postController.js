@@ -94,7 +94,7 @@ const likeOrDislikePost = async (req, res) => {
   const user = req.user;
 
   const findPost = await Post.findById(id).exec();
-  if (!findPost) {
+  if (findPost == null) {
     throw { statusCode: 404, message: "post-not-found" };
   }
 
@@ -134,6 +134,46 @@ const likeOrDislikePost = async (req, res) => {
   });
 };
 
+const togglePublicVote = async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+  const { vote } = req.body;
+
+
+  const findPost = await Post.findById(id).exec();
+  if (findPost == null) {
+    throw { statusCode: 404, message: "post-not-found" };
+  }
+  const hasVoted = findPost.public_votes.includes(user);
+
+  let updateQuery = {};
+
+  if (vote) {
+    if (hasVoted == false) {
+      updateQuery.$push = { publicVotes: user };
+    }
+  } else {
+    if (hasVoted) {
+      updateQuery.$pull = { publicVotes: user };
+    }
+  }
+
+  const updatedPost = await Post.findByIdAndUpdate(
+    findPost._id,
+    updateQuery,
+    { new: true }
+  ).exec();
+
+  if (updatedPost == null) {
+    throw { statusCode: 400, message: "update-failed" };
+  }
+
+  res.status(200).json({
+    success: true,
+    data: updatedPost,
+  });
+};
+
 const findInRadius = async (req, res) => {
   const userId = req.user._id;
 
@@ -152,7 +192,6 @@ const findInRadius = async (req, res) => {
     throw { statusCode: 400, message: "update-failed" };
   }
 
-  // Suche nach Posts in der Nähe
   const posts = await Post.find({
     location: {
       $near: {
@@ -197,6 +236,7 @@ module.exports = {
   createPost,
   updatePost,
   likeOrDislikePost,
+  togglePublicVote,
   findInRadius,
   deletePost,
 };

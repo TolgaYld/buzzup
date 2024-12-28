@@ -128,6 +128,46 @@ const likeOrDislikeStory = async (req, res) => {
   });
 };
 
+const togglePublicVote = async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+  const { vote } = req.body;
+
+
+  const findStory = await Story.findById(id).exec();
+  if (findStory == null) {
+    throw { statusCode: 404, message: "story-not-found" };
+  }
+  const hasVoted = findStory.public_votes.includes(user);
+
+  let updateQuery = {};
+
+  if (vote) {
+    if (hasVoted == false) {
+      updateQuery.$push = { publicVotes: user };
+    }
+  } else {
+    if (hasVoted) {
+      updateQuery.$pull = { publicVotes: user };
+    }
+  }
+
+  const updatedStory = await Story.findByIdAndUpdate(
+    findStory._id,
+    updateQuery,
+    { new: true }
+  ).exec();
+
+  if (updatedStory == null) {
+    throw { statusCode: 400, message: "update-failed" };
+  }
+
+  res.status(200).json({
+    success: true,
+    data: updatedStory,
+  });
+};
+
 
 const findInRadius = async (req, res) => {
   const { coordinates } = req.body;
@@ -227,6 +267,7 @@ module.exports = {
   createStory,
   updateStory,
   likeOrDislikeStory,
+  togglePublicVote,
   findInRadius,
   deleteStory,
 };

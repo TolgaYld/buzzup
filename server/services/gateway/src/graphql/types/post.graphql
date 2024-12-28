@@ -23,6 +23,8 @@ type Post {
   type: String!
   likes: [User!]
   dislikes: [User!]
+  public_votes: [User!]
+  end_date: String
   is_active: Boolean!
   is_deleted: Boolean!
   created_at: String!
@@ -32,6 +34,7 @@ type Post {
 type Mutation {
   createPost(data: CreatePostInput!): Post!
   likeOrDislikePost(id: ID!, like: Boolean!): Post!
+  togglePublicVotePost(story_id: ID!, like: Boolean!): Post!
   updatePost(id: ID, data: UpdatePostInput!): Post!
   deletePostFromDb(id: ID!): Post!
 }
