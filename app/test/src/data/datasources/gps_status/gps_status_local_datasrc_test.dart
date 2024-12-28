@@ -1,5 +1,5 @@
 import 'package:buzzup/core/errors/exception.dart';
-import 'package:buzzup/src/data/datasources/gps_status/gps_status_local_datasrc.dart';
+import 'package:buzzup/src/data/datasources/gps_status/gps_status.local.datasrc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:mockito/annotations.dart';
@@ -17,10 +17,8 @@ void main() {
   });
 
   group('getGeneralServiceStatusStream', () {
-    test('should emit [ServiceStatus] to find out if LocationService is on/off',
-        () {
-      when(geolocator.getServiceStatusStream())
-          .thenAnswer((_) => Stream.fromIterable([ServiceStatus.enabled]));
+    test('should emit [ServiceStatus] to find out if LocationService is on/off', () {
+      when(geolocator.getServiceStatusStream()).thenAnswer((_) => Stream.fromIterable([ServiceStatus.enabled]));
 
       final result = datasrc.getGeneralServiceStatusStream();
 
@@ -34,8 +32,7 @@ void main() {
   group('getServiceStatus', () {
     test('should return [LocationPermission] to find out the status', () async {
       const tLocationPermission = LocationPermission.denied;
-      when(geolocator.checkPermission())
-          .thenAnswer((_) async => tLocationPermission);
+      when(geolocator.checkPermission()).thenAnswer((_) async => tLocationPermission);
 
       final result = await datasrc.getServiceStatus();
 

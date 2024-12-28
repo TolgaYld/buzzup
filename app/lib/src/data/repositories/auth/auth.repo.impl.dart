@@ -4,8 +4,8 @@ import 'package:buzzup/core/models/token.dart';
 import 'package:buzzup/core/models/user.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
-import 'package:buzzup/src/data/datasources/auth/auth_local_datasrc.dart';
-import 'package:buzzup/src/data/datasources/auth/auth_remote_datasrc.dart';
+import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart';
+import 'package:buzzup/src/data/datasources/auth/auth.remote.datasrc.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
 
 class AuthRepoImpl implements AuthRepo {

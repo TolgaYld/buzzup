@@ -7,10 +7,8 @@ import 'dart:async' as _i5;
 
 import 'package:buzzup/core/models/token.dart' as _i3;
 import 'package:buzzup/core/models/user.dart' as _i2;
-import 'package:buzzup/src/data/datasources/auth/auth_local_datasrc.dart'
-    as _i6;
-import 'package:buzzup/src/data/datasources/auth/auth_remote_datasrc.dart'
-    as _i4;
+import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart' as _i6;
+import 'package:buzzup/src/data/datasources/auth/auth.remote.datasrc.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -211,8 +209,7 @@ class MockAuthRemoteDatasrc extends _i1.Mock implements _i4.AuthRemoteDatasrc {
       ) as _i5.Future<bool>);
 
   @override
-  _i5.Future<bool> checkIfUsernameExists(String? username) =>
-      (super.noSuchMethod(
+  _i5.Future<bool> checkIfUsernameExists(String? username) => (super.noSuchMethod(
         Invocation.method(
           #checkIfUsernameExists,
           [username],

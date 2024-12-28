@@ -1,10 +1,10 @@
-import 'package:buzzup/src/data/datasources/theme_mode/theme_mode_local_datasrc.dart';
-import 'package:buzzup/src/data/repositories/theme_mode/theme_mode_repo_impl.dart';
+import 'package:buzzup/src/data/datasources/theme_mode/theme_mode.local.datasrc.dart';
+import 'package:buzzup/src/data/repositories/theme_mode/theme_mode.repo.impl.dart';
 import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode.repo.dart';
-import 'package:buzzup/src/domain/usecases/theme_mode/get_theme_mode_usecase.dart';
-import 'package:buzzup/src/domain/usecases/theme_mode/get_use_system_theme_usecase.dart';
-import 'package:buzzup/src/domain/usecases/theme_mode/set_theme_mode_usecase.dart';
-import 'package:buzzup/src/domain/usecases/theme_mode/set_use_system_theme_usecase.dart';
+import 'package:buzzup/src/domain/usecases/theme_mode/get_theme_mode.usecase.dart';
+import 'package:buzzup/src/domain/usecases/theme_mode/get_use_system_theme.usecase.dart';
+import 'package:buzzup/src/domain/usecases/theme_mode/set_theme_mode.usecase.dart';
+import 'package:buzzup/src/domain/usecases/theme_mode/set_use_system_theme.usecase.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

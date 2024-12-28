@@ -1,6 +1,6 @@
 import 'package:buzzup/core/common/constants.dart';
 import 'package:buzzup/core/errors/exception.dart';
-import 'package:buzzup/src/data/datasources/theme_mode/theme_mode_local_datasrc.dart';
+import 'package:buzzup/src/data/datasources/theme_mode/theme_mode.local.datasrc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -34,8 +34,7 @@ void main() {
       verifyNoMoreInteractions(sharedPreferences);
     });
 
-    test('should throw a [CacheException] when [SharedPreferences] is called',
-        () async {
+    test('should throw a [CacheException] when [SharedPreferences] is called', () async {
       when(sharedPreferences.setBool(any, any)).thenThrow(
         Exception(),
       );
@@ -73,8 +72,7 @@ void main() {
       verifyNoMoreInteractions(sharedPreferences);
     });
 
-    test('should throw a [CacheException] when [SharedPreferences] is called',
-        () async {
+    test('should throw a [CacheException] when [SharedPreferences] is called', () async {
       when(sharedPreferences.getBool(any)).thenThrow(
         Exception(),
       );
@@ -109,8 +107,7 @@ void main() {
       verifyNoMoreInteractions(sharedPreferences);
     });
 
-    test('should throw a [CacheException] when [SharedPreferences] is called',
-        () async {
+    test('should throw a [CacheException] when [SharedPreferences] is called', () async {
       when(sharedPreferences.getBool(any)).thenThrow(
         Exception(),
       );
@@ -147,8 +144,7 @@ void main() {
       verifyNoMoreInteractions(sharedPreferences);
     });
 
-    test('should throw a [CacheException] when [SharedPreferences] is called',
-        () async {
+    test('should throw a [CacheException] when [SharedPreferences] is called', () async {
       when(sharedPreferences.setBool(any, any)).thenThrow(
         Exception(),
       );

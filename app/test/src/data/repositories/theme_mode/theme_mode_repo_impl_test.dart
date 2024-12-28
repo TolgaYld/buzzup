@@ -1,8 +1,8 @@
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
-import 'package:buzzup/src/data/datasources/theme_mode/theme_mode_local_datasrc.dart';
-import 'package:buzzup/src/data/repositories/theme_mode/theme_mode_repo_impl.dart';
+import 'package:buzzup/src/data/datasources/theme_mode/theme_mode.local.datasrc.dart';
+import 'package:buzzup/src/data/repositories/theme_mode/theme_mode.repo.impl.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -33,8 +33,7 @@ void main() {
       verifyNoMoreInteractions(localDatasrc);
     });
 
-    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called',
-        () async {
+    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called', () async {
       when(localDatasrc.getCachedThemeData()).thenThrow(
         CacheException(
           message: "Can't fetch bool",
@@ -71,8 +70,7 @@ void main() {
       verifyNoMoreInteractions(localDatasrc);
     });
 
-    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called',
-        () async {
+    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called', () async {
       when(localDatasrc.getUseSystemTheme()).thenThrow(
         CacheException(
           message: "Can't fetch bool",
@@ -96,8 +94,7 @@ void main() {
   });
 
   group('setThemeMode', () {
-    test('should set/cache theme mode when [ThemeModeLocalDatasrc] is called',
-        () async {
+    test('should set/cache theme mode when [ThemeModeLocalDatasrc] is called', () async {
       when(localDatasrc.cacheThemeData(mode: anyNamed('mode'))).thenAnswer(
         (_) async => Future.value(),
       );
@@ -110,8 +107,7 @@ void main() {
       verifyNoMoreInteractions(localDatasrc);
     });
 
-    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called',
-        () async {
+    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called', () async {
       when(localDatasrc.cacheThemeData(mode: anyNamed('mode'))).thenThrow(
         CacheException(
           message: "Can't cache bool",
@@ -135,8 +131,7 @@ void main() {
   });
 
   group('setUseSystemTheme', () {
-    test('should set/cache theme mode when [ThemeModeLocalDatasrc] is called',
-        () async {
+    test('should set/cache theme mode when [ThemeModeLocalDatasrc] is called', () async {
       when(
         localDatasrc.cacheUseSystemTheme(
           useSystemTheme: anyNamed(
@@ -157,8 +152,7 @@ void main() {
       verifyNoMoreInteractions(localDatasrc);
     });
 
-    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called',
-        () async {
+    test('should return [CacheFailure] when [ThemeModeLocalDatasrc] is called', () async {
       when(
         localDatasrc.cacheUseSystemTheme(
           useSystemTheme: anyNamed(

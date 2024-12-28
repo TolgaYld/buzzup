@@ -1,7 +1,7 @@
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/src/application/gps_status/workflow/state/gps_status.state.dart';
-import 'package:buzzup/src/domain/usecases/gps_status/get_gps_status_usecase.dart';
-import 'package:buzzup/src/domain/usecases/gps_status/watch_gps_status_usecase.dart';
+import 'package:buzzup/src/domain/usecases/gps_status/get_gps_status.usecase.dart';
+import 'package:buzzup/src/domain/usecases/gps_status/watch_gps_status.usecase.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

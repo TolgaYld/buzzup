@@ -8,7 +8,7 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:buzzup/core/utils/graphql/auth/gql_mutations.dart';
 import 'package:buzzup/core/utils/graphql/auth/gql_querys.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
-import 'package:buzzup/src/data/datasources/auth/auth_remote_datasrc.dart';
+import 'package:buzzup/src/data/datasources/auth/auth.remote.datasrc.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

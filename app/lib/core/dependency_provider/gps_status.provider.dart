@@ -1,8 +1,8 @@
-import 'package:buzzup/src/data/datasources/gps_status/gps_status_local_datasrc.dart';
-import 'package:buzzup/src/data/repositories/gps_status/gps_status_repo_impl.dart';
+import 'package:buzzup/src/data/datasources/gps_status/gps_status.local.datasrc.dart';
+import 'package:buzzup/src/data/repositories/gps_status/gps_status.repo.impl.dart';
 import 'package:buzzup/src/domain/repositories/gps_status/gps_status.repo.dart';
-import 'package:buzzup/src/domain/usecases/gps_status/get_gps_status_usecase.dart';
-import 'package:buzzup/src/domain/usecases/gps_status/watch_gps_status_usecase.dart';
+import 'package:buzzup/src/domain/usecases/gps_status/get_gps_status.usecase.dart';
+import 'package:buzzup/src/domain/usecases/gps_status/watch_gps_status.usecase.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 

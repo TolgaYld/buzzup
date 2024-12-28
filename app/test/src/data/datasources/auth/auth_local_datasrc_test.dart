@@ -2,7 +2,7 @@ import 'package:buzzup/core/errors/exception.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/common/constants.dart';
-import 'package:buzzup/src/data/datasources/auth/auth_local_datasrc.dart';
+import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart';
 import 'package:buzzup/core/models/token.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -21,10 +21,8 @@ void main() {
   final tTokenModel = Token.empty();
 
   group('setToken', () {
-    test('should chache the Tokens when call to local source is successful',
-        () async {
-      when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-          .thenAnswer((_) async => Future.value());
+    test('should chache the Tokens when call to local source is successful', () async {
+      when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value'))).thenAnswer((_) async => Future.value());
 
       await datasrc.setTokens(
         token: tTokenModel.token,
@@ -51,8 +49,7 @@ void main() {
     test(
         'should throw an [CacheException] when call to remote source is '
         'unsuccessful', () async {
-      when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value')))
-          .thenThrow(Exception());
+      when(secureStorage.write(key: anyNamed('key'), value: anyNamed('value'))).thenThrow(Exception());
 
       final methodCall = datasrc.setTokens;
 

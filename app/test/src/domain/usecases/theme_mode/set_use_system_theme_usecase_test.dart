@@ -1,7 +1,7 @@
 import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:buzzup/src/domain/usecases/theme_mode/set_use_system_theme_usecase.dart';
+import 'package:buzzup/src/domain/usecases/theme_mode/set_use_system_theme.usecase.dart';
 import 'package:mockito/mockito.dart';
 
 import 'get_theme_mode_usecase_test.mocks.dart';
@@ -16,8 +16,7 @@ void main() {
   });
 
   group('SetUseSystemThemeUsecase', () {
-    test('should call [ThemeModeRepo] when ThemeMode on System will be used',
-        () async {
+    test('should call [ThemeModeRepo] when ThemeMode on System will be used', () async {
       when(
         repo.setUseSystemTheme(
           useSystemTheme: anyNamed('useSystemTheme'),
@@ -64,8 +63,7 @@ void main() {
     test(
         'should return [CacheFailure] when call to '
         '[ThemeModeRepo] was unsuccessful', () async {
-      when(repo.setUseSystemTheme(useSystemTheme: anyNamed('useSystemTheme')))
-          .thenAnswer(
+      when(repo.setUseSystemTheme(useSystemTheme: anyNamed('useSystemTheme'))).thenAnswer(
         (_) async => Left(
           CacheFailure(
             message: "Can't set bool",

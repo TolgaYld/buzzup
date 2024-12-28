@@ -2,7 +2,7 @@ import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
-import 'package:buzzup/src/data/datasources/theme_mode/theme_mode_local_datasrc.dart';
+import 'package:buzzup/src/data/datasources/theme_mode/theme_mode.local.datasrc.dart';
 import 'package:buzzup/src/domain/repositories/theme_mode/theme_mode.repo.dart';
 
 class ThemeModeRepoImpl implements ThemeModeRepo {

@@ -3,7 +3,7 @@ import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:buzzup/src/domain/repositories/gps_status/gps_status.repo.dart';
-import 'package:buzzup/src/domain/usecases/gps_status/get_gps_status_usecase.dart';
+import 'package:buzzup/src/domain/usecases/gps_status/get_gps_status.usecase.dart';
 import 'package:mockito/mockito.dart';
 
 import 'watch_gps_status_usecase_test.mocks.dart';
