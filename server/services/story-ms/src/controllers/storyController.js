@@ -1,5 +1,5 @@
 const { Story, User } = require("@TolgaYld/core-buzzup");
-const errorHandler = require("../errors/errorHandler");
+const { DateTime } = require("luxon");
 
 const findAll = async (req, res) => {
   const findAllStorys = await Story.find().exec();
@@ -37,8 +37,14 @@ const findAllStorysFromUser = async (req, res) => {
 };
 
 const createStory = async (req, res) => {
+  const isPostAnonym = req.body.data.type === "ANONYMOUS";
+  const endDate = isPostAnonym
+    ? DateTime.now().plus({ hours: 12 }).toJSDate()
+    : null;
+
   const createdStory = await Story.create({
     ...req.body.data,
+    end_date: endDate,
     user: req.user,
   });
 
@@ -61,9 +67,17 @@ const updateStory = async (req, res) => {
     throw { statusCode: 404, message: "story-not-found" };
   }
 
+  const isPostAnonym = req.body.data.type === "ANONYMOUS";
+  const endDate = isPostAnonym
+    ? req.body.data.end_date == null ? DateTime.now().plus({ hours: 12 }).toJSDate() : req.body.data.end_date
+    : null;
+
   const updatedStory = await Story.findByIdAndUpdate(
     id,
-    { ...req.body },
+    {
+      ...req.body.data,
+      end_date: endDate,
+    },
     { new: true }
   ).exec();
 
@@ -220,44 +234,22 @@ const findInRadius = async (req, res) => {
 };
 
 const deleteStory = async (req, res) => {
-  try {
-    const userId = req.headers.authorization;
-    if (userId == null) {
-      return await errorHandler(401, "unauthorized", true, req, res);
-    } else {
-      const findUser = await User.findById(userId).exec();
-
-      if (!findUser) {
-        return await errorHandler(401, "unauthorized", true, req, res);
-      } else {
-        const { id } = req.params;
-        const findStory = await Story.findById(id).exec();
-
-        if (!findStory) {
-          return await errorHandler(404, "story-not-found", true, req, res);
-        } else {
-          const deletedStory = await Story.findByIdAndDelete(id).exec();
-
-          if (!deletedStory) {
-            return await errorHandler(
-              400,
-              "story-delete-failed",
-              true,
-              req,
-              res,
-            );
-          } else {
-            await res.status(200).json({
-              success: true,
-              data: findStory,
-            });
-          }
-        }
-      }
-    }
-  } catch (error) {
-    return await errorHandler(404, error, false, req, res);
+  const { id } = req.params;
+  const findStory = await Story.findById(id).exec();
+  if (findStory == null) {
+    throw {
+      statusCode: 404,
+      message: "story-not-found",
+    };
   }
+  const deletedStory = await Story.findByIdAndDelete(id).exec();
+  if (deletedStory == null) {
+    throw { statusCode: 400, message: "story-delete-failed" };
+  }
+  await res.status(200).json({
+    success: true,
+    data: findStory,
+  });
 };
 
 module.exports = {

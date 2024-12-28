@@ -1,4 +1,5 @@
 const { Post, User } = require("@TolgaYld/core-buzzup");
+const { DateTime } = require("luxon");
 
 
 const findAll = async (req, res) => {
@@ -47,8 +48,14 @@ const findAllPostsFromUser = async (req, res) => {
 
 
 const createPost = async (req, res) => {
+  const isPostAnonym = req.body.data.type === "ANONYMOUS";
+  const endDate = isPostAnonym
+    ? DateTime.now().plus({ hours: 12 }).toJSDate()
+    : null;
+
   const createdPost = await Post.create({
     ...req.body.data,
+    end_date: endDate,
     created_by: req.user,
   });
 
@@ -65,16 +72,23 @@ const createPost = async (req, res) => {
 
 const updatePost = async (req, res) => {
   const { id } = req.params;
-
   const findPost = await Post.findById(id).exec();
 
   if (findPost == null) {
     throw { statusCode: 404, message: "post-not-found" };
   }
+  const isPostAnonym = req.body.data.type === "ANONYMOUS";
+  const endDate = isPostAnonym
+    ? req.body.data.end_date == null ? DateTime.now().plus({ hours: 12 }).toJSDate() : req.body.data.end_date
+    : null;
 
   const updatedPost = await Post.findByIdAndUpdate(
     findPost._id,
-    { ...req.body },
+    {
+      ...req.body.data,
+      end_date: endDate,
+      last_update_from_user: req.user,
+    },
     { new: true }
   ).exec();
 
