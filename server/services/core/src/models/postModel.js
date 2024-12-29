@@ -52,6 +52,12 @@ const PostSchema = new Schema(
       type: SchemaTypes.Date,
       default: null,
     },
+    linked_users: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Users",
+      },
+    ],
     is_deleted: {
       type: SchemaTypes.Boolean,
       default: false,

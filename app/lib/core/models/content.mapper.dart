@@ -15,7 +15,6 @@ class ContentMapper extends ClassMapperBase<Content> {
       MapperContainer.globals.use(_instance = ContentMapper._());
       PostMapper.ensureInitialized();
       StoryMapper.ensureInitialized();
-      MetadataMapper.ensureInitialized();
       ChannelMapper.ensureInitialized();
       LocationMapper.ensureInitialized();
       UserMapper.ensureInitialized();
@@ -29,9 +28,6 @@ class ContentMapper extends ClassMapperBase<Content> {
 
   static String _$id(Content v) => v.id;
   static const Field<Content, String> _f$id = Field('id', _$id);
-  static Metadata _$metadata(Content v) => v.metadata;
-  static const Field<Content, Metadata> _f$metadata =
-      Field('metadata', _$metadata);
   static List<Channel>? _$channels(Content v) => v.channels;
   static const Field<Content, List<Channel>> _f$channels =
       Field('channels', _$channels);
@@ -40,6 +36,24 @@ class ContentMapper extends ClassMapperBase<Content> {
       Field('location', _$location);
   static ContentType _$type(Content v) => v.type;
   static const Field<Content, ContentType> _f$type = Field('type', _$type);
+  static bool _$isActive(Content v) => v.isActive;
+  static const Field<Content, bool> _f$isActive =
+      Field('isActive', _$isActive, key: 'is_active');
+  static bool _$isDeleted(Content v) => v.isDeleted;
+  static const Field<Content, bool> _f$isDeleted =
+      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+  static DateTime _$createdAt(Content v) => v.createdAt;
+  static const Field<Content, DateTime> _f$createdAt =
+      Field('createdAt', _$createdAt, key: 'created_at');
+  static User _$createdBy(Content v) => v.createdBy;
+  static const Field<Content, User> _f$createdBy =
+      Field('createdBy', _$createdBy, key: 'created_by');
+  static DateTime? _$updatedAt(Content v) => v.updatedAt;
+  static const Field<Content, DateTime> _f$updatedAt =
+      Field('updatedAt', _$updatedAt, key: 'updated_at', opt: true);
+  static User? _$updatedBy(Content v) => v.updatedBy;
+  static const Field<Content, User> _f$updatedBy =
+      Field('updatedBy', _$updatedBy, key: 'updated_by', opt: true);
   static List<User>? _$likes(Content v) => v.likes;
   static const Field<Content, List<User>> _f$likes =
       Field('likes', _$likes, opt: true);
@@ -58,20 +72,29 @@ class ContentMapper extends ClassMapperBase<Content> {
   static List<Comment>? _$comments(Content v) => v.comments;
   static const Field<Content, List<Comment>> _f$comments =
       Field('comments', _$comments, opt: true);
+  static List<User>? _$linkedUsers(Content v) => v.linkedUsers;
+  static const Field<Content, List<User>> _f$linkedUsers =
+      Field('linkedUsers', _$linkedUsers, key: 'linked_users', opt: true);
 
   @override
   final MappableFields<Content> fields = const {
     #id: _f$id,
-    #metadata: _f$metadata,
     #channels: _f$channels,
     #location: _f$location,
     #type: _f$type,
+    #isActive: _f$isActive,
+    #isDeleted: _f$isDeleted,
+    #createdAt: _f$createdAt,
+    #createdBy: _f$createdBy,
+    #updatedAt: _f$updatedAt,
+    #updatedBy: _f$updatedBy,
     #likes: _f$likes,
     #dislikes: _f$dislikes,
     #text: _f$text,
     #media: _f$media,
     #city: _f$city,
     #comments: _f$comments,
+    #linkedUsers: _f$linkedUsers,
   };
 
   static Content _instantiate(DecodingData data) {
@@ -98,10 +121,11 @@ mixin ContentMappable {
 
 abstract class ContentCopyWith<$R, $In extends Content, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  MetadataCopyWith<$R, Metadata, Metadata> get metadata;
   ListCopyWith<$R, Channel, ChannelCopyWith<$R, Channel, Channel>>?
       get channels;
   LocationCopyWith<$R, Location, Location> get location;
+  UserCopyWith<$R, User, User> get createdBy;
+  UserCopyWith<$R, User, User>? get updatedBy;
   ListCopyWith<$R, User, UserCopyWith<$R, User, User>>? get likes;
   ListCopyWith<$R, User, UserCopyWith<$R, User, User>>? get dislikes;
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>?>? get media;
@@ -109,10 +133,15 @@ abstract class ContentCopyWith<$R, $In extends Content, $Out>
       get comments;
   $R call(
       {String? id,
-      Metadata? metadata,
       List<Channel>? channels,
       Location? location,
       ContentType? type,
+      bool? isActive,
+      bool? isDeleted,
+      DateTime? createdAt,
+      User? createdBy,
+      DateTime? updatedAt,
+      User? updatedBy,
       List<User>? likes,
       List<User>? dislikes,
       String? text,
@@ -130,7 +159,6 @@ class PostMapper extends ClassMapperBase<Post> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = PostMapper._());
       ContentMapper.ensureInitialized();
-      MetadataMapper.ensureInitialized();
       ChannelMapper.ensureInitialized();
       LocationMapper.ensureInitialized();
       UserMapper.ensureInitialized();
@@ -144,9 +172,6 @@ class PostMapper extends ClassMapperBase<Post> {
 
   static String _$id(Post v) => v.id;
   static const Field<Post, String> _f$id = Field('id', _$id);
-  static Metadata _$metadata(Post v) => v.metadata;
-  static const Field<Post, Metadata> _f$metadata =
-      Field('metadata', _$metadata);
   static List<Channel>? _$channels(Post v) => v.channels;
   static const Field<Post, List<Channel>> _f$channels =
       Field('channels', _$channels);
@@ -155,6 +180,24 @@ class PostMapper extends ClassMapperBase<Post> {
       Field('location', _$location);
   static ContentType _$type(Post v) => v.type;
   static const Field<Post, ContentType> _f$type = Field('type', _$type);
+  static bool _$isActive(Post v) => v.isActive;
+  static const Field<Post, bool> _f$isActive =
+      Field('isActive', _$isActive, key: 'is_active');
+  static bool _$isDeleted(Post v) => v.isDeleted;
+  static const Field<Post, bool> _f$isDeleted =
+      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+  static DateTime _$createdAt(Post v) => v.createdAt;
+  static const Field<Post, DateTime> _f$createdAt =
+      Field('createdAt', _$createdAt, key: 'created_at');
+  static User _$createdBy(Post v) => v.createdBy;
+  static const Field<Post, User> _f$createdBy =
+      Field('createdBy', _$createdBy, key: 'created_by');
+  static DateTime? _$updatedAt(Post v) => v.updatedAt;
+  static const Field<Post, DateTime> _f$updatedAt =
+      Field('updatedAt', _$updatedAt, key: 'updated_at', opt: true);
+  static User? _$updatedBy(Post v) => v.updatedBy;
+  static const Field<Post, User> _f$updatedBy =
+      Field('updatedBy', _$updatedBy, key: 'updated_by', opt: true);
   static List<User>? _$likes(Post v) => v.likes;
   static const Field<Post, List<User>> _f$likes =
       Field('likes', _$likes, opt: true);
@@ -174,14 +217,22 @@ class PostMapper extends ClassMapperBase<Post> {
   static DateTime? _$endDate(Post v) => v.endDate;
   static const Field<Post, DateTime> _f$endDate =
       Field('endDate', _$endDate, key: 'end_date', opt: true);
+  static List<User>? _$linkedUsers(Post v) => v.linkedUsers;
+  static const Field<Post, List<User>> _f$linkedUsers =
+      Field('linkedUsers', _$linkedUsers, key: 'linked_users');
 
   @override
   final MappableFields<Post> fields = const {
     #id: _f$id,
-    #metadata: _f$metadata,
     #channels: _f$channels,
     #location: _f$location,
     #type: _f$type,
+    #isActive: _f$isActive,
+    #isDeleted: _f$isDeleted,
+    #createdAt: _f$createdAt,
+    #createdBy: _f$createdBy,
+    #updatedAt: _f$updatedAt,
+    #updatedBy: _f$updatedBy,
     #likes: _f$likes,
     #dislikes: _f$dislikes,
     #text: _f$text,
@@ -189,15 +240,21 @@ class PostMapper extends ClassMapperBase<Post> {
     #city: _f$city,
     #comments: _f$comments,
     #endDate: _f$endDate,
+    #linkedUsers: _f$linkedUsers,
   };
 
   static Post _instantiate(DecodingData data) {
     return Post(
         id: data.dec(_f$id),
-        metadata: data.dec(_f$metadata),
         channels: data.dec(_f$channels),
         location: data.dec(_f$location),
         type: data.dec(_f$type),
+        isActive: data.dec(_f$isActive),
+        isDeleted: data.dec(_f$isDeleted),
+        createdAt: data.dec(_f$createdAt),
+        createdBy: data.dec(_f$createdBy),
+        updatedAt: data.dec(_f$updatedAt),
+        updatedBy: data.dec(_f$updatedBy),
         likes: data.dec(_f$likes),
         dislikes: data.dec(_f$dislikes),
         text: data.dec(_f$text),
@@ -254,12 +311,14 @@ extension PostValueCopy<$R, $Out> on ObjectCopyWith<$R, Post, $Out> {
 abstract class PostCopyWith<$R, $In extends Post, $Out>
     implements ContentCopyWith<$R, $In, $Out> {
   @override
-  MetadataCopyWith<$R, Metadata, Metadata> get metadata;
-  @override
   ListCopyWith<$R, Channel, ChannelCopyWith<$R, Channel, Channel>>?
       get channels;
   @override
   LocationCopyWith<$R, Location, Location> get location;
+  @override
+  UserCopyWith<$R, User, User> get createdBy;
+  @override
+  UserCopyWith<$R, User, User>? get updatedBy;
   @override
   ListCopyWith<$R, User, UserCopyWith<$R, User, User>>? get likes;
   @override
@@ -272,10 +331,15 @@ abstract class PostCopyWith<$R, $In extends Post, $Out>
   @override
   $R call(
       {String? id,
-      Metadata? metadata,
       List<Channel>? channels,
       Location? location,
       ContentType? type,
+      bool? isActive,
+      bool? isDeleted,
+      DateTime? createdAt,
+      User? createdBy,
+      DateTime? updatedAt,
+      User? updatedBy,
       List<User>? likes,
       List<User>? dislikes,
       String? text,
@@ -293,9 +357,6 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
   @override
   late final ClassMapperBase<Post> $mapper = PostMapper.ensureInitialized();
   @override
-  MetadataCopyWith<$R, Metadata, Metadata> get metadata =>
-      $value.metadata.copyWith.$chain((v) => call(metadata: v));
-  @override
   ListCopyWith<$R, Channel, ChannelCopyWith<$R, Channel, Channel>>?
       get channels => $value.channels != null
           ? ListCopyWith($value.channels!, (v, t) => v.copyWith.$chain(t),
@@ -304,6 +365,12 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
   @override
   LocationCopyWith<$R, Location, Location> get location =>
       $value.location.copyWith.$chain((v) => call(location: v));
+  @override
+  UserCopyWith<$R, User, User> get createdBy =>
+      $value.createdBy.copyWith.$chain((v) => call(createdBy: v));
+  @override
+  UserCopyWith<$R, User, User>? get updatedBy =>
+      $value.updatedBy?.copyWith.$chain((v) => call(updatedBy: v));
   @override
   ListCopyWith<$R, User, UserCopyWith<$R, User, User>>? get likes =>
       $value.likes != null
@@ -331,10 +398,15 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
   @override
   $R call(
           {String? id,
-          Metadata? metadata,
           Object? channels = $none,
           Location? location,
           ContentType? type,
+          bool? isActive,
+          bool? isDeleted,
+          DateTime? createdAt,
+          User? createdBy,
+          Object? updatedAt = $none,
+          Object? updatedBy = $none,
           Object? likes = $none,
           Object? dislikes = $none,
           Object? text = $none,
@@ -344,10 +416,15 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
           Object? endDate = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
-        if (metadata != null) #metadata: metadata,
         if (channels != $none) #channels: channels,
         if (location != null) #location: location,
         if (type != null) #type: type,
+        if (isActive != null) #isActive: isActive,
+        if (isDeleted != null) #isDeleted: isDeleted,
+        if (createdAt != null) #createdAt: createdAt,
+        if (createdBy != null) #createdBy: createdBy,
+        if (updatedAt != $none) #updatedAt: updatedAt,
+        if (updatedBy != $none) #updatedBy: updatedBy,
         if (likes != $none) #likes: likes,
         if (dislikes != $none) #dislikes: dislikes,
         if (text != $none) #text: text,
@@ -359,10 +436,15 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
   @override
   Post $make(CopyWithData data) => Post(
       id: data.get(#id, or: $value.id),
-      metadata: data.get(#metadata, or: $value.metadata),
       channels: data.get(#channels, or: $value.channels),
       location: data.get(#location, or: $value.location),
       type: data.get(#type, or: $value.type),
+      isActive: data.get(#isActive, or: $value.isActive),
+      isDeleted: data.get(#isDeleted, or: $value.isDeleted),
+      createdAt: data.get(#createdAt, or: $value.createdAt),
+      createdBy: data.get(#createdBy, or: $value.createdBy),
+      updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+      updatedBy: data.get(#updatedBy, or: $value.updatedBy),
       likes: data.get(#likes, or: $value.likes),
       dislikes: data.get(#dislikes, or: $value.dislikes),
       text: data.get(#text, or: $value.text),
@@ -384,7 +466,6 @@ class StoryMapper extends ClassMapperBase<Story> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = StoryMapper._());
       ContentMapper.ensureInitialized();
-      MetadataMapper.ensureInitialized();
       ChannelMapper.ensureInitialized();
       LocationMapper.ensureInitialized();
       UserMapper.ensureInitialized();
@@ -398,9 +479,6 @@ class StoryMapper extends ClassMapperBase<Story> {
 
   static String _$id(Story v) => v.id;
   static const Field<Story, String> _f$id = Field('id', _$id);
-  static Metadata _$metadata(Story v) => v.metadata;
-  static const Field<Story, Metadata> _f$metadata =
-      Field('metadata', _$metadata);
   static List<Channel>? _$channels(Story v) => v.channels;
   static const Field<Story, List<Channel>> _f$channels =
       Field('channels', _$channels);
@@ -409,6 +487,24 @@ class StoryMapper extends ClassMapperBase<Story> {
       Field('location', _$location);
   static ContentType _$type(Story v) => v.type;
   static const Field<Story, ContentType> _f$type = Field('type', _$type);
+  static bool _$isActive(Story v) => v.isActive;
+  static const Field<Story, bool> _f$isActive =
+      Field('isActive', _$isActive, key: 'is_active');
+  static bool _$isDeleted(Story v) => v.isDeleted;
+  static const Field<Story, bool> _f$isDeleted =
+      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+  static DateTime _$createdAt(Story v) => v.createdAt;
+  static const Field<Story, DateTime> _f$createdAt =
+      Field('createdAt', _$createdAt, key: 'created_at');
+  static User _$createdBy(Story v) => v.createdBy;
+  static const Field<Story, User> _f$createdBy =
+      Field('createdBy', _$createdBy, key: 'created_by');
+  static DateTime? _$updatedAt(Story v) => v.updatedAt;
+  static const Field<Story, DateTime> _f$updatedAt =
+      Field('updatedAt', _$updatedAt, key: 'updated_at', opt: true);
+  static User? _$updatedBy(Story v) => v.updatedBy;
+  static const Field<Story, User> _f$updatedBy =
+      Field('updatedBy', _$updatedBy, key: 'updated_by', opt: true);
   static List<User>? _$likes(Story v) => v.likes;
   static const Field<Story, List<User>> _f$likes =
       Field('likes', _$likes, opt: true);
@@ -425,29 +521,43 @@ class StoryMapper extends ClassMapperBase<Story> {
   static List<Comment>? _$comments(Story v) => v.comments;
   static const Field<Story, List<Comment>> _f$comments =
       Field('comments', _$comments, opt: true);
+  static List<User>? _$linkedUsers(Story v) => v.linkedUsers;
+  static const Field<Story, List<User>> _f$linkedUsers =
+      Field('linkedUsers', _$linkedUsers, key: 'linked_users');
 
   @override
   final MappableFields<Story> fields = const {
     #id: _f$id,
-    #metadata: _f$metadata,
     #channels: _f$channels,
     #location: _f$location,
     #type: _f$type,
+    #isActive: _f$isActive,
+    #isDeleted: _f$isDeleted,
+    #createdAt: _f$createdAt,
+    #createdBy: _f$createdBy,
+    #updatedAt: _f$updatedAt,
+    #updatedBy: _f$updatedBy,
     #likes: _f$likes,
     #dislikes: _f$dislikes,
     #text: _f$text,
     #media: _f$media,
     #city: _f$city,
     #comments: _f$comments,
+    #linkedUsers: _f$linkedUsers,
   };
 
   static Story _instantiate(DecodingData data) {
     return Story(
         id: data.dec(_f$id),
-        metadata: data.dec(_f$metadata),
         channels: data.dec(_f$channels),
         location: data.dec(_f$location),
         type: data.dec(_f$type),
+        isActive: data.dec(_f$isActive),
+        isDeleted: data.dec(_f$isDeleted),
+        createdAt: data.dec(_f$createdAt),
+        createdBy: data.dec(_f$createdBy),
+        updatedAt: data.dec(_f$updatedAt),
+        updatedBy: data.dec(_f$updatedBy),
         likes: data.dec(_f$likes),
         dislikes: data.dec(_f$dislikes),
         text: data.dec(_f$text),
@@ -503,12 +613,14 @@ extension StoryValueCopy<$R, $Out> on ObjectCopyWith<$R, Story, $Out> {
 abstract class StoryCopyWith<$R, $In extends Story, $Out>
     implements ContentCopyWith<$R, $In, $Out> {
   @override
-  MetadataCopyWith<$R, Metadata, Metadata> get metadata;
-  @override
   ListCopyWith<$R, Channel, ChannelCopyWith<$R, Channel, Channel>>?
       get channels;
   @override
   LocationCopyWith<$R, Location, Location> get location;
+  @override
+  UserCopyWith<$R, User, User> get createdBy;
+  @override
+  UserCopyWith<$R, User, User>? get updatedBy;
   @override
   ListCopyWith<$R, User, UserCopyWith<$R, User, User>>? get likes;
   @override
@@ -521,10 +633,15 @@ abstract class StoryCopyWith<$R, $In extends Story, $Out>
   @override
   $R call(
       {String? id,
-      Metadata? metadata,
       List<Channel>? channels,
       Location? location,
       ContentType? type,
+      bool? isActive,
+      bool? isDeleted,
+      DateTime? createdAt,
+      User? createdBy,
+      DateTime? updatedAt,
+      User? updatedBy,
       List<User>? likes,
       List<User>? dislikes,
       String? text,
@@ -541,9 +658,6 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
   @override
   late final ClassMapperBase<Story> $mapper = StoryMapper.ensureInitialized();
   @override
-  MetadataCopyWith<$R, Metadata, Metadata> get metadata =>
-      $value.metadata.copyWith.$chain((v) => call(metadata: v));
-  @override
   ListCopyWith<$R, Channel, ChannelCopyWith<$R, Channel, Channel>>?
       get channels => $value.channels != null
           ? ListCopyWith($value.channels!, (v, t) => v.copyWith.$chain(t),
@@ -552,6 +666,12 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
   @override
   LocationCopyWith<$R, Location, Location> get location =>
       $value.location.copyWith.$chain((v) => call(location: v));
+  @override
+  UserCopyWith<$R, User, User> get createdBy =>
+      $value.createdBy.copyWith.$chain((v) => call(createdBy: v));
+  @override
+  UserCopyWith<$R, User, User>? get updatedBy =>
+      $value.updatedBy?.copyWith.$chain((v) => call(updatedBy: v));
   @override
   ListCopyWith<$R, User, UserCopyWith<$R, User, User>>? get likes =>
       $value.likes != null
@@ -579,10 +699,15 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
   @override
   $R call(
           {String? id,
-          Metadata? metadata,
           Object? channels = $none,
           Location? location,
           ContentType? type,
+          bool? isActive,
+          bool? isDeleted,
+          DateTime? createdAt,
+          User? createdBy,
+          Object? updatedAt = $none,
+          Object? updatedBy = $none,
           Object? likes = $none,
           Object? dislikes = $none,
           Object? text = $none,
@@ -591,10 +716,15 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
           Object? comments = $none}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
-        if (metadata != null) #metadata: metadata,
         if (channels != $none) #channels: channels,
         if (location != null) #location: location,
         if (type != null) #type: type,
+        if (isActive != null) #isActive: isActive,
+        if (isDeleted != null) #isDeleted: isDeleted,
+        if (createdAt != null) #createdAt: createdAt,
+        if (createdBy != null) #createdBy: createdBy,
+        if (updatedAt != $none) #updatedAt: updatedAt,
+        if (updatedBy != $none) #updatedBy: updatedBy,
         if (likes != $none) #likes: likes,
         if (dislikes != $none) #dislikes: dislikes,
         if (text != $none) #text: text,
@@ -605,10 +735,15 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
   @override
   Story $make(CopyWithData data) => Story(
       id: data.get(#id, or: $value.id),
-      metadata: data.get(#metadata, or: $value.metadata),
       channels: data.get(#channels, or: $value.channels),
       location: data.get(#location, or: $value.location),
       type: data.get(#type, or: $value.type),
+      isActive: data.get(#isActive, or: $value.isActive),
+      isDeleted: data.get(#isDeleted, or: $value.isDeleted),
+      createdAt: data.get(#createdAt, or: $value.createdAt),
+      createdBy: data.get(#createdBy, or: $value.createdBy),
+      updatedAt: data.get(#updatedAt, or: $value.updatedAt),
+      updatedBy: data.get(#updatedBy, or: $value.updatedBy),
       likes: data.get(#likes, or: $value.likes),
       dislikes: data.get(#dislikes, or: $value.dislikes),
       text: data.get(#text, or: $value.text),

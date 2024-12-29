@@ -25,6 +25,7 @@ type Post {
   dislikes: [User!]
   public_votes: [User!]
   end_date: String
+  linked_users: [User!]
   is_active: Boolean!
   is_deleted: Boolean!
   created_at: String!

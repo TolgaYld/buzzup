@@ -23,6 +23,7 @@ type Story {
   likes: [User!]
   dislikes: [User!]
   public_votes: [User!]
+  linked_users: [User!]
   is_active: Boolean!
   is_deleted: Boolean!
   created_at: String
