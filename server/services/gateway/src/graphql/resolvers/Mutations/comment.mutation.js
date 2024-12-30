@@ -51,7 +51,7 @@ module.exports = {
         type: "UpdateComment",
         data: {
           ...args.data,
-          last_update_from_user: id,
+          updatad_by: id,
         },
       },
       { headers }

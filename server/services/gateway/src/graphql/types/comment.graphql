@@ -1,6 +1,8 @@
 # import User from "./user.graphql"
 # import Post from "./post.graphql"
+# import Story from "./story.graphql"
 # import Report from "./report.graphql"
+# import VisibilityType from "./visibilityType.graphql"
 
 type Query {
     comment(id: ID!): Comment!
@@ -12,14 +14,18 @@ type Comment {
   text: String
   media: [String]
   created_by: User!
-  post: Post!
-  type: String!
+  post: Post
+  story: Story
+  visibility: VisibilityType!
   likes: [User!]!
   dislikes: [User!]
+  hashtags: [String]
+  shares: [User!]
   is_active: Boolean
   is_deleted: Boolean!
   created_at: String!
-  last_update_from_user: ID
+  updated_at: String
+  updated_by: User
 }
 
 type Mutation{
@@ -32,20 +38,20 @@ type Mutation{
 input CreateCommentInput{
   text: String
   media: [String]
-  post: ID!
-  type: String!
-  last_update_from_user: ID
+  post: ID
+  story: ID
+  visibility: VisibilityType!
 }
 
 input UpdateCommentInput{
   text: String!
   media: [String]
   post: ID
-  type: String
+  story: ID
+  visibility: VisibilityType
   is_active: Boolean
   is_deleted: Boolean
 }
-
 
 type Subscription {
     comment(device_id: ID): Comment!

@@ -24,5 +24,7 @@
 # import Mutation from "./types/report.graphql"
 # import Subscription from "./types/report.graphql"
 
+# import EngagementLog from "./types/engagementLog.graphql"
+# import VisibilityType from "./types/visibilityType.graphql"
 
 # import Token from "./types/token.graphql"

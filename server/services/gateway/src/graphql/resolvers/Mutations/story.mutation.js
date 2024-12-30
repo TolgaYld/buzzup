@@ -44,7 +44,7 @@ module.exports = {
         type: "UpdateStory",
         data: {
           ...args.data,
-          last_update_from_user: id,
+          updated_by: id,
         },
       },
       { headers }

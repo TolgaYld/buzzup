@@ -18,7 +18,8 @@ type Channel {
   is_active: Boolean!
   is_deleted: Boolean!
   created_at: String
-  last_update_from_user: ID
+  updated_at: String
+  updated_by: User
 }
 
 type Mutation{

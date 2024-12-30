@@ -46,7 +46,7 @@ module.exports = {
         type: "UpdatePost",
         data: {
           ...args.data,
-          last_update_from_user: id,
+          updated_by: id,
         },
       },
       { headers }

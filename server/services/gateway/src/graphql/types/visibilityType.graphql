@@ -1,0 +1,7 @@
+enum VisibilityType {
+    PUBLIC
+    ANONYMOUS
+    PRIVATE
+    ONLY_FRIENDS
+    ONLY_ME
+}

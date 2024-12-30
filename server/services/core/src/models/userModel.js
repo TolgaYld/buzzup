@@ -7,6 +7,7 @@ const Story = require("./storyModel");
 const Comment = require("./commentModel");
 const Report = require("./reportModel");
 const Channel = require("./channelModel");
+const EngagementLog = require("./engagementLogModel");
 const { log } = require("../modules/logModule");
 
 const UserSchema = new Schema(
@@ -129,7 +130,7 @@ UserSchema.post("findOneAndDelete", async function () {
     await Story.deleteMany({ user: userId }, { session });
     await Comment.deleteMany({ user: userId }, { session });
     await Report.deleteMany({ reported_user: userId }, { session });
-
+    await EngagementLog.deleteMany({ user: userId }, { session });
     await session.commitTransaction();
   } catch (error) {
     // rollback the transaction
@@ -154,6 +155,7 @@ UserSchema.post("findOneAndUpdate", async function () {
       await Story.updateMany({ user: userId }, { is_deleted: true }, { session });
       await Comment.updateMany({ user: userId }, { is_deleted: true }, { session });
       await Report.updateMany({ reported_user: userId }, { is_deleted: true }, { session });
+      await EngagementLog.updateMany({ user: userId }, { is_deleted: true }, { session });
     }
 
     if (update.is_banned === true) {

@@ -1,0 +1,26 @@
+# import User from "./user.graphql"
+# import Post from "./post.graphql"
+# import Comment from "./comment.graphql"
+# import Story from "./story.graphql"
+
+type EngagementLog {
+    _id: ID!
+    user: User!
+    post: Post
+    story: Story
+    comment: Comment
+    interactionType: InteractionType!
+    is_active: Boolean!
+    is_deleted: Boolean!
+    created_by: User!
+    updated_by: User!
+    created_at: String!
+    updated_at: String!
+}
+
+enum InteractionType {
+    LIKE
+    DISLIKE
+    COMMENT
+    SHARE
+}

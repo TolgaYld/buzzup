@@ -43,7 +43,7 @@ module.exports = {
         type: "UpdateReport",
         data: {
           ...args.data,
-          last_update_from_user: id,
+          updated_by: id,
         },
       },
       { headers }

@@ -75,7 +75,7 @@ module.exports = {
           type: "updateUser",
           data: {
             is_deleted: true,
-            last_update_from_user: id,
+            updated_by: id,
           },
         },
         { headers }
@@ -131,7 +131,7 @@ module.exports = {
           type: "updateUser",
           data: {
             ...args.data,
-            last_update_from_user: id,
+            updated_by: id,
           },
         },
         { headers }
@@ -160,7 +160,7 @@ module.exports = {
           type: "updatePassword",
           data: {
             password: args.data.password,
-            last_update_from_user: id,
+            updated_by: id,
           },
         },
         { headers }

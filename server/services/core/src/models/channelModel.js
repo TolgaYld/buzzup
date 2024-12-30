@@ -28,10 +28,10 @@ const ChannelSchema = new Schema(
     storys: [
       {
         type: SchemaTypes.ObjectId,
-        ref: "Storys",
+        ref: "Stories",
       },
     ],
-    createdBy: [
+    created_By: [
       {
         type: SchemaTypes.ObjectId,
         ref: "Users",

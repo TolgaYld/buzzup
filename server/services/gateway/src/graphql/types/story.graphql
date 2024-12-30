@@ -3,6 +3,7 @@
 # import Report from "./report.graphql"
 # import Channel from "./channel.graphql"
 # import Location from "./location.graphql"
+# import VisibilityType from "./visibilityType.graphql"
 
 type Query {
   story(id: ID!): Story!
@@ -19,15 +20,18 @@ type Story {
   city: String
   channels: [Channel!]!
   comments: [Comment]
-  type: String!
+  visibility: VisibilityType!
   likes: [User!]
   dislikes: [User!]
   public_votes: [User!]
   linked_users: [User!]
+  hashtags: [String]
+  shares: [User!]
   is_active: Boolean!
   is_deleted: Boolean!
   created_at: String
-  last_update_from_user: ID
+  updated_at: String
+  updated_by: User
 }
 
 type Mutation {
@@ -42,7 +46,7 @@ input CreateStoryInput {
   coordinates: [Float!]!
   text: String
   media: [String]
-  type: String
+  visibility: VisibilityType
   channels: [ID!]!
 }
 
@@ -50,7 +54,7 @@ input UpdateStoryInput {
   text: String!
   media: [String]
   channels: [ID]
-  type: String
+  visibility: VisibilityType
   is_active: Boolean
   is_deleted: Boolean
 }

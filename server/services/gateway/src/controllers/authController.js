@@ -118,7 +118,7 @@ const savePassword = async (req, res) => {
         data: {
           password: req.body.password,
           repeat_password: req.body.repeatPassword,
-          last_update_from_user: id,
+          updated_by: id,
         },
       },
       { headers }

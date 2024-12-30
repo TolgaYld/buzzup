@@ -42,7 +42,9 @@ type User {
   is_banned: Boolean!
   is_admin: Boolean!
   created_at: String
-  last_update_from_user: ID
+  updated_at: String
+  created_by: User
+  updated_by: User
 }
 
 type Mutation {
