@@ -36,8 +36,9 @@ class CommentMapper extends ClassMapperBase<Comment> {
   static DateTime _$createdAt(Comment v) => v.createdAt;
   static const Field<Comment, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt, key: 'created_at');
-  static ContentType _$type(Comment v) => v.type;
-  static const Field<Comment, ContentType> _f$type = Field('type', _$type);
+  static ContentVisibility _$visibility(Comment v) => v.visibility;
+  static const Field<Comment, ContentVisibility> _f$visibility =
+      Field('visibility', _$visibility);
   static Post _$post(Comment v) => v.post;
   static const Field<Comment, Post> _f$post = Field('post', _$post);
   static List<User>? _$likes(Comment v) => v.likes;
@@ -60,7 +61,7 @@ class CommentMapper extends ClassMapperBase<Comment> {
     #isDeleted: _f$isDeleted,
     #createdBy: _f$createdBy,
     #createdAt: _f$createdAt,
-    #type: _f$type,
+    #visibility: _f$visibility,
     #post: _f$post,
     #likes: _f$likes,
     #dislikes: _f$dislikes,
@@ -75,7 +76,7 @@ class CommentMapper extends ClassMapperBase<Comment> {
         isDeleted: data.dec(_f$isDeleted),
         createdBy: data.dec(_f$createdBy),
         createdAt: data.dec(_f$createdAt),
-        type: data.dec(_f$type),
+        visibility: data.dec(_f$visibility),
         post: data.dec(_f$post),
         likes: data.dec(_f$likes),
         dislikes: data.dec(_f$dislikes),
@@ -143,7 +144,7 @@ abstract class CommentCopyWith<$R, $In extends Comment, $Out>
       bool? isDeleted,
       User? createdBy,
       DateTime? createdAt,
-      ContentType? type,
+      ContentVisibility? visibility,
       Post? post,
       List<User>? likes,
       List<User>? dislikes,
@@ -191,7 +192,7 @@ class _CommentCopyWithImpl<$R, $Out>
           bool? isDeleted,
           User? createdBy,
           DateTime? createdAt,
-          ContentType? type,
+          ContentVisibility? visibility,
           Post? post,
           Object? likes = $none,
           Object? dislikes = $none,
@@ -203,7 +204,7 @@ class _CommentCopyWithImpl<$R, $Out>
         if (isDeleted != null) #isDeleted: isDeleted,
         if (createdBy != null) #createdBy: createdBy,
         if (createdAt != null) #createdAt: createdAt,
-        if (type != null) #type: type,
+        if (visibility != null) #visibility: visibility,
         if (post != null) #post: post,
         if (likes != $none) #likes: likes,
         if (dislikes != $none) #dislikes: dislikes,
@@ -217,7 +218,7 @@ class _CommentCopyWithImpl<$R, $Out>
       isDeleted: data.get(#isDeleted, or: $value.isDeleted),
       createdBy: data.get(#createdBy, or: $value.createdBy),
       createdAt: data.get(#createdAt, or: $value.createdAt),
-      type: data.get(#type, or: $value.type),
+      visibility: data.get(#visibility, or: $value.visibility),
       post: data.get(#post, or: $value.post),
       likes: data.get(#likes, or: $value.likes),
       dislikes: data.get(#dislikes, or: $value.dislikes),

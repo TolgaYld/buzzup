@@ -34,8 +34,9 @@ class ContentMapper extends ClassMapperBase<Content> {
   static Location _$location(Content v) => v.location;
   static const Field<Content, Location> _f$location =
       Field('location', _$location);
-  static ContentType _$type(Content v) => v.type;
-  static const Field<Content, ContentType> _f$type = Field('type', _$type);
+  static ContentVisibility _$visibility(Content v) => v.visibility;
+  static const Field<Content, ContentVisibility> _f$visibility =
+      Field('visibility', _$visibility);
   static bool _$isActive(Content v) => v.isActive;
   static const Field<Content, bool> _f$isActive =
       Field('isActive', _$isActive, key: 'is_active');
@@ -81,7 +82,7 @@ class ContentMapper extends ClassMapperBase<Content> {
     #id: _f$id,
     #channels: _f$channels,
     #location: _f$location,
-    #type: _f$type,
+    #visibility: _f$visibility,
     #isActive: _f$isActive,
     #isDeleted: _f$isDeleted,
     #createdAt: _f$createdAt,
@@ -135,7 +136,7 @@ abstract class ContentCopyWith<$R, $In extends Content, $Out>
       {String? id,
       List<Channel>? channels,
       Location? location,
-      ContentType? type,
+      ContentVisibility? visibility,
       bool? isActive,
       bool? isDeleted,
       DateTime? createdAt,
@@ -178,8 +179,9 @@ class PostMapper extends ClassMapperBase<Post> {
   static Location _$location(Post v) => v.location;
   static const Field<Post, Location> _f$location =
       Field('location', _$location);
-  static ContentType _$type(Post v) => v.type;
-  static const Field<Post, ContentType> _f$type = Field('type', _$type);
+  static ContentVisibility _$visibility(Post v) => v.visibility;
+  static const Field<Post, ContentVisibility> _f$visibility =
+      Field('visibility', _$visibility);
   static bool _$isActive(Post v) => v.isActive;
   static const Field<Post, bool> _f$isActive =
       Field('isActive', _$isActive, key: 'is_active');
@@ -226,7 +228,7 @@ class PostMapper extends ClassMapperBase<Post> {
     #id: _f$id,
     #channels: _f$channels,
     #location: _f$location,
-    #type: _f$type,
+    #visibility: _f$visibility,
     #isActive: _f$isActive,
     #isDeleted: _f$isDeleted,
     #createdAt: _f$createdAt,
@@ -248,7 +250,7 @@ class PostMapper extends ClassMapperBase<Post> {
         id: data.dec(_f$id),
         channels: data.dec(_f$channels),
         location: data.dec(_f$location),
-        type: data.dec(_f$type),
+        visibility: data.dec(_f$visibility),
         isActive: data.dec(_f$isActive),
         isDeleted: data.dec(_f$isDeleted),
         createdAt: data.dec(_f$createdAt),
@@ -333,7 +335,7 @@ abstract class PostCopyWith<$R, $In extends Post, $Out>
       {String? id,
       List<Channel>? channels,
       Location? location,
-      ContentType? type,
+      ContentVisibility? visibility,
       bool? isActive,
       bool? isDeleted,
       DateTime? createdAt,
@@ -400,7 +402,7 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
           {String? id,
           Object? channels = $none,
           Location? location,
-          ContentType? type,
+          ContentVisibility? visibility,
           bool? isActive,
           bool? isDeleted,
           DateTime? createdAt,
@@ -418,7 +420,7 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
         if (id != null) #id: id,
         if (channels != $none) #channels: channels,
         if (location != null) #location: location,
-        if (type != null) #type: type,
+        if (visibility != null) #visibility: visibility,
         if (isActive != null) #isActive: isActive,
         if (isDeleted != null) #isDeleted: isDeleted,
         if (createdAt != null) #createdAt: createdAt,
@@ -438,7 +440,7 @@ class _PostCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Post, $Out>
       id: data.get(#id, or: $value.id),
       channels: data.get(#channels, or: $value.channels),
       location: data.get(#location, or: $value.location),
-      type: data.get(#type, or: $value.type),
+      visibility: data.get(#visibility, or: $value.visibility),
       isActive: data.get(#isActive, or: $value.isActive),
       isDeleted: data.get(#isDeleted, or: $value.isDeleted),
       createdAt: data.get(#createdAt, or: $value.createdAt),
@@ -485,8 +487,9 @@ class StoryMapper extends ClassMapperBase<Story> {
   static Location _$location(Story v) => v.location;
   static const Field<Story, Location> _f$location =
       Field('location', _$location);
-  static ContentType _$type(Story v) => v.type;
-  static const Field<Story, ContentType> _f$type = Field('type', _$type);
+  static ContentVisibility _$visibility(Story v) => v.visibility;
+  static const Field<Story, ContentVisibility> _f$visibility =
+      Field('visibility', _$visibility);
   static bool _$isActive(Story v) => v.isActive;
   static const Field<Story, bool> _f$isActive =
       Field('isActive', _$isActive, key: 'is_active');
@@ -530,7 +533,7 @@ class StoryMapper extends ClassMapperBase<Story> {
     #id: _f$id,
     #channels: _f$channels,
     #location: _f$location,
-    #type: _f$type,
+    #visibility: _f$visibility,
     #isActive: _f$isActive,
     #isDeleted: _f$isDeleted,
     #createdAt: _f$createdAt,
@@ -551,7 +554,7 @@ class StoryMapper extends ClassMapperBase<Story> {
         id: data.dec(_f$id),
         channels: data.dec(_f$channels),
         location: data.dec(_f$location),
-        type: data.dec(_f$type),
+        visibility: data.dec(_f$visibility),
         isActive: data.dec(_f$isActive),
         isDeleted: data.dec(_f$isDeleted),
         createdAt: data.dec(_f$createdAt),
@@ -635,7 +638,7 @@ abstract class StoryCopyWith<$R, $In extends Story, $Out>
       {String? id,
       List<Channel>? channels,
       Location? location,
-      ContentType? type,
+      ContentVisibility? visibility,
       bool? isActive,
       bool? isDeleted,
       DateTime? createdAt,
@@ -701,7 +704,7 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
           {String? id,
           Object? channels = $none,
           Location? location,
-          ContentType? type,
+          ContentVisibility? visibility,
           bool? isActive,
           bool? isDeleted,
           DateTime? createdAt,
@@ -718,7 +721,7 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
         if (id != null) #id: id,
         if (channels != $none) #channels: channels,
         if (location != null) #location: location,
-        if (type != null) #type: type,
+        if (visibility != null) #visibility: visibility,
         if (isActive != null) #isActive: isActive,
         if (isDeleted != null) #isDeleted: isDeleted,
         if (createdAt != null) #createdAt: createdAt,
@@ -737,7 +740,7 @@ class _StoryCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, Story, $Out>
       id: data.get(#id, or: $value.id),
       channels: data.get(#channels, or: $value.channels),
       location: data.get(#location, or: $value.location),
-      type: data.get(#type, or: $value.type),
+      visibility: data.get(#visibility, or: $value.visibility),
       isActive: data.get(#isActive, or: $value.isActive),
       isDeleted: data.get(#isDeleted, or: $value.isDeleted),
       createdAt: data.get(#createdAt, or: $value.createdAt),

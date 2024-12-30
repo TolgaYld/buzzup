@@ -1,4 +1,4 @@
-import 'package:buzzup/core/enums/post_type.dart';
+import 'package:buzzup/core/enums/content_visibility.dart';
 import 'package:buzzup/core/models/channel.dart';
 import 'package:buzzup/core/models/comment.dart';
 import 'package:buzzup/core/models/location.dart';
@@ -14,7 +14,7 @@ sealed class Content with ContentMappable {
     required this.id,
     required this.channels,
     required this.location,
-    required this.type,
+    required this.visibility,
     required this.isActive,
     required this.isDeleted,
     required this.createdAt,
@@ -38,7 +38,7 @@ sealed class Content with ContentMappable {
   final List<String>? media;
   final String? city;
   final Location location;
-  final ContentType type;
+  final ContentVisibility visibility;
   final List<Comment>? comments;
   @MappableField(key: 'linked_users')
   final List<User>? linkedUsers;
@@ -64,7 +64,7 @@ class Post extends Content with PostMappable {
     required super.id,
     required super.channels,
     required super.location,
-    required super.type,
+    required super.visibility,
     required super.isActive,
     required super.isDeleted,
     required super.createdAt,
@@ -83,7 +83,7 @@ class Post extends Content with PostMappable {
   factory Post.empty() => Post(
         id: 'empty',
         location: Location.empty(),
-        type: ContentType.anonymous,
+        visibility: ContentVisibility.anonymous,
         channels: [Channel.empty()],
         endDate: DateTime.parse('2024-02-10T14:38:36.936Z'),
         createdAt: DateTime.parse('2024-02-10T14:38:36.936Z'),
@@ -102,7 +102,7 @@ class Story extends Content with StoryMappable {
     required super.id,
     required super.channels,
     required super.location,
-    required super.type,
+    required super.visibility,
     required super.isActive,
     required super.isDeleted,
     required super.createdAt,
@@ -120,7 +120,7 @@ class Story extends Content with StoryMappable {
   factory Story.empty() => Story(
         id: 'empty',
         location: Location.empty(),
-        type: ContentType.public,
+        visibility: ContentVisibility.public,
         channels: [Channel.empty()],
         createdAt: DateTime.parse('2024-02-10T14:38:36.936Z'),
         createdBy: User.empty(),

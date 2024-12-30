@@ -1,7 +1,7 @@
 import 'package:buzzup/core/models/content.dart';
 import 'package:buzzup/core/models/user.dart';
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:buzzup/core/enums/post_type.dart';
+import 'package:buzzup/core/enums/content_visibility.dart';
 import 'package:buzzup/core/utils/datetime_converter.dart';
 
 part 'comment.mapper.dart';
@@ -14,7 +14,7 @@ class Comment with CommentMappable {
     required this.isDeleted,
     required this.createdBy,
     required this.createdAt,
-    required this.type,
+    required this.visibility,
     required this.post,
     this.likes,
     this.dislikes,
@@ -28,7 +28,7 @@ class Comment with CommentMappable {
         isDeleted: false,
         createdBy: User.empty(),
         createdAt: DateTime.parse('2024-02-10T14:38:36.936Z'),
-        type: ContentType.public,
+        visibility: ContentVisibility.public,
         post: Post.empty(),
         likes: [User.empty()],
       );
@@ -44,7 +44,7 @@ class Comment with CommentMappable {
   @DateTimeConverter()
   @MappableField(key: 'created_at')
   final DateTime createdAt;
-  final ContentType type;
+  final ContentVisibility visibility;
   final Post post;
   final List<User>? likes;
   final List<User>? dislikes;
