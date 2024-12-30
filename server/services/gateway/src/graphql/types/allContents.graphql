@@ -1,0 +1,11 @@
+# import Post from './post.graphql'
+# import Story from './story.graphql'
+
+type Query {
+  getNearContents(coordinates: [Float!]!): AllContents
+}
+
+type AllContents {
+  posts: [Post!]
+  storys: [Story!]
+}

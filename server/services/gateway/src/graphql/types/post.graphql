@@ -9,7 +9,6 @@
 type Query {
   post(id: ID!): Post!
   posts: [Post!]!
-  getNearContents(coordinates: [Float!]!): PostsAndStorys
 }
 
 type Post {
@@ -63,9 +62,4 @@ input UpdatePostInput {
 
 type Subscription {
   post(device_id: ID): Post!
-}
-
-type PostsAndStorys {
-  posts: [Post!]
-  storys: [Story!]
 }

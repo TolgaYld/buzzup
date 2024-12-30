@@ -27,4 +27,7 @@
 # import EngagementLog from "./types/engagementLog.graphql"
 # import VisibilityType from "./types/visibilityType.graphql"
 
+# import Query from "./types/allContents.graphql"
+# import AllContents from "./types/allContents.graphql"
+
 # import Token from "./types/token.graphql"
