@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
+const metadataPlugin = require("../plugins/metadata");
 
 const EngagementLogSchema = new Schema({
     user: {
@@ -28,27 +29,9 @@ const EngagementLogSchema = new Schema({
         enum: ["like", "dislike", "comment", "share"],
         required: true,
     },
-    is_deleted: {
-        type: SchemaTypes.Boolean,
-        default: false,
-        required: true,
-    },
-    is_active: {
-        type: SchemaTypes.Boolean,
-        default: false,
-        required: true,
-    },
-    created_by: {
-        type: SchemaTypes.ObjectId,
-        ref: "Users",
-        required: true,
-    },
-    udated_by: {
-        type: SchemaTypes.ObjectId,
-        ref: "Users",
-        required: true,
-    }
-}, { collection: "EngagementLogs", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, });
+}, { collection: "EngagementLogs" });
+
+EngagementLogSchema.plugin(metadataPlugin);
 
 const EngagementLog = mongoose.model("EngagementLog", EngagementLogSchema);
 

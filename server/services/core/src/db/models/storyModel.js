@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
-const EngagementLog = require("./engagementLogModel");
+const metadataPlugin = require("../plugins/metadata");
 
-const PostSchema = new Schema(
+const StorySchema = new Schema(
   {
     text: {
       type: SchemaTypes.String,
@@ -50,36 +50,22 @@ const PostSchema = new Schema(
         ref: "Users",
       },
     ],
+    shares: [
+      {
+        type: SchemaTypes.ObjectId,
+        ref: "Users",
+      },
+    ],
     public_votes: [
       {
         type: SchemaTypes.ObjectId,
         ref: "Users",
       },
     ],
-    end_date: {
-      type: SchemaTypes.Date,
-      default: null,
-    },
     linked_users: [
       {
         type: SchemaTypes.ObjectId,
         ref: "Users",
-      },
-    ],
-    is_deleted: {
-      type: SchemaTypes.Boolean,
-      default: false,
-      required: true,
-    },
-    is_active: {
-      type: SchemaTypes.Boolean,
-      default: false,
-      required: true,
-    },
-    comments: [
-      {
-        type: SchemaTypes.ObjectId,
-        ref: "Comments",
       },
     ],
     hashtags: {
@@ -92,10 +78,10 @@ const PostSchema = new Schema(
       },
       default: [],
     },
-    shares: [
+    comments: [
       {
         type: SchemaTypes.ObjectId,
-        ref: "Users",
+        ref: "Comments",
       },
     ],
     user: {
@@ -111,38 +97,37 @@ const PostSchema = new Schema(
       }],
       validate: [arrayLimit, "{PATH} exceeds the limit of 3"]
     },
-    last_update_from_user: {
-      type: SchemaTypes.ObjectId,
-    },
   },
-  { collection: "Posts", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, },
+  { collection: "Stories" },
 );
+
+StorySchema.plugin(metadataPlugin);
 
 function arrayLimit(val) {
   return val.length <= 3;
 }
 
-PostSchema.index({ location: "2dsphere" });
+StorySchema.index({ location: "2dsphere" });
 
 function extractHashtags(text) {
   return (text.match(/#[a-zA-Z0-9_]+/g) || []).map(tag => tag.toLowerCase());
 }
 
-PostSchema.pre("save", function (next) {
+StorySchema.pre("save", function (next) {
   if (this.text) {
     this.hashtags = extractHashtags(this.text);
   }
   next();
 });
 
-PostSchema.post("save", async function (doc) {
+StorySchema.post("save", async function (doc) {
   const interactions = [];
 
   if (doc.likes && doc.likes.length > 0) {
     const lastLikeUser = doc.likes.slice(-1)[0];
     interactions.push({
       user: lastLikeUser,
-      post: doc._id,
+      story: doc._id,
       interactionType: "like",
       is_active: true,
       created_by: lastLikeUser,
@@ -154,7 +139,7 @@ PostSchema.post("save", async function (doc) {
     const lastDislikeUser = doc.dislikes.slice(-1)[0];
     interactions.push({
       user: lastDislikeUser,
-      post: doc._id,
+      story: doc._id,
       interactionType: "dislike",
       is_active: true,
       created_by: lastDislikeUser,
@@ -166,7 +151,7 @@ PostSchema.post("save", async function (doc) {
     const lastCommentUser = doc.comments.slice(-1)[0].user;
     interactions.push({
       user: lastCommentUser,
-      post: doc._id,
+      story: doc._id,
       interactionType: "comment",
       is_active: true,
       created_by: lastCommentUser,
@@ -195,6 +180,7 @@ PostSchema.post("save", async function (doc) {
   }
 });
 
-const Post = mongoose.model("Post", PostSchema);
 
-module.exports = Post;
+const Story = mongoose.model("Story", StorySchema);
+
+module.exports = Story;

@@ -1,3 +1,4 @@
+import 'package:buzzup/core/enums/user_type.dart';
 import 'package:buzzup/core/models/channel.dart';
 import 'package:buzzup/core/models/comment.dart';
 import 'package:buzzup/core/models/content.dart';
@@ -17,7 +18,7 @@ class User with UserMappable {
     required this.email,
     required this.isBanned,
     required this.isDeleted,
-    required this.isAdmin,
+    required this.userType,
     required this.official,
     required this.distance,
     required this.points,
@@ -42,7 +43,7 @@ class User with UserMappable {
         id: 'empty',
         username: 'empty',
         email: 'test123@test.com',
-        isAdmin: false,
+        userType: UserType.user,
         isBanned: false,
         isDeleted: false,
         official: false,
@@ -63,8 +64,8 @@ class User with UserMappable {
   final bool? isBanned;
   @MappableField(key: 'is_deleted')
   final bool? isDeleted;
-  @MappableField(key: 'is_admin')
-  final bool? isAdmin;
+  @MappableField(key: 'user_type')
+  final UserType userType;
   final bool? official;
   final int? distance;
   final int? points;

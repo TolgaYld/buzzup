@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
+const metadataPlugin = require("../plugins/metadata");
 
 const ReportSchema = new Schema(
   {
@@ -38,12 +39,11 @@ const ReportSchema = new Schema(
     notes_from_us: {
       type: SchemaTypes.String,
     },
-    last_update_from_user: {
-      type: SchemaTypes.ObjectId,
-    },
   },
-  { collection: "Reports", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, },
+  { collection: "Reports" },
 );
+
+ReportSchema.plugin(metadataPlugin);
 
 const Report = mongoose.model("Report", ReportSchema);
 

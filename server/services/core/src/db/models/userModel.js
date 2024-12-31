@@ -8,6 +8,7 @@ const Comment = require("./commentModel");
 const Report = require("./reportModel");
 const Channel = require("./channelModel");
 const EngagementLog = require("./engagementLogModel");
+const metadataPlugin = require("../plugins/metadata");
 const { log } = require("../modules/logModule");
 
 const UserSchema = new Schema(
@@ -86,11 +87,6 @@ const UserSchema = new Schema(
       default: false,
       required: true,
     },
-    is_deleted: {
-      type: SchemaTypes.Boolean,
-      default: false,
-      required: true,
-    },
     is_banned: {
       type: SchemaTypes.Boolean,
       default: false,
@@ -101,20 +97,28 @@ const UserSchema = new Schema(
       default: false,
       required: true,
     },
-    is_admin: {
-      type: SchemaTypes.Boolean,
-      default: false,
+    user_type: {
+      type: SchemaTypes.String,
+      enum: [
+        "USER",
+        "ADMIN",
+        "SUPER_ADMIN",
+        "MODERATOR",
+        "EDITOR",
+        "SUPPORT",
+        "MARKETING",
+        "GUEST",
+      ],
       required: true,
-    },
-    last_update_from_user: {
-      type: SchemaTypes.ObjectId,
+      default: "USER",
     },
   },
   {
     collection: "Users",
-    timestamps: { createdAt: "created_at", updatedAt: "updated_at" },
   },
 );
+
+UserSchema.plugin(metadataPlugin);
 
 UserSchema.index({ location: "2dsphere" });
 
@@ -163,6 +167,7 @@ UserSchema.post("findOneAndUpdate", async function () {
       await Story.updateMany({ user: userId }, { is_active: false }, { session });
       await Comment.updateMany({ user: userId }, { is_active: false }, { session });
       await Report.updateMany({ reported_user: userId }, { is_done: true }, { session });
+      await EngagementLog.updateMany({ user: userId }, { is_active: false }, { session });
     }
 
     await session.commitTransaction();

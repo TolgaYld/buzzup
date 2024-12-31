@@ -39,9 +39,9 @@ class UserMapper extends ClassMapperBase<User> {
   static bool? _$isDeleted(User v) => v.isDeleted;
   static const Field<User, bool> _f$isDeleted =
       Field('isDeleted', _$isDeleted, key: 'is_deleted');
-  static bool? _$isAdmin(User v) => v.isAdmin;
-  static const Field<User, bool> _f$isAdmin =
-      Field('isAdmin', _$isAdmin, key: 'is_admin');
+  static UserType _$userType(User v) => v.userType;
+  static const Field<User, UserType> _f$userType =
+      Field('userType', _$userType, key: 'is_admin');
   static bool? _$official(User v) => v.official;
   static const Field<User, bool> _f$official = Field('official', _$official);
   static int? _$distance(User v) => v.distance;
@@ -102,7 +102,7 @@ class UserMapper extends ClassMapperBase<User> {
     #email: _f$email,
     #isBanned: _f$isBanned,
     #isDeleted: _f$isDeleted,
-    #isAdmin: _f$isAdmin,
+    #userType: _f$userType,
     #official: _f$official,
     #distance: _f$distance,
     #points: _f$points,
@@ -130,7 +130,7 @@ class UserMapper extends ClassMapperBase<User> {
         email: data.dec(_f$email),
         isBanned: data.dec(_f$isBanned),
         isDeleted: data.dec(_f$isDeleted),
-        isAdmin: data.dec(_f$isAdmin),
+        userType: data.dec(_f$userType),
         official: data.dec(_f$official),
         distance: data.dec(_f$distance),
         points: data.dec(_f$points),
@@ -213,7 +213,7 @@ abstract class UserCopyWith<$R, $In extends User, $Out>
       String? email,
       bool? isBanned,
       bool? isDeleted,
-      bool? isAdmin,
+      UserType? userType,
       bool? official,
       int? distance,
       int? points,
@@ -290,7 +290,7 @@ class _UserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, User, $Out>
           Object? email = $none,
           Object? isBanned = $none,
           Object? isDeleted = $none,
-          Object? isAdmin = $none,
+          UserType? userType,
           Object? official = $none,
           Object? distance = $none,
           Object? points = $none,
@@ -315,7 +315,7 @@ class _UserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, User, $Out>
         if (email != $none) #email: email,
         if (isBanned != $none) #isBanned: isBanned,
         if (isDeleted != $none) #isDeleted: isDeleted,
-        if (isAdmin != $none) #isAdmin: isAdmin,
+        if (userType != null) #userType: userType,
         if (official != $none) #official: official,
         if (distance != $none) #distance: distance,
         if (points != $none) #points: points,
@@ -344,7 +344,7 @@ class _UserCopyWithImpl<$R, $Out> extends ClassCopyWithBase<$R, User, $Out>
       email: data.get(#email, or: $value.email),
       isBanned: data.get(#isBanned, or: $value.isBanned),
       isDeleted: data.get(#isDeleted, or: $value.isDeleted),
-      isAdmin: data.get(#isAdmin, or: $value.isAdmin),
+      userType: data.get(#userType, or: $value.userType),
       official: data.get(#official, or: $value.official),
       distance: data.get(#distance, or: $value.distance),
       points: data.get(#points, or: $value.points),

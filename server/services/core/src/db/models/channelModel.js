@@ -5,6 +5,7 @@ const Post = require("./postModel");
 const Story = require("./storyModel");
 const Report = require("./reportModel");
 const { log } = require("../modules/logModule");
+const metadataPlugin = require("../plugins/metadata");
 
 const ChannelSchema = new Schema(
   {
@@ -37,22 +38,11 @@ const ChannelSchema = new Schema(
         ref: "Users",
       },
     ],
-    is_deleted: {
-      type: SchemaTypes.Boolean,
-      default: false,
-      required: true,
-    },
-    is_active: {
-      type: SchemaTypes.Boolean,
-      default: true,
-      required: true,
-    },
-    last_update_from_user: {
-      type: SchemaTypes.ObjectId,
-    },
   },
-  { collection: "Channels", timestamps: { createdAt: "created_at", updatedAt: "updated_at" }, },
+  { collection: "Channels" },
 );
+
+ChannelSchema.plugin(metadataPlugin);
 
 ChannelSchema.post("findOneAndDelete", async function () {
   const session = await mongoose.startSession();
