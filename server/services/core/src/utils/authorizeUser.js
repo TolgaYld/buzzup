@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const User = require("../db/models/userModel");
 
 const authorizeUser = (errorHandler) => {
     if (typeof errorHandler !== "function") {

@@ -198,4 +198,29 @@ module.exports = {
     },
     errorHandler
   ),
+
+  toggleTune: catchGraphQLResolverErrors(
+    async (parent, args, { req }) => {
+      const id = await getUserId(req);
+      if (id == null) {
+        throw { statusCode: 401, message: "unauthorized" };
+      }
+
+      const headers = { Authorization: id };
+      const response = await axios.patch(
+        `${AUTHSERVICE}/tune/${args.id}`,
+        {
+          type: "tuneUser",
+        },
+        { headers }
+      );
+
+      if (response.data.success) {
+        return response.data.data;
+      }
+
+      throw { statusCode: response.status, message: response.data.msg };
+    },
+    errorHandler
+  ),
 };

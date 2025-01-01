@@ -9,7 +9,7 @@ const Report = require("./reportModel");
 const Channel = require("./channelModel");
 const EngagementLog = require("./engagementLogModel");
 const metadataPlugin = require("../plugins/metadata");
-const { log } = require("../modules/logModule");
+const { log } = require("../../modules/logModule");
 
 const UserSchema = new Schema(
   {
@@ -96,6 +96,14 @@ const UserSchema = new Schema(
       type: SchemaTypes.Boolean,
       default: false,
       required: true,
+    },
+    tunings: {
+      type: SchemaTypes.ObjectId,
+      ref: "Users",
+    },
+    tuned_by: {
+      type: SchemaTypes.ObjectId,
+      ref: "Users",
     },
     user_type: {
       type: SchemaTypes.String,

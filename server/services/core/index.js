@@ -4,12 +4,12 @@ if (process.env.NODE_ENV === "test")
 if (process.env.NODE_ENV !== "test")
     require("dotenv").config({ path: __dirname + "/.env", debug: true });
 // MODELS
-const User = require("./src/models/userModel");
-const Channel = require("./src/models/channelModel");
-const Post = require("./src/models/postModel");
-const Comment = require("./src/models/commentModel");
-const Story = require("./src/models/storyModel");
-const Report = require("./src/models/reportModel");
+const User = require("./src/db/models/userModel");
+const Channel = require("./src/db/models/channelModel");
+const Post = require("./src/db/models/postModel");
+const Comment = require("./src/db/models/commentModel");
+const Story = require("./src/db/models/storyModel");
+const Report = require("./src/db/models/reportModel");
 
 // UTILS
 

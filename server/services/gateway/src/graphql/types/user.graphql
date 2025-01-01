@@ -38,13 +38,26 @@ type User {
   device_type: String
   device_id: String
   email_confirmed: Boolean!
+  tunings: [User!]
+  tuned_by: [User!]
   is_deleted: Boolean!
   is_banned: Boolean!
-  is_admin: Boolean!
+  user_type: UserType!
   created_at: String
   updated_at: String
   created_by: User
   updated_by: User
+}
+
+enum UserType {
+  USER
+  ADMIN
+  SUPER_ADMIN
+  MODERATOR
+  EDITOR
+  SUPPORT
+  MARKETING
+  GUEST
 }
 
 type Mutation {
@@ -52,6 +65,7 @@ type Mutation {
   signInUser(data: SignInUserInput!): AuthUser!
   authUserWithProvider(data: AuthUserWithProviderInput): AuthUser!
   updateUser(data: UpdateUserInput): AuthUser!
+  toggleTune(id: ID!): User!
   resetPassword(email: String): User
   updateUserPassword(data: String!): AuthUser!
   deleteUser(id: ID!): User!

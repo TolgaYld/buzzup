@@ -53,4 +53,6 @@ router.get(
 
 router.get("/refreshToken", catchErrors(authController.tokenService, errorHandler));
 
+router.patch("/tune/:id", authorize, catchErrors(authController.toggleTune, errorHandler));
+
 module.exports = router;

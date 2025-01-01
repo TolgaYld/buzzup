@@ -4,7 +4,7 @@ const SchemaTypes = Schema.Types;
 const Post = require("./postModel");
 const Story = require("./storyModel");
 const Report = require("./reportModel");
-const { log } = require("../modules/logModule");
+const { log } = require("../../modules/logModule");
 const metadataPlugin = require("../plugins/metadata");
 
 const ChannelSchema = new Schema(

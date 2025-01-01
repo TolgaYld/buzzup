@@ -388,7 +388,6 @@ const tokenService = async (req, res) => {
 
 
 const signOut = async (req, res) => {
-
   const id = req.user._id;
   const findOneUser = await User.findById(id).exec();
 
@@ -396,6 +395,65 @@ const signOut = async (req, res) => {
     success: true,
     data: findOneUser,
   });
+};
+
+const toggleTune = async (req, res) => {
+  const { id } = req.params;
+  const idOfToggler = req.user._id;
+
+  const toggledUser = await User.findById(id).exec();
+  const toggler = await User.findById(idOfToggler).exec();
+
+  if (toggledUser == null || toggler == null) {
+    return res.status(404).json({ message: "user-not-found" });
+  }
+
+  const isTuned = toggler.tunings && toggler.tunings.includes(toggledUser._id);
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+
+    if (isTuned) {
+      await User.findByIdAndUpdate(
+        idOfToggler,
+        { $pull: { tunings: toggledUser._id } },
+        { session }
+      ).exec();
+
+      await User.findByIdAndUpdate(
+        id,
+        { $pull: { tuned_by: toggler._id } },
+        { session }
+      ).exec();
+    } else {
+      await User.findByIdAndUpdate(
+        idOfToggler,
+        { $addToSet: { tunings: toggledUser._id } },
+        { session }
+      ).exec();
+
+      await User.findByIdAndUpdate(
+        id,
+        { $addToSet: { tuned_by: toggler._id } },
+        { session }
+      ).exec();
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+
+    const updatedToggler = await User.findById(idOfToggler).exec();
+
+    res.status(200).json({
+      success: true,
+      user: updatedToggler,
+    });
+  } catch (error) {
+    await session.abortTransaction();
+    const statusCode = error.statusCode || 500;
+    const message = error.message || "unexpected-error";
+    throw { statusCode: statusCode, message: message, success: false };
+  }
 };
 
 const resetPassword = async (req, res) => {
@@ -543,4 +601,5 @@ module.exports = {
   authUserWithProvider,
   checkIfEmailExists,
   checkIfUsernameExists,
+  toggleTune,
 };
