@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
-const metadataPlugin = require("../plugins/metadataPlugin");
+const metadataPlugin = require("../plugins/metadata");
 
 const TransactionSchema = new Schema({
     from_user: {

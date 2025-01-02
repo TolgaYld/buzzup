@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
+const metadataPlugin = require("../plugins/metadata");
 
 const GiftSchema = new Schema(
     {
@@ -53,10 +54,9 @@ const GiftSchema = new Schema(
             required: false,
         },
     },
-    { collection: "Gifts", timestamps: { createdAt: "created_at", updatedAt: "updated_at" } },
+    { collection: "Gifts" },
 );
 
-// Optional: Plugin für Metadaten
 GiftSchema.plugin(metadataPlugin);
 
 const Gift = mongoose.model("Gift", GiftSchema);
