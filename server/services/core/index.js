@@ -10,6 +10,10 @@ const Post = require("./src/db/models/postModel");
 const Comment = require("./src/db/models/commentModel");
 const Story = require("./src/db/models/storyModel");
 const Report = require("./src/db/models/reportModel");
+const EngagementLog = require("./src/db/models/engagementLogModel");
+const Gift = require("./src/db/models/giftModel");
+const StreamData = require("./src/db/models/streamModel");
+const Transaction = require("./src/db/models/transactionModel");
 
 // UTILS
 
@@ -43,6 +47,10 @@ module.exports = {
     Post,
     Story,
     Report,
+    EngagementLog,
+    Gift,
+    StreamData,
+    Transaction,
     getUserId,
     catchErrors,
     authorizeUser,

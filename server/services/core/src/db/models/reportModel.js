@@ -31,6 +31,14 @@ const ReportSchema = new Schema(
       type: SchemaTypes.ObjectId,
       ref: "Channels",
     },
+    message: {
+      type: SchemaTypes.ObjectId,
+      ref: "Messages",
+    },
+    chat: {
+      type: SchemaTypes.ObjectId,
+      ref: "Chats",
+    },
     is_done: {
       type: SchemaTypes.Boolean,
       default: false,
