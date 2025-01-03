@@ -8,9 +8,9 @@ abstract interface class CrudRepo<T> {
 
   ResultFuture<T> getById(String id);
 
-  ResultFuture<void> create(T item);
+  ResultFuture<void> create(T data);
 
-  ResultFuture<void> update(T item);
+  ResultFuture<void> update(T data);
 
   ResultFuture<void> delete(String id);
 }
