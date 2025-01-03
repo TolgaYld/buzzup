@@ -1,6 +1,7 @@
 import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
+import 'package:buzzup/src/presentation/pages/post/post.dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -58,7 +59,7 @@ class AppPage extends HookConsumerWidget {
       body: navigationShell,
       floatingActionButton: FloatingActionButton(
         backgroundColor: theme.colorScheme.primary,
-        onPressed: () {},
+        onPressed: () async => PostDialog().show(context),
         child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -76,7 +77,9 @@ class AppPage extends HookConsumerWidget {
             ),
           ),
           RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(Spacers.s)),
+            borderRadius: BorderRadius.all(
+              Radius.circular(Spacers.s),
+            ),
           ),
         ),
         notchMargin: 3,
