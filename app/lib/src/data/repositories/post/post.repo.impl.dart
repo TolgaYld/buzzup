@@ -1,48 +1,84 @@
+import 'package:buzzup/core/errors/exception.dart';
+import 'package:buzzup/core/errors/failure.dart';
 import 'package:buzzup/core/models/content.dart';
 import 'package:buzzup/core/models/location.dart';
+import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
+import 'package:buzzup/src/data/datasources/post/post.remote.datasrc.dart';
 import 'package:buzzup/src/domain/repositories/post/post.repo.dart';
 
 class PostRepoImpl implements PostRepo {
+  const PostRepoImpl(this._remoteDatasrc);
+
+  final PostRemoteDatasrc _remoteDatasrc;
+
   @override
-  ResultFuture<void> create(Post item) async {
-    // TODO: implement create
-    throw UnimplementedError();
+  ResultFuture<void> create(Post post) async {
+    try {
+      await _remoteDatasrc.createPost(post);
+      return Right(null);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 
   @override
   ResultFuture<void> delete(String id) async {
-    // TODO: implement delete
-    throw UnimplementedError();
+    try {
+      await _remoteDatasrc.deletePost(id);
+      return Right(null);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 
   @override
   ResultFuture<List<Post>> getAll(Location location) async {
-    // TODO: implement getAll
-    throw UnimplementedError();
+    try {
+      final result = await _remoteDatasrc.getAll();
+      return Right(result);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 
   @override
   ResultFuture<Post> getById(String id) async {
-    // TODO: implement getById
-    throw UnimplementedError();
+    try {
+      final result = await _remoteDatasrc.getById(id);
+      return Right(result);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 
   @override
   ResultFuture<List<Post>> getMyPosts() async {
-    // TODO: implement getMyPosts
-    throw UnimplementedError();
+    try {
+      final result = await _remoteDatasrc.getMyPosts();
+      return Right(result);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 
   @override
   ResultFuture<List<Post>> getPostsByUser(String userId) async {
-    // TODO: implement getPostsByUser
-    throw UnimplementedError();
+    try {
+      final result = await _remoteDatasrc.getPostsByUser(userId);
+      return Right(result);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 
   @override
-  ResultFuture<void> update(Post item) async {
-    // TODO: implement update
-    throw UnimplementedError();
+  ResultFuture<void> update(Post post) async {
+    try {
+      await _remoteDatasrc.updatePost(post);
+      return Right(null);
+    } on ApiException catch (e) {
+      return Left(ApiFailure.fromException(e));
+    }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
 import 'package:buzzup/core/dependency_provider/auth.provider.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/jwt_helper.dart';

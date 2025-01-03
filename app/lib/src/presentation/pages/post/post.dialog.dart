@@ -18,7 +18,7 @@ class PostDialog extends HookConsumerWidget with ShowableDialogMixin {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: const Text('Close'),
+          child: const Text('Save'),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
