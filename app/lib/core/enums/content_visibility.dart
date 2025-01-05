@@ -1,14 +1,17 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 
+part 'content_visibility.mapper.dart';
+
+@MappableEnum()
 enum ContentVisibility {
-  @JsonValue('PUBLIC')
+  @MappableValue('PUBLIC')
   public,
-  @JsonValue('ANONYMOUS')
+  @MappableValue('ANONYMOUS')
   anonymous,
-  @JsonValue('PRIVATE')
+  @MappableValue('PRIVATE')
   private,
-  @JsonValue('ONLY_FRIENDS')
+  @MappableValue('ONLY_FRIENDS')
   onlyFriends,
-  @JsonValue('ONLY_ME')
+  @MappableValue('ONLY_ME')
   onlyMe,
 }

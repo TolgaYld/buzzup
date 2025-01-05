@@ -1,20 +1,23 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 
+part 'user_type.mapper.dart';
+
+@MappableEnum()
 enum UserType {
-  @JsonValue('SUPER_ADMIN')
+  @MappableValue('SUPER_ADMIN')
   superAdmin,
-  @JsonValue('ADMIN')
+  @MappableValue('ADMIN')
   admin,
-  @JsonValue('USER')
+  @MappableValue('USER')
   user,
-  @JsonValue('GUEST')
+  @MappableValue('GUEST')
   guest,
-  @JsonValue('MARKETING')
+  @MappableValue('MARKETING')
   marketing,
-  @JsonValue('MODERATOR')
+  @MappableValue('MODERATOR')
   moderator,
-  @JsonValue('EDITOR')
+  @MappableValue('EDITOR')
   editor,
-  @JsonValue('SUPPORT')
+  @MappableValue('SUPPORT')
   support,
 }

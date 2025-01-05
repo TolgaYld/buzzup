@@ -17,6 +17,7 @@ class ContentMapper extends ClassMapperBase<Content> {
       StoryMapper.ensureInitialized();
       ChannelMapper.ensureInitialized();
       LocationMapper.ensureInitialized();
+      ContentVisibilityMapper.ensureInitialized();
       UserMapper.ensureInitialized();
       CommentMapper.ensureInitialized();
     }
@@ -162,6 +163,7 @@ class PostMapper extends ClassMapperBase<Post> {
       ContentMapper.ensureInitialized();
       ChannelMapper.ensureInitialized();
       LocationMapper.ensureInitialized();
+      ContentVisibilityMapper.ensureInitialized();
       UserMapper.ensureInitialized();
       CommentMapper.ensureInitialized();
     }
@@ -470,6 +472,7 @@ class StoryMapper extends ClassMapperBase<Story> {
       ContentMapper.ensureInitialized();
       ChannelMapper.ensureInitialized();
       LocationMapper.ensureInitialized();
+      ContentVisibilityMapper.ensureInitialized();
       UserMapper.ensureInitialized();
       CommentMapper.ensureInitialized();
     }

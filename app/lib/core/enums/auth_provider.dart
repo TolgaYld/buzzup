@@ -1,10 +1,13 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:dart_mappable/dart_mappable.dart';
 
+part "auth_provider.mapper.dart";
+
+@MappableEnum()
 enum AuthProvider {
-  @JsonValue('LOCAL')
+  @MappableValue('LOCAL')
   local,
-  @JsonValue('GOOGLE')
+  @MappableValue('GOOGLE')
   google,
-  @JsonValue('APPLE')
+  @MappableValue('APPLE')
   apple,
 }

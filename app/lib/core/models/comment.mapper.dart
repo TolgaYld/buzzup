@@ -14,6 +14,7 @@ class CommentMapper extends ClassMapperBase<Comment> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = CommentMapper._());
       UserMapper.ensureInitialized();
+      ContentVisibilityMapper.ensureInitialized();
       PostMapper.ensureInitialized();
     }
     return _instance!;

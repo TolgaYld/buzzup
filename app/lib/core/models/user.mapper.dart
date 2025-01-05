@@ -13,6 +13,7 @@ class UserMapper extends ClassMapperBase<User> {
   static UserMapper ensureInitialized() {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = UserMapper._());
+      UserTypeMapper.ensureInitialized();
       LocationMapper.ensureInitialized();
       ChannelMapper.ensureInitialized();
       PostMapper.ensureInitialized();
@@ -41,7 +42,7 @@ class UserMapper extends ClassMapperBase<User> {
       Field('isDeleted', _$isDeleted, key: 'is_deleted');
   static UserType _$userType(User v) => v.userType;
   static const Field<User, UserType> _f$userType =
-      Field('userType', _$userType, key: 'is_admin');
+      Field('userType', _$userType, key: 'user_type');
   static bool? _$official(User v) => v.official;
   static const Field<User, bool> _f$official = Field('official', _$official);
   static int? _$distance(User v) => v.distance;

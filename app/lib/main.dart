@@ -20,9 +20,7 @@ Future<void> main() async {
   final appDocumentDir = await getApplicationDocumentsDirectory();
 
   HiveStore.init(onPath: appDocumentDir.path);
-  runApp(
-    const ProviderScope(child: MyApp()),
-  );
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends HookConsumerWidget {
