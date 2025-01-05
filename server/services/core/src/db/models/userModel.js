@@ -8,7 +8,7 @@ const Comment = require("./commentModel");
 const Report = require("./reportModel");
 const Channel = require("./channelModel");
 const EngagementLog = require("./engagementLogModel");
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 const { log } = require("../../modules/logModule");
 
 const UserSchema = new Schema(
@@ -120,13 +120,14 @@ const UserSchema = new Schema(
       required: true,
       default: "USER",
     },
+    ...metadatafields,
   },
   {
     collection: "Users",
   },
 );
 
-UserSchema.plugin(metadataPlugin);
+addMetadataHooks(UserSchema);
 
 UserSchema.index({ location: "2dsphere" });
 

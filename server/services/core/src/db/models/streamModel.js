@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const StreamDataSchema = new Schema({
     title: {
@@ -88,9 +88,10 @@ const StreamDataSchema = new Schema({
         ],
         required: false
     },
+    ...metadatafields,
 }, { collection: "StreamData" });
 
-StreamDataSchema.plugin(metadataPlugin);
+addMetadataHooks(StreamDataSchema);
 
 const StreamData = mongoose.model("StreamData", StreamDataSchema);
 

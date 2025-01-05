@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const GiftSchema = new Schema(
     {
@@ -23,11 +23,11 @@ const GiftSchema = new Schema(
             },
         },
         icon: {
-            type: SchemaTypes.String, // URL to the icon that is displayed
+            type: SchemaTypes.String,
             required: true,
         },
         animation: {
-            type: SchemaTypes.String, // URL to the animation
+            type: SchemaTypes.String,
             required: false,
         },
         category: {
@@ -53,11 +53,13 @@ const GiftSchema = new Schema(
             type: SchemaTypes.Date,
             required: false,
         },
+        ...metadatafields,
     },
     { collection: "Gifts" },
 );
 
-GiftSchema.plugin(metadataPlugin);
+addMetadataHooks(GiftSchema);
+
 
 const Gift = mongoose.model("Gift", GiftSchema);
 

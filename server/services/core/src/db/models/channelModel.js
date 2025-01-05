@@ -5,7 +5,7 @@ const Post = require("./postModel");
 const Story = require("./storyModel");
 const Report = require("./reportModel");
 const { log } = require("../../modules/logModule");
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const ChannelSchema = new Schema(
   {
@@ -38,11 +38,12 @@ const ChannelSchema = new Schema(
         ref: "Users",
       },
     ],
+    ...metadatafields,
   },
   { collection: "Channels" },
 );
 
-ChannelSchema.plugin(metadataPlugin);
+addMetadataHooks(ChannelSchema);
 
 ChannelSchema.post("findOneAndDelete", async function () {
   const session = await mongoose.startSession();

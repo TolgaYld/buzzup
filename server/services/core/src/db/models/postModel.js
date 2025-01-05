@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 const EngagementLog = require("./engagementLogModel");
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const PostSchema = new Schema(
   {
@@ -102,11 +102,12 @@ const PostSchema = new Schema(
       }],
       validate: [arrayLimit, "{PATH} exceeds the limit of 3"]
     },
+    ...metadatafields
   },
   { collection: "Posts" },
 );
 
-PostSchema.plugin(metadataPlugin);
+addMetadataHooks(PostSchema);
 
 function arrayLimit(val) {
   return val.length <= 3;

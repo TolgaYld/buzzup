@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
 const EngagementLog = require("./engagementLogModel");
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const CommentSchema = new Schema(
   {
@@ -68,11 +68,12 @@ const CommentSchema = new Schema(
       ref: "Stories",
       required: false,
     },
+    ...metadatafields,
   },
   { collection: "Comments" },
 );
 
-CommentSchema.plugin(metadataPlugin);
+addMetadataHooks(CommentSchema);
 
 function extractHashtags(text) {
   return (text.match(/#[a-zA-Z0-9_]+/g) || []).map(tag => tag.toLowerCase());

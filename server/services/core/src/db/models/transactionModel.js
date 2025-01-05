@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const TransactionSchema = new Schema({
     from_user: {
@@ -28,9 +28,10 @@ const TransactionSchema = new Schema({
         type: SchemaTypes.Number,
         required: true
     },
+    ...metadatafields,
 }, { collection: "Transactions" });
 
-TransactionSchema.plugin(metadataPlugin);
+addMetadataHooks(TransactionSchema);
 
 const Transaction = mongoose.model("Transaction", TransactionSchema);
 

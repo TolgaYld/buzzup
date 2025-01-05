@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const StorySchema = new Schema(
   {
@@ -97,11 +97,12 @@ const StorySchema = new Schema(
       }],
       validate: [arrayLimit, "{PATH} exceeds the limit of 3"]
     },
+    ...metadatafields,
   },
   { collection: "Stories" },
 );
 
-StorySchema.plugin(metadataPlugin);
+addMetadataHooks(StorySchema);
 
 function arrayLimit(val) {
   return val.length <= 3;

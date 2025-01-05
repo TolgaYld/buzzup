@@ -1,12 +1,33 @@
 const mongoose = require("mongoose");
+const SchemaTypes = mongoose.Schema.Types;
+const metadatafields = {
+    is_active: {
+        type: SchemaTypes.Boolean,
+        default: true,
+        required: true,
+    },
+    is_deleted: {
+        type: SchemaTypes.Boolean,
+        default: false,
+        required: true,
+    },
+    created_by: {
+        type: SchemaTypes.ObjectId,
+        ref: "Users",
+        required: true,
+    },
+    updated_by: {
+        type: SchemaTypes.ObjectId,
+        ref: "Users",
+    },
+};
 
-function metadataPlugin(schema) {
-    schema.add({
-        is_active: { type: Boolean, default: true, required: true },
-        is_deleted: { type: Boolean, default: false, required: true },
-        created_by: { type: mongoose.Schema.Types.ObjectId, ref: "Users", required: true },
-        updated_by: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
-    });
+/**
+ * Adds common hooks to an existing mongoose schema,
+ * and automatically sets the `created_at` and `updated_at` timestamps
+ * @param {mongoose.Schema} schema - The existing mongoose schema
+ */
+function addMetadataHooks(schema) {
 
     schema.set("timestamps", { createdAt: "created_at", updatedAt: "updated_at" });
 
@@ -20,7 +41,6 @@ function metadataPlugin(schema) {
                 this.updated_by = this._updatedBy;
             }
         }
-
         next();
     });
 
@@ -68,6 +88,11 @@ function metadataPlugin(schema) {
         update.$set.updated_at = new Date();
         next();
     });
+
+    return schema;
 }
 
-module.exports = metadataPlugin;
+module.exports = {
+    metadatafields,
+    addMetadataHooks,
+};

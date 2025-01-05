@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const SchemaTypes = Schema.Types;
-const metadataPlugin = require("../plugins/metadata");
+const { addMetadataHooks, metadatafields } = require("../utils/metadata");
 
 const MessageSchema = new Schema(
     {
@@ -32,11 +32,12 @@ const MessageSchema = new Schema(
             ],
             default: "SENT",
         },
+        ...metadatafields,
     },
     { collection: "Messages" }
 );
 
-MessageSchema.plugin(metadataPlugin);
+addMetadataHooks(MessageSchema);
 
 MessageSchema.index({ chat: 1 });
 MessageSchema.index({ chat: 1, created_at: -1 });
