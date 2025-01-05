@@ -8,7 +8,7 @@ mutation SignUpUser(\$data: SignUpUserInput!) {
       device_type
       distance
       email
-      is_admin
+      user_type
       is_banned
       is_deleted
       location {
@@ -46,7 +46,7 @@ mutation SignInUser(\$data: SignInUserInput!) {
       official
       is_deleted
       is_banned
-      is_admin
+      user_type
       provider
       provider_id
       device_id
@@ -78,7 +78,7 @@ mutation AuthUserWithProvider(\$data: AuthUserWithProviderInput) {
       official
       is_deleted
       is_banned
-      is_admin
+      user_type
       provider
       provider_id
       device_id
@@ -129,7 +129,7 @@ mutation Mutation(\$data: UpdateUserInput) {
       official
       is_deleted
       is_banned
-      is_admin
+      user_type
       provider
       provider_id
       device_id
