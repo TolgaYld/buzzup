@@ -359,7 +359,10 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   Future<Token> refreshToken() async {
     try {
       final response = await _client.query(
-        QueryOptions(document: gql(GqlQuerys.refreshToken)),
+        QueryOptions(
+          document: gql(GqlQuerys.refreshToken),
+          fetchPolicy: FetchPolicy.noCache,
+        ),
       );
 
       if (response.data case final d? when response.hasException == false) {
