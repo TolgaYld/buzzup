@@ -120,7 +120,20 @@ const UserSchema = new Schema(
       required: true,
       default: "USER",
     },
-    ...metadatafields,
+    is_active: {
+      type: SchemaTypes.Boolean,
+      default: true,
+      required: true,
+    },
+    is_deleted: {
+      type: SchemaTypes.Boolean,
+      default: false,
+      required: true,
+    },
+    updated_by: {
+      type: SchemaTypes.ObjectId,
+      ref: "Users",
+    },
   },
   {
     collection: "Users",

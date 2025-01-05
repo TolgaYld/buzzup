@@ -11,7 +11,6 @@ module.exports = {
       data: {
         ...args.data,
         email_confirmed: false,
-        is_admin: false,
       },
     });
 
@@ -29,7 +28,6 @@ module.exports = {
       data: {
         ...args.data,
         email_confirmed: false,
-        is_admin: false,
       },
     });
 

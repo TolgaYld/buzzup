@@ -34,7 +34,7 @@ function addMetadataHooks(schema) {
     schema.pre("save", function (next) {
         if (this.isNew) {
             if (this.created_by == null) {
-                throw new Error("created_by is required");
+                this.created_by = this._id;
             }
         } else {
             if (this._updatedBy) {
