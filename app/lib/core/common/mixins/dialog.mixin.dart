@@ -6,7 +6,7 @@ mixin ShowableDialogMixin<T> on Widget {
     bool useAnimation = true,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder,
   }) {
-    if (useAnimation == false) {
+    if (!useAnimation) {
       return showDialog<T>(
         context: context,
         builder: (context) => this,
@@ -18,21 +18,24 @@ mixin ShowableDialogMixin<T> on Widget {
       barrierLabel: 'Dialog',
       barrierDismissible: true,
       barrierColor: Colors.black.withValues(alpha: 0.6),
-      transitionDuration: Durations.short3,
+      transitionDuration: Durations.medium4,
       pageBuilder: (context, anim1, anim2) => this,
       transitionBuilder: customTransitionBuilder ??
           (context, anim1, anim2, child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 1),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: anim1,
-                  curve: Curves.easeInOut,
-                ),
+            final curvedAnim = CurvedAnimation(
+              parent: anim1,
+              curve: Curves.easeOutExpo,
+            );
+
+            return FadeTransition(
+              opacity: curvedAnim,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 1.0),
+                  end: Offset.zero,
+                ).animate(curvedAnim),
+                child: child,
               ),
-              child: child,
             );
           },
     );
@@ -40,10 +43,10 @@ mixin ShowableDialogMixin<T> on Widget {
 
   Future<T?> showBarrierDisabled(
     BuildContext context, {
-    bool useAnimation = true,
+    bool useAnimation = false,
     Widget Function(BuildContext, Animation<double>, Animation<double>, Widget)? customTransitionBuilder,
   }) {
-    if (useAnimation == false) {
+    if (!useAnimation) {
       return showDialog<T>(
         context: context,
         builder: (context) => this,
@@ -56,21 +59,24 @@ mixin ShowableDialogMixin<T> on Widget {
       barrierLabel: 'Dialog',
       barrierDismissible: false,
       barrierColor: Colors.black.withValues(alpha: 0.6),
-      transitionDuration: Durations.short3,
+      transitionDuration: Durations.medium4,
       pageBuilder: (context, anim1, anim2) => this,
       transitionBuilder: customTransitionBuilder ??
           (context, anim1, anim2, child) {
-            return SlideTransition(
-              position: Tween<Offset>(
-                begin: const Offset(0, 1),
-                end: Offset.zero,
-              ).animate(
-                CurvedAnimation(
-                  parent: anim1,
-                  curve: Curves.easeInOut,
-                ),
+            final curvedAnim = CurvedAnimation(
+              parent: anim1,
+              curve: Curves.easeOutExpo,
+            );
+
+            return FadeTransition(
+              opacity: curvedAnim,
+              child: SlideTransition(
+                position: Tween<Offset>(
+                  begin: const Offset(0, 1.0),
+                  end: Offset.zero,
+                ).animate(curvedAnim),
+                child: child,
               ),
-              child: child,
             );
           },
     );
