@@ -19,6 +19,7 @@
     "@TolgaYld/core-buzzup": "*",
     "bcrypt": "^5.1.1",
     "nodemailer": "^6.9.16",
+    "redis": "^4.7.0",
     "validator": "^13.12.0"
   }
 }

@@ -153,11 +153,6 @@ const Query = {
 
 
   refreshToken: catchGraphQLResolverErrors(async (parent, args, { req }) => {
-    const id = await getUserId(req);
-
-    if (id == null) {
-      throw { statusCode: 401, message: "Unauthorized" };
-    }
     const headers = req.headers;
 
     const response = await axios.get(`${AUTHSERVICE}/refreshToken`, {

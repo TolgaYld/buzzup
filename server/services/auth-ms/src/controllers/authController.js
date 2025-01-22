@@ -8,7 +8,7 @@ const { sendConfirmationEmail, sendResetEmail } = require("../helpers/mailHandle
 const jwt = require("jsonwebtoken");
 
 const saltValue = 12;
-const tokenDuration = "3h";
+const tokenDuration = "15m";
 const refreshTokenDuration = "30d";
 const validatePasswordOptions = {
   minLength: 6,
