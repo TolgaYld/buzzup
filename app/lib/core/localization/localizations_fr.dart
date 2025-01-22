@@ -145,4 +145,10 @@ class L10nFr extends L10n {
 
   @override
   String get profile => 'Profil';
+
+  @override
+  String get post => 'Vib3';
+
+  @override
+  String get shareVib3Hint => 'Lâche ton Vib3...';
 }

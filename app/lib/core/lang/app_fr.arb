@@ -44,5 +44,7 @@
     "home": "Accueil",
     "channels": "Canaux",
     "chats": "Chats",
-    "profile": "Profil"
+    "profile": "Profil",
+    "post": "Vib3",
+    "shareVib3Hint": "Lâche ton Vib3..."
 }

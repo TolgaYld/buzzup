@@ -32,10 +32,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
     _tokenTimer?.cancel();
     final expiryDate = JwtHelper.getExpiryDate(token);
     if (expiryDate != null) {
-      final duration = expiryDate.difference(DateTime.now().subtract(const Duration(minutes: 3)));
-      _tokenTimer = Timer(duration, () async {
-        await _refreshToken();
-      });
+      final duration = expiryDate.difference(DateTime.now());
+      _tokenTimer = Timer(duration, () async => await _refreshToken());
     }
   }
 
@@ -91,6 +89,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right(value: final user):
         state = SignedInState(user);
+        await _refreshToken();
         break;
     }
   }
@@ -117,6 +116,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right(value: final user):
         state = SignedUpState(user);
+        await _refreshToken();
         break;
     }
   }
@@ -142,6 +142,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right(value: final user):
         state = AuthenticatedWithProviderState(user);
+        await _refreshToken();
         break;
     }
   }
@@ -160,6 +161,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right():
         state = const UserUpdatedState();
+        await _refreshToken();
         break;
     }
   }
@@ -183,6 +185,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right():
         state = const PasswordChangedState();
+        await _refreshToken();
         break;
     }
   }

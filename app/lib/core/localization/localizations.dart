@@ -376,6 +376,18 @@ abstract class L10n {
   /// In de, this message translates to:
   /// **'Profil'**
   String get profile;
+
+  /// No description provided for @post.
+  ///
+  /// In de, this message translates to:
+  /// **'Vib3'**
+  String get post;
+
+  /// No description provided for @shareVib3Hint.
+  ///
+  /// In de, this message translates to:
+  /// **'Gib dein Vib3 ab...'**
+  String get shareVib3Hint;
 }
 
 class _L10nDelegate extends LocalizationsDelegate<L10n> {

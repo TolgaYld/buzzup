@@ -145,4 +145,10 @@ class L10nEs extends L10n {
 
   @override
   String get profile => 'Perfil';
+
+  @override
+  String get post => 'Vib3';
+
+  @override
+  String get shareVib3Hint => 'Comparte tu Vib3...';
 }

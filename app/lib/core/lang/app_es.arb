@@ -44,5 +44,7 @@
     "home": "Inicio",
     "channels": "Canales",
     "chats": "Chats",
-    "profile": "Perfil"
+    "profile": "Perfil",
+    "post": "Vib3",
+    "shareVib3Hint": "Comparte tu Vib3..."
 }

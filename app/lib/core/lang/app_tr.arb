@@ -44,5 +44,7 @@
     "home": "Anasayfa",
     "channels": "Kanallar",
     "chats": "Sohbetler",
-    "profile": "Profil"
+    "profile": "Profil",
+    "post": "Vib3",
+    "shareVib3Hint": "Vib3'ını paylaş..."
 }
