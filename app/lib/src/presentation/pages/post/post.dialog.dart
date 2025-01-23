@@ -41,7 +41,33 @@ class PostDialog extends HookConsumerWidget with ShowableDialogMixin {
                           ),
                         ),
                         const VSpace.s(),
-                        // TODO: Add image picker
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton.filled(
+                              onPressed: () {},
+                              icon: Icon(Icons.camera_alt_rounded),
+                            ),
+                            const HSpace.s(),
+                            IconButton.filled(
+                              onPressed: () {},
+                              icon: Icon(Icons.image_rounded),
+                              style: IconButton.styleFrom(backgroundColor: theme.colorScheme.secondary),
+                            ),
+                            const HSpace.s(),
+                            IconButton.filled(
+                              onPressed: () {},
+                              icon: Icon(Icons.person_add_alt_rounded),
+                              style: IconButton.styleFrom(backgroundColor: Colors.green),
+                            ),
+                            const HSpace.s(),
+                            IconButton.filled(
+                              onPressed: () {},
+                              icon: Icon(Icons.pin_drop_rounded),
+                              style: IconButton.styleFrom(backgroundColor: Colors.lightBlue),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -55,11 +81,15 @@ class PostDialog extends HookConsumerWidget with ShowableDialogMixin {
                       child: Text(l10n.close),
                     ),
                     const HSpace.s(),
-                    ElevatedButton(
+                    ElevatedButton.icon(
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
-                      child: Text(l10n.post),
+                      label: Text(l10n.post),
+                      icon: Icon(
+                        Icons.send_rounded,
+                        color: theme.colorScheme.onPrimary,
+                      ),
                     ),
                   ],
                 ),
