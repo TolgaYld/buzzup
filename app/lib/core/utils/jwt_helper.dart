@@ -10,4 +10,5 @@ class JwtHelper {
   }
 
   static bool isExpired(String token) => JwtDecoder.isExpired(token);
+  static bool isNotExpired(String token) => JwtDecoder.isExpired(token) == false;
 }

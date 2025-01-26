@@ -1,18 +1,31 @@
 import 'dart:async';
 
-import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
+import 'package:buzzup/core/common/refresh_token_manager.dart';
 import 'package:buzzup/core/dependency_provider/auth.provider.dart';
 import 'package:buzzup/core/utils/either.dart';
-import 'package:buzzup/core/utils/jwt_helper.dart';
 import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class AuthNotifier extends StateNotifier<AuthState> {
-  AuthNotifier(this.ref) : super(const AuthInitialState());
+  AuthNotifier(this.ref) : super(const AuthInitialState()) {
+    init();
+  }
 
   final Ref ref;
-  Timer? _tokenTimer;
+
+  void init() {
+    ref.listen<AsyncValue<AuthStatus>>(
+      userIsAuthProvider,
+      (previous, next) {
+        if (next.value == AuthStatus.authenticated) {
+          state = SignedInState(null);
+        } else {
+          state = const SignedOutState();
+        }
+      },
+    );
+  }
 
   Future<void> event(AuthEvent event) async {
     state = const LoadingState();
@@ -28,44 +41,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
     };
   }
 
-  void _startTokenTimer({required String token, required String refreshToken}) {
-    _tokenTimer?.cancel();
-    final expiryDate = JwtHelper.getExpiryDate(token);
-    if (expiryDate != null) {
-      final duration = expiryDate.difference(DateTime.now());
-      _tokenTimer = Timer(duration, () async => await _refreshToken());
-    }
-  }
-
   Future<void> _refreshToken() async {
-    final getToken = await ref.read(tokenProvider.future);
-    final getRefreshToken = await ref.read(refreshTokenProvider.future);
-    if (getToken != null && getRefreshToken != null) {
-      final refreshTokenUseCase = await ref.read(refreshTokenUsecaseProvider.future);
-      final result = await refreshTokenUseCase();
-      if (JwtHelper.isExpired(getRefreshToken)) {
-        await _signOut();
-      } else if (result case Right(value: final newTokens)) {
-        _startTokenTimer(
-          token: newTokens.token,
-          refreshToken: newTokens.refreshToken,
-        );
-        state = SignedInState(null);
-      } else if (result is Left) {
-        await _signOut();
-      } else {
-        await _signOut();
-      }
-    } else {
-      await _signOut();
-    }
+    final refreshTokenManager = ref.read(refreshTokenManagerProvider);
+    await refreshTokenManager.refreshToken();
   }
 
   Future<void> _signOut() async {
-    _tokenTimer?.cancel();
-    _tokenTimer = null;
+    final refreshTokenManager = ref.read(refreshTokenManagerProvider);
     final signOutUsecase = await ref.read(signOutUsecaseProvider.future);
     await signOutUsecase();
+    refreshTokenManager.dispose();
     state = const SignedOutState();
   }
 
@@ -210,7 +195,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   @override
   void dispose() {
-    _tokenTimer?.cancel();
+    ref.read(refreshTokenManagerProvider).dispose();
     super.dispose();
   }
 }
