@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 
 const saltValue = 12;
 const tokenDuration = "15m";
-const refreshTokenDuration = "30d";
+const refreshTokenDuration = process.env.NODE_ENV == "production" ? "30d" : "7d";
 const algorithm = 'sha256';
 const validatePasswordOptions = {
   minLength: 6,
