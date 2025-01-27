@@ -29,7 +29,7 @@ class RefreshTokenManager {
     final expiryDate = JwtHelper.getExpiryDate(accessToken);
 
     if (expiryDate != null) {
-      final duration = expiryDate.subtract(Duration(minutes: 3)).difference(DateTime.now());
+      final duration = expiryDate.subtract(JwtHelper.substractDurationValuefFromExpiryDate).difference(DateTime.now());
       _refreshTimer = Timer(duration, refreshToken);
     }
   }

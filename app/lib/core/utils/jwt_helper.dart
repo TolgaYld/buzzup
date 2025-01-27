@@ -9,6 +9,17 @@ class JwtHelper {
     }
   }
 
-  static bool isExpired(String token) => JwtDecoder.isExpired(token);
+  static Duration substractDurationValuefFromExpiryDate = Duration(minutes: 3);
+
+  static bool isExpired(String token) {
+    try {
+      final expiryDate = JwtDecoder.getExpirationDate(token);
+      final duration = expiryDate.subtract(substractDurationValuefFromExpiryDate).difference(DateTime.now());
+      return duration.isNegative || duration.inMicroseconds == 0;
+    } catch (e) {
+      return true;
+    }
+  }
+
   static bool isNotExpired(String token) => JwtDecoder.isExpired(token) == false;
 }

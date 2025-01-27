@@ -17,11 +17,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
   void init() {
     ref.listen<AsyncValue<AuthStatus>>(
       userIsAuthProvider,
-      (previous, next) {
+      (previous, next) async {
         if (next.value == AuthStatus.authenticated) {
           state = SignedInState(null);
         } else {
-          state = const SignedOutState();
+          _signOutHandler();
         }
       },
     );
