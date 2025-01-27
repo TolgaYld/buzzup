@@ -15,33 +15,33 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
 
 // Provider ThemeModeLocalDatasrc
 final themeModeLocalDataSourceProvider = Provider<ThemeModeLocalDatasrc>((ref) {
-  final sharedPreferences = ref.read(sharedPreferencesProvider);
+  final sharedPreferences = ref.watch(sharedPreferencesProvider);
   return ThemeModeLocalDatasrcImpl(sharedPreferences);
 });
 
 // Repository Provider
 final themeModeRepoProvider = Provider<ThemeModeRepo>((ref) {
-  final localDatasource = ref.read(themeModeLocalDataSourceProvider);
+  final localDatasource = ref.watch(themeModeLocalDataSourceProvider);
   return ThemeModeRepoImpl(localDatasource);
 });
 
 // Usecases Providers
 final getThemeModeUsecaseProvider = Provider<GetThemeModeUsecase>((ref) {
-  final repo = ref.read(themeModeRepoProvider);
+  final repo = ref.watch(themeModeRepoProvider);
   return GetThemeModeUsecase(repo);
 });
 
 final getUseSystemThemeUsecaseProvider = Provider<GetUseSystemThemeUsecase>((ref) {
-  final repo = ref.read(themeModeRepoProvider);
+  final repo = ref.watch(themeModeRepoProvider);
   return GetUseSystemThemeUsecase(repo);
 });
 
 final setThemeModeUsecaseProvider = Provider<SetThemeModeUsecase>((ref) {
-  final repo = ref.read(themeModeRepoProvider);
+  final repo = ref.watch(themeModeRepoProvider);
   return SetThemeModeUsecase(repo);
 });
 
 final setUseSystemThemeUsecaseProvider = Provider<SetUseSystemThemeUsecase>((ref) {
-  final repo = ref.read(themeModeRepoProvider);
+  final repo = ref.watch(themeModeRepoProvider);
   return SetUseSystemThemeUsecase(repo);
 });

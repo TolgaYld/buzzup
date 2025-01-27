@@ -17,70 +17,70 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // Datasources Providers
 final authRemoteDatasourceProvider = FutureProvider<AuthRemoteDatasrc>((ref) async {
-  final graphqlClient = await ref.read(graphQLClientProvider.future);
+  final graphqlClient = await ref.watch(graphQLClientProvider.future);
   return AuthRemoteDatasrcImpl(graphqlClient);
 });
 
 final authLocalDatasourceProvider = Provider<AuthLocalDatasrc>((ref) {
-  return AuthLocalDatasrcImpl(ref.read(flutterSecureStorageProvider));
+  return AuthLocalDatasrcImpl(ref.watch(flutterSecureStorageProvider));
 });
 
 // Repository Provider
 final authRepoProvider = FutureProvider<AuthRepo>((ref) async {
-  final authRemoteDatasrc = await ref.read(authRemoteDatasourceProvider.future);
+  final authRemoteDatasrc = await ref.watch(authRemoteDatasourceProvider.future);
   return AuthRepoImpl(
     remoteDatasrc: authRemoteDatasrc,
-    localDatasrc: ref.read(authLocalDatasourceProvider),
+    localDatasrc: ref.watch(authLocalDatasourceProvider),
   );
 });
 
 // Usecases Providers
 final checkEmailExistsUsecaseProvider = FutureProvider<CheckEmailExistsUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return CheckEmailExistsUsecase(authRepo);
 });
 
 final checkUsernameExistsUsecaseProvider = FutureProvider<CheckUsernameExistsUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return CheckUsernameExistsUsecase(authRepo);
 });
 
 final refreshTokenUsecaseProvider = FutureProvider<RefreshTokenUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return RefreshTokenUsecase(authRepo);
 });
 
 final signInUsecaseProvider = FutureProvider<SignInUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return SignInUsecase(authRepo);
 });
 
 final signOutUsecaseProvider = FutureProvider<SignOutUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return SignOutUsecase(authRepo);
 });
 
 final signUpUsecaseProvider = FutureProvider<SignUpUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return SignUpUsecase(authRepo);
 });
 
 final authWithProviderUsecaseProvider = FutureProvider<AuthWithProviderUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return AuthWithProviderUsecase(authRepo);
 });
 
 final updateUserUsecaseProvider = FutureProvider<UpdateUserUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return UpdateUserUsecase(authRepo);
 });
 
 final forgotPasswordUsecaseProvider = FutureProvider<ForgotPasswordUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return ForgotPasswordUsecase(authRepo);
 });
 
 final updatePasswordUsecaseProvider = FutureProvider<UpdatePasswordUsecase>((ref) async {
-  final authRepo = await ref.read(authRepoProvider.future);
+  final authRepo = await ref.watch(authRepoProvider.future);
   return UpdatePasswordUsecase(authRepo);
 });

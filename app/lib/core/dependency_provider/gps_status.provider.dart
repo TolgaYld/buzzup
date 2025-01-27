@@ -13,19 +13,19 @@ final geolocatorProvider = Provider<GeolocatorPlatform>((ref) {
 
 // Datasource provider
 final gpsStatusLocalDataSourceProvider = Provider<GpsStatusLocalDatasrc>((ref) {
-  return GpsStatusLocalDatasrcImpl(ref.read(geolocatorProvider));
+  return GpsStatusLocalDatasrcImpl(ref.watch(geolocatorProvider));
 });
 
 // Repository provider
 final gpsStatusRepoProvider = Provider<GpsStatusRepo>((ref) {
-  return GpsStatusRepoImpl(ref.read(gpsStatusLocalDataSourceProvider));
+  return GpsStatusRepoImpl(ref.watch(gpsStatusLocalDataSourceProvider));
 });
 
 // Usecases providers
 final watchGpsStatusUsecaseProvider = Provider<WatchGpsStatusUsecase>((ref) {
-  return WatchGpsStatusUsecase(ref.read(gpsStatusRepoProvider));
+  return WatchGpsStatusUsecase(ref.watch(gpsStatusRepoProvider));
 });
 
 final getGpsStatusUsecaseProvider = Provider<GetGpsStatusUsecase>((ref) {
-  return GetGpsStatusUsecase(ref.read(gpsStatusRepoProvider));
+  return GetGpsStatusUsecase(ref.watch(gpsStatusRepoProvider));
 });

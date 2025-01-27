@@ -12,19 +12,19 @@ final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) => con
 
 final tokenProvider = FutureProvider.autoDispose<String?>((ref) async {
   ref.invalidate(flutterSecureStorageProvider);
-  final storage = ref.read(flutterSecureStorageProvider);
+  final storage = ref.watch(flutterSecureStorageProvider);
   return await storage.read(key: kCachedTokenKey);
 });
 
 final refreshTokenProvider = FutureProvider.autoDispose<String?>((ref) async {
   ref.invalidate(flutterSecureStorageProvider);
-  final storage = ref.read(flutterSecureStorageProvider);
+  final storage = ref.watch(flutterSecureStorageProvider);
   return await storage.read(key: kCachedRefreshTokenKey);
 });
 
 final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
   final box = await HiveStore.openBox(kGraphqlHiveBoxName);
-  final customAuthLink = ref.read(customAuthLinkProvider);
+  final customAuthLink = ref.watch(customAuthLinkProvider);
 
   final httpLink = HttpLink(
     switch (Environment.type == EnvironmentType.test) {
