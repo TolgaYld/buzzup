@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
+const redis = require("../db/redis/dbConnection");
 const { User, Post, Comment, Report, log, SECRET_KEY, SECRET_KEY_REFRESH } = require("@TolgaYld/core-buzzup");
 const { token, refreshToken } = require("../helpers/token");
 const bcrypt = require("bcrypt");
+const crypto = require("crypto");
 const validator = require("validator");
 const generateRandomPassword = require('../helpers/pwdHandler');
 const { sendConfirmationEmail, sendResetEmail } = require("../helpers/mailHandler");
@@ -10,6 +12,7 @@ const jwt = require("jsonwebtoken");
 const saltValue = 12;
 const tokenDuration = "15m";
 const refreshTokenDuration = "30d";
+const algorithm = 'sha256';
 const validatePasswordOptions = {
   minLength: 6,
   minLowercase: 0,
@@ -362,6 +365,7 @@ const tokenService = async (req, res) => {
 
   try {
     const decodedRefresh = jwt.verify(refrToken, SECRET_KEY_REFRESH);
+    await blacklistValidation(refrToken, decodedRefresh.exp);
     const { id } = decodedRefresh;
     try {
       jwt.verify(accessToken, SECRET_KEY);
@@ -581,6 +585,26 @@ const sendSuccessResponseWithTokens = async (user, res, statusCode = 200) => {
     },
   });
 };
+
+async function isTokenBlacklisted(refreshToken) {
+  const hashedToken = crypto.createHash(algorithm).update(refreshToken).digest('hex');
+  const result = await redis.get(hashedToken);
+
+  if (result) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async function blacklistValidation(refreshToken, expiryUnixTimestampInSec) {
+  const tokenIsBlacklisted = await isTokenBlacklisted(refreshToken);
+  if (tokenIsBlacklisted) {
+    throw { statusCode: 401, message: "unauthorized" };
+  }
+  const hashedToken = crypto.createHash(algorithm).update(refreshToken).digest('hex');
+  await redis.set(hashedToken, 'blacklisted', { exat: expiryUnixTimestampInSec });
+}
 
 module.exports = {
   findAll,
