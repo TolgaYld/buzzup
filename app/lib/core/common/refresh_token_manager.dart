@@ -7,9 +7,13 @@ import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/jwt_helper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final refreshTokenManagerProvider = Provider(RefreshTokenManager.new);
+final refreshTokenManagerProvider = Provider((ref) {
+  final notifier = RefreshTokenManager(ref);
+  ref.onDispose(notifier.dispose);
+  return notifier;
+});
 final userIsAuthProvider = StreamProvider.autoDispose<AuthStatus>((ref) async* {
-  final refreshTokenManager = ref.read(refreshTokenManagerProvider);
+  final refreshTokenManager = ref.watch(refreshTokenManagerProvider);
   yield* refreshTokenManager.authStatusStream;
 });
 

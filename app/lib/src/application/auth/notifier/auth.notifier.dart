@@ -33,24 +33,23 @@ class AuthNotifier extends StateNotifier<AuthState> {
       SignInEvent() => await _signInHandler(event),
       SignUpEvent() => await _signUpHandler(event),
       AuthWithProviderEvent() => await _authWithProviderHandler(event),
-      SignOutEvent() => await _signOut(),
+      SignOutEvent() => await _signOutHandler(),
       UpdateUserEvent() => await _updateUserHandler(event),
       UpdatePasswordEvent() => await _updatePasswordHandler(event),
       ForgotPasswordEvent() => await _forgotPasswordHandler(event),
-      RefreshTokenEvent() => await _refreshToken(),
+      RefreshTokenEvent() => await _refreshTokenHandler(),
     };
   }
 
-  Future<void> _refreshToken() async {
+  Future<void> _refreshTokenHandler() async {
     final refreshTokenManager = ref.read(refreshTokenManagerProvider);
     await refreshTokenManager.refreshToken();
   }
 
-  Future<void> _signOut() async {
-    final refreshTokenManager = ref.read(refreshTokenManagerProvider);
+  Future<void> _signOutHandler() async {
     final signOutUsecase = await ref.read(signOutUsecaseProvider.future);
     await signOutUsecase();
-    refreshTokenManager.dispose();
+    ref.invalidate(refreshTokenManagerProvider);
     state = const SignedOutState();
   }
 
@@ -74,7 +73,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right(value: final user):
         state = SignedInState(user);
-        await _refreshToken();
+        await _refreshTokenHandler();
         break;
     }
   }
@@ -101,7 +100,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right(value: final user):
         state = SignedUpState(user);
-        await _refreshToken();
+        await _refreshTokenHandler();
         break;
     }
   }
@@ -127,7 +126,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right(value: final user):
         state = AuthenticatedWithProviderState(user);
-        await _refreshToken();
+        await _refreshTokenHandler();
         break;
     }
   }
@@ -146,7 +145,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right():
         state = const UserUpdatedState();
-        await _refreshToken();
+        await _refreshTokenHandler();
         break;
     }
   }
@@ -170,7 +169,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         break;
       case Right():
         state = const PasswordChangedState();
-        await _refreshToken();
+        await _refreshTokenHandler();
         break;
     }
   }
