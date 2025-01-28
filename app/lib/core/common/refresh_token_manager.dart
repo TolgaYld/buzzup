@@ -55,9 +55,7 @@ class RefreshTokenManager {
     }
   }
 
-  void dispose() {
-    _authStatusStreamController.close();
-  }
+  Future<void> dispose() async => await _authStatusStreamController.close();
 }
 
 enum AuthStatus {

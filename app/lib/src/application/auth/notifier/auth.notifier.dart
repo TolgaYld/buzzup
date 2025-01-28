@@ -13,15 +13,16 @@ class AuthNotifier extends StateNotifier<AuthState> {
   }
 
   final Ref ref;
+  late final ProviderSubscription<AsyncValue<AuthStatus>> listener;
 
   void init() {
-    ref.listen<AsyncValue<AuthStatus>>(
+    listener = ref.listen<AsyncValue<AuthStatus>>(
       userIsAuthProvider,
-      (previous, next) async {
+      (previous, next) {
         if (next.value == AuthStatus.authenticated) {
           state = SignedInState(null);
         } else {
-          _signOutHandler();
+          state = const SignedOutState();
         }
       },
     );
@@ -49,6 +50,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
   Future<void> _signOutHandler() async {
     final signOutUsecase = await ref.read(signOutUsecaseProvider.future);
     await signOutUsecase();
+    listener.close();
     ref.invalidate(refreshTokenManagerProvider);
     state = const SignedOutState();
   }
@@ -194,7 +196,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   @override
   void dispose() {
-    ref.read(refreshTokenManagerProvider).dispose();
+    listener.close();
+    ref.invalidate(refreshTokenManagerProvider);
     super.dispose();
   }
 }
