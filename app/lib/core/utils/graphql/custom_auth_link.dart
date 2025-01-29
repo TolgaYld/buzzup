@@ -11,8 +11,9 @@ class CustomAuthLink extends Link {
 
   @override
   Stream<Response> request(Request request, [NextLink? forward]) async* {
-    final token = await ref.read(tokenProvider.future);
-    final refreshToken = await ref.read(refreshTokenProvider.future);
+    final secureStorage = ref.watch(flutterSecureStorageProvider);
+    final token = await secureStorage.read(key: kCachedTokenKey);
+    final refreshToken = await secureStorage.read(key: kCachedRefreshTokenKey);
 
     final updatedRequest = request.updateContextEntry<HttpLinkHeaders>(
       (headers) => HttpLinkHeaders(
