@@ -10,8 +10,8 @@ const { sendConfirmationEmail, sendResetEmail } = require("../helpers/mailHandle
 const jwt = require("jsonwebtoken");
 
 const saltValue = 12;
-const tokenDuration = "15m";
-const refreshTokenDuration = process.env.NODE_ENV == "production" ? "30d" : "7d";
+const tokenDuration = process.env.NODE_ENV.toString() === "production" ? "15m" : "1m";
+const refreshTokenDuration = process.env.NODE_ENV.toString() === "production" ? "7d" : "1d";
 const algorithm = 'sha256';
 const validatePasswordOptions = {
   minLength: 6,
@@ -193,7 +193,6 @@ const signInUser = async (req, res) => {
 
     throw { statusCode: 406, message: "authentication-failed" };
   }
-
   return sendSuccessResponseWithTokens(findUser, res);
 };
 
@@ -356,13 +355,11 @@ const tokenService = async (req, res) => {
   const refresh = req.headers.refresh;
   const authorization = req.headers.authorization;
 
-
   if (refresh == null || authorization == null) {
     throw { statusCode: 401, message: "unauthorized" };
   }
   const refrToken = refresh.split(" ")[1];
   const accessToken = authorization.split(" ")[1];
-
   try {
     const decodedRefresh = jwt.verify(refrToken, SECRET_KEY_REFRESH);
     await blacklistValidation(refrToken, decodedRefresh.exp);
@@ -600,6 +597,7 @@ async function isTokenBlacklisted(refreshToken) {
 async function blacklistValidation(refreshToken, expiryUnixTimestampInSec) {
   const tokenIsBlacklisted = await isTokenBlacklisted(refreshToken);
   if (tokenIsBlacklisted) {
+    console.log("token is blacklisted");
     throw { statusCode: 401, message: "unauthorized" };
   }
   const hashedToken = crypto.createHash(algorithm).update(refreshToken).digest('hex');
