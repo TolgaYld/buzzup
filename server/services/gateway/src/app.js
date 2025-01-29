@@ -7,14 +7,14 @@ const i18next = require("i18next");
 const Backend = require("i18next-fs-backend");
 const i18nextMiddleware = require("i18next-http-middleware");
 const express = require("express");
-const { ApolloServer } = require("apollo-server-express");
+const { ApolloServer } = require("@apollo/server");
+const { expressMiddleware } = require("@apollo/server/express4");
 const { PubSub } = require("graphql-subscriptions");
 const { SESSION_SECRET } = require("@TolgaYld/core-buzzup");
 const session = require("express-session");
 const flash = require("connect-flash");
 const limitter = require("express-rate-limit");
 const helmet = require("helmet");
-
 const app = express();
 
 app.use(express.json());
@@ -88,20 +88,24 @@ let apolloServer = null;
 async function startServer() {
   apolloServer = new ApolloServer({
     schema: schemaWithResolvers,
-    context: async ({ req, res }) => {
-      return {
-        req,
-        res,
-        pubsub,
-      };
-    },
     introspection: process.env.NODE_ENV !== "production",
   });
   await apolloServer.start();
-  apolloServer.applyMiddleware({ app });
+  app.use(
+    "/graphql",
+    express.json(),
+    expressMiddleware(apolloServer, {
+      context: async ({ req, res }) => {
+        return {
+          req,
+          res,
+          pubsub,
+        };
+      },
+    }),
+  );
 }
 startServer();
-
 // Routes
 
 const authRouter = require("./routes/authRouter");
