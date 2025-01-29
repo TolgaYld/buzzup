@@ -198,9 +198,7 @@ class SignUpWidget extends HookConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (authState is LoadingState) const LoadingIndicator(),
-                Flexible(
-                  child: Text(l10n.sign_up),
-                ),
+                Flexible(child: Text(l10n.sign_up)),
               ],
             ),
           ),

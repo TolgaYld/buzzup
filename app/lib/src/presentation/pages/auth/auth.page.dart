@@ -37,6 +37,7 @@ class AuthPage extends HookConsumerWidget {
 
     ref.listen<AuthState>(authProvider, (previous, next) {
       if (next is SignedInState) {
+        authModeNotifier.signIn();
         context.go(RoutePath.home.path);
       } else if (next is SignedUpState) {
         context.go(RoutePath.home.path);
