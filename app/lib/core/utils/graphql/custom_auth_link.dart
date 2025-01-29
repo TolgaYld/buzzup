@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
 
 class CustomAuthLink extends Link {
-  CustomAuthLink(this.ref);
+  const CustomAuthLink(this.ref);
   final Ref ref;
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:buzzup/core/common/constants.dart';
 import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
 import 'package:buzzup/core/dependency_provider/auth.provider.dart';
 import 'package:buzzup/core/models/token.dart';
@@ -27,7 +28,6 @@ class RefreshTokenManager {
   void _startTokenTimer(String accessToken) {
     _refreshTimer?.cancel();
     final expiryDate = JwtHelper.getExpiryDate(accessToken);
-
     if (expiryDate != null) {
       final duration = expiryDate.subtract(JwtHelper.substractDurationValuefFromExpiryDate).difference(DateTime.now());
       _refreshTimer = Timer(duration, refreshToken);
@@ -35,8 +35,9 @@ class RefreshTokenManager {
   }
 
   Future<void> refreshToken() async {
-    final getToken = await ref.read(tokenProvider.future);
-    final getRefreshToken = await ref.read(refreshTokenProvider.future);
+    final secureStorage = ref.watch(flutterSecureStorageProvider);
+    final getToken = await secureStorage.read(key: kCachedTokenKey);
+    final getRefreshToken = await secureStorage.read(key: kCachedRefreshTokenKey);
     if (getToken != null && getRefreshToken != null) {
       final refreshTokenUseCase = await ref.read(refreshTokenUsecaseProvider.future);
       final result = await refreshTokenUseCase();
@@ -55,7 +56,10 @@ class RefreshTokenManager {
     }
   }
 
-  Future<void> dispose() async => await _authStatusStreamController.close();
+  Future<void> dispose() async {
+    _refreshTimer?.cancel();
+    await _authStatusStreamController.close();
+  }
 }
 
 enum AuthStatus {

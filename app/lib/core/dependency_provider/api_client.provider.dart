@@ -10,19 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Providers for External Dependencies
 final flutterSecureStorageProvider = Provider<FlutterSecureStorage>((ref) => const FlutterSecureStorage());
 
-final tokenProvider = FutureProvider.autoDispose<String?>((ref) async {
-  ref.invalidate(flutterSecureStorageProvider);
-  final storage = ref.watch(flutterSecureStorageProvider);
-  return await storage.read(key: kCachedTokenKey);
-});
-
-final refreshTokenProvider = FutureProvider.autoDispose<String?>((ref) async {
-  ref.invalidate(flutterSecureStorageProvider);
-  final storage = ref.watch(flutterSecureStorageProvider);
-  return await storage.read(key: kCachedRefreshTokenKey);
-});
-
-final graphQLClientProvider = FutureProvider<GraphQLClient>((ref) async {
+final graphQLClientProvider = FutureProvider.autoDispose<GraphQLClient>((ref) async {
   final box = await HiveStore.openBox(kGraphqlHiveBoxName);
   final customAuthLink = ref.watch(customAuthLinkProvider);
 
