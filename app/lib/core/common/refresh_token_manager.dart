@@ -39,6 +39,11 @@ class RefreshTokenManager {
     final getToken = await secureStorage.read(key: kCachedTokenKey);
     final getRefreshToken = await secureStorage.read(key: kCachedRefreshTokenKey);
     if (getToken != null && getRefreshToken != null) {
+      if (JwtHelper.isNotExpired(getToken)) {
+        _startTokenTimer(getToken);
+        _authStatusStreamController.add(AuthStatus.authenticated);
+        return;
+      }
       final refreshTokenUseCase = await ref.read(refreshTokenUsecaseProvider.future);
       final result = await refreshTokenUseCase();
       if (JwtHelper.isExpired(getRefreshToken)) {
