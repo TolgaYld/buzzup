@@ -1,8 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 extension AsyncValueX<T> on AsyncValue<T> {
-  bool get isLoadingInitial =>
-      isLoading && hasValue == false && hasError == false;
+  bool get isLoadingInitial => isLoading && hasValue == false && hasError == false;
 
   T? get latestValueOrNull => whenOrNull(
         skipLoadingOnReload: true,
