@@ -4,7 +4,7 @@ import 'package:buzzup/core/utils/typedefs.dart';
 abstract interface class CrudRepo<T> {
   const CrudRepo();
 
-  ResultFuture<List<T>> getAll(Location location);
+  ResultFuture<List<T>> getAll(Location? location);
 
   ResultFuture<T> getById(String id);
 

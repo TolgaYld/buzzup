@@ -33,7 +33,7 @@ class PostRepoImpl implements PostRepo {
   }
 
   @override
-  ResultFuture<List<Post>> getAll(Location location) async {
+  ResultFuture<List<Post>> getAll(Location? location) async {
     try {
       final result = await _remoteDatasrc.getAll();
       return Right(result);
