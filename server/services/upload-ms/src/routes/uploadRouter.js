@@ -7,5 +7,7 @@ const authorize = authorizeUser(errorHandler);
 
 router.get("/presigned-url", authorize, catchErrors(uploadController.generate, errorHandler));
 
+router.post("/upload/:key", authorize, catchErrors(uploadController.upload, errorHandler));
+
 
 module.exports = router;

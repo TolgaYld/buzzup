@@ -36,11 +36,11 @@ const upload = async (req, res) => {
     if (err) {
       throw { err };
     }
-    if (!req.files || req.files.length === 0) {
+    if (req.files == null || req.files.length === 0) {
       throw { statusCode: 400, message: "No files uploaded" };
     }
 
-    const { key } = req.body;
+    const { key } = req.params;
 
     if (key == null) {
       throw { statusCode: 400, message: "Missing key parameter" };
