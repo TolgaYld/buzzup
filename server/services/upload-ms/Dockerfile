@@ -1,0 +1,26 @@
+# Build-Stage
+FROM node:lts-alpine as build-stage
+
+WORKDIR /app
+
+ARG GITHUB_TOKEN
+
+COPY ../../package.json ./
+COPY ../../yarn.lock ./
+
+COPY ./package.json ./packages/auth-ms/package.json
+
+RUN yarn install --pure-lockfile --ignore-scripts
+
+COPY . .
+
+# Production-Stage
+FROM node:lts-alpine
+
+WORKDIR /app
+
+COPY --from=build-stage /app /app
+
+EXPOSE 8007
+
+CMD ["yarn", "workspace", "upload-ms", "start"]

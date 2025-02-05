@@ -1,0 +1,8 @@
+{
+    "channel-not-created": "Channel oluşturulamadı",
+    "channels-not-found": "Channellar bulunamadı",
+    "post-not-found": "Channel bulunamadı",
+    "post-update-failed": "Güncellemede hata oluştu",
+    "channel-delete-failed": "Channel silinemedi",
+    "unauthorized": "İzinsiz erişim"
+}
