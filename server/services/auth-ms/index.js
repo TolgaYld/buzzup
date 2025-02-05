@@ -7,4 +7,4 @@ app.listen({ port }, () => {
   log(`${process.env.CURRENTSERVICE} Server Up!}`);
 });
 
-require("./src/db/mongodb/dbConnection");
+require("./src/db/dbConnection");

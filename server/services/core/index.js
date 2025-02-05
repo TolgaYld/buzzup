@@ -21,6 +21,7 @@ const getUserId = require("./src/utils/getId");
 const catchErrors = require("./src/utils/catchErrors");
 const { log } = require("./src/modules/logModule");
 const authorizeUser = require("./src/utils/authorizeUser");
+const redis = require("./src/utils/redis");
 
 // ENVIRONMENT VARIABLES
 
@@ -34,6 +35,8 @@ const {
     COMMENTSERVICE,
     STORYSERVICE,
     REPORTSERVICE,
+    UPLOADSERVICE,
+    UPLOADSERVICESUBDOMAIN,
     REDISURL,
     REDISPASSWORD,
     SECRET_KEY_PERMISSION,
@@ -54,6 +57,7 @@ module.exports = {
     getUserId,
     catchErrors,
     authorizeUser,
+    redis,
     SECRET_KEY,
     SECRET_KEY_REFRESH,
     MONGODBCONNECTIONSTRING,
@@ -63,6 +67,8 @@ module.exports = {
     COMMENTSERVICE,
     STORYSERVICE,
     REPORTSERVICE,
+    UPLOADSERVICE,
+    UPLOADSERVICESUBDOMAIN,
     log,
     REDISURL,
     REDISPASSWORD,

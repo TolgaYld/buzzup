@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const redis = require("../db/redis/dbConnection");
-const { User, Post, Comment, Report, log, SECRET_KEY, SECRET_KEY_REFRESH } = require("@TolgaYld/core-buzzup");
+const { User, Post, Comment, Report, log, SECRET_KEY, SECRET_KEY_REFRESH, redis } = require("@TolgaYld/core-buzzup");
 const { token, refreshToken } = require("../helpers/token");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
