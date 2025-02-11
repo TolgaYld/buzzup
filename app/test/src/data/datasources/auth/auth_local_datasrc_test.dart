@@ -1,9 +1,9 @@
 import 'package:buzzup/core/errors/exception.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:buzzup/core/common/constants.dart';
+import 'package:buzzup/core/common/constants/constants.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart';
-import 'package:buzzup/core/models/token.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 

@@ -6,6 +6,7 @@ const path = require("path");
 const i18next = require("i18next");
 const Backend = require("i18next-fs-backend");
 const i18nextMiddleware = require("i18next-http-middleware");
+require("./config/firebaseAdmin"); // Initialize Firebase Admin
 
 i18next
   .use(Backend)

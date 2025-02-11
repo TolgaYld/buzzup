@@ -1,7 +1,6 @@
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/token.dart';
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.remote.datasrc.dart';

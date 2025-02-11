@@ -7,6 +7,7 @@ const validator = require("validator");
 const generateRandomPassword = require('../helpers/pwdHandler');
 const { sendConfirmationEmail, sendResetEmail } = require("../helpers/mailHandler");
 const jwt = require("jsonwebtoken");
+const admin = require("../config/firebaseAdmin");
 
 const saltValue = 12;
 const tokenDuration = process.env.NODE_ENV.toString() === "production" ? "15m" : "1m";
@@ -132,28 +133,45 @@ const createUser = async (req, res) => {
     }
   }
 
-  // create new user
-  const hashedPassword = await bcrypt.hash(password, saltValue);
-  const newUserData = {
-    email,
-    username,
-    password: hashedPassword,
-    location: { coordinates },
-  };
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  const createdUser = await User.create(newUserData);
-  if (createdUser === null) {
+  try {
+
+    // create new user
+    const hashedPassword = await bcrypt.hash(password, saltValue);
+    const newUserData = {
+      email,
+      username,
+      password: hashedPassword,
+      location: { coordinates },
+    };
+
+    const createdUser = await User.create([newUserData], { session });
+    const user = createdUser[0];
+    if (user == null) {
+      throw { statusCode: 400, message: "user-not-created" };
+    }
+    log("user created in firebase");
+    await createUserInFirebase(user._id.toString(), email, password, username);
+
+    // // send confirmation email
+    // await sendConfirmationEmail(
+    //   user,
+    //   confirmEmailTemplate,
+    //   errorHandler
+    // );
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return await sendSuccessResponseWithTokens(user, res, 201);
+
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
     throw { statusCode: 400, message: "user-not-created" };
   }
-
-  // // send confirmation email
-  // await sendConfirmationEmail(
-  //   createdUser,
-  //   confirmEmailTemplate,
-  //   errorHandler
-  // );
-
-  return sendSuccessResponseWithTokens(createdUser, res, 201);
 };
 
 const signInUser = async (req, res) => {
@@ -189,7 +207,6 @@ const signInUser = async (req, res) => {
     { new: true }
   ).exec();
   if (findUser == null) {
-
     throw { statusCode: 406, message: "authentication-failed" };
   }
   return sendSuccessResponseWithTokens(findUser, res);
@@ -205,43 +222,62 @@ const authUserWithProvider = async (req, res) => {
   const normalizedEmail = email.toLowerCase();
   let findUser = await User.findOne({ email: normalizedEmail }).exec();
 
-  if (findUser == null) {
-    const randomPassword = generateRandomPassword();
-    const hashedPassword = await bcrypt.hash(randomPassword, saltValue);
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-    const uid = new ShortUniqueId({ length: 12 });
+    if (findUser == null) {
+      const randomPassword = generateRandomPassword();
+      const hashedPassword = await bcrypt.hash(randomPassword, saltValue);
 
-    const createdUser = await User.create({
-      email,
-      username: `user${uid}`,
-      password: hashedPassword,
-      provider,
-      provider_id,
-      location: { coordinates },
-    });
+      const uid = new ShortUniqueId({ length: 12 });
 
-    if (createdUser == null) {
-      throw { statusCode: 400, message: "user-not-created" };
+      const createdUser = await User.create({
+        email,
+        username: `user${uid}`,
+        password: hashedPassword,
+        provider,
+        provider_id,
+        location: { coordinates },
+      }, { session });
+
+      if (createdUser == null) {
+        throw { statusCode: 400, message: "user-not-created" };
+      }
+
+      await createUserInFirebase(createdUser._id.toString(), email, randomPassword, createdUser.username);
+
+      await session.commitTransaction();
+      session.endSession();
+      return sendSuccessResponseWithTokens(createdUser, res, 201);
     }
-    return sendSuccessResponseWithTokens(createdUser, res, 201);
-  }
 
-  if (findUser.is_banned) {
-    throw { statusCode: 403, message: "user-is-banned" };
-  }
+    if (findUser.is_banned) {
+      throw { statusCode: 403, message: "user-is-banned" };
+    }
 
-  if (findUser.is_deleted) {
-    return await handleDeletedUserRestoration(findUser, { provider, provider_id, location: { coordinates } }, res);
-  }
+    if (findUser.is_deleted) {
+      await admin.auth().setCustomUserClaims(findUser._id.toString(), {
+        is_deleted: false,
+        is_banned: false,
+      });
+      return await handleDeletedUserRestoration(findUser, { provider, provider_id, location: { coordinates } }, res);
+    }
 
-  if (findUser.provider !== provider) {
-    findUser = await User.findByIdAndUpdate(
-      findUser._id,
-      { provider, provider_id, location: { coordinates } },
-      { new: true }
-    ).exec();
+    if (findUser.provider !== provider) {
+      findUser = await User.findByIdAndUpdate(
+        findUser._id,
+        { provider, provider_id, location: { coordinates } },
+        { new: true }
+      ).exec();
+    }
+    return sendSuccessResponseWithTokens(findUser, res);
+
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw { statusCode: 400, message: "user-not-created" };
   }
-  return sendSuccessResponseWithTokens(findUser, res);
 };
 
 const updateUser = async (req, res) => {
@@ -259,20 +295,35 @@ const updateUser = async (req, res) => {
     throw { statusCode: 404, message: "user-not-found" };
   }
 
-  const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true }).exec();
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true, session }).exec();
 
-  if (updatedUser == null) {
+    if (updatedUser == null) {
+      throw { statusCode: 400, message: "user-update-failed" };
+    }
+
+    if (req.body.data.is_deleted || req.body.data.is_banned) {
+      await admin.auth().setCustomUserClaims(updatedUser._id.toString(), {
+        is_deleted: req.body.data.is_deleted,
+        is_banned: req.body.data.is_banned,
+      });
+      await session.commitTransaction();
+      session.endSession();
+      return res.status(200).send({
+        success: true,
+        data: updatedUser,
+      });
+    }
+    await session.commitTransaction();
+    session.endSession();
+    return await sendSuccessResponseWithTokens(updatedUser, res);
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
     throw { statusCode: 400, message: "user-update-failed" };
   }
-
-  if (req.body.data.is_deleted) {
-    return res.status(200).send({
-      success: true,
-      data: updatedUser,
-    });
-  }
-
-  return await sendSuccessResponseWithTokens(updatedUser, res);
 };
 
 const updateUserPassword = async (req, res) => {
@@ -303,6 +354,8 @@ const updateUserPassword = async (req, res) => {
     throw { statusCode: 400, message: "user-password-update-failed" };
   }
 
+  await admin.auth().updateUser(findUser._id.toString(), { password });
+
   return await sendSuccessResponseWithTokens(updatedUser, res);
 };
 
@@ -314,20 +367,37 @@ const deleteUser = async (req, res) => {
     throw { statusCode: 404, message: "user-not-found" };
   }
 
-  const deletedUser = await User.findByIdAndUpdate(
-    id,
-    { is_deleted: true },
-    { new: true }
-  ).exec();
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    const deletedUser = await User.findByIdAndUpdate(
+      id,
+      { is_deleted: true },
+      { new: true, session }
+    ).exec();
 
-  if (deletedUser == null) {
-    throw { statusCode: 400, message: "user-update-failed" };
+    if (deletedUser == null) {
+      throw { statusCode: 400, message: "user-update-failed" };
+    }
+
+    await admin.auth().setCustomUserClaims(deletedUser._id.toString(), {
+      is_deleted: true,
+      is_banned: false,
+    });
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return res.status(200).json({
+      success: true,
+      data: deletedUser,
+    });
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw { statusCode: 400, message: "user-delete-failed" };
+
   }
-
-  return res.status(200).json({
-    success: true,
-    data: deletedUser,
-  });
 };
 
 const deleteUserFromDb = async (req, res) => {
@@ -338,16 +408,29 @@ const deleteUserFromDb = async (req, res) => {
     throw { statusCode: 404, message: "user-not-found" };
   }
 
-  const deletedUser = await User.findByIdAndDelete(id).exec();
+  try {
+    const session = await mongoose.startSession();
+    session.startTransaction();
 
-  if (deletedUser == null) {
+    const deletedUser = await User.findByIdAndDelete(id, { session }).exec();
+
+    if (deletedUser == null) {
+      throw { statusCode: 400, message: "user-delete-failed" };
+    }
+    await admin.auth().deleteUser(deletedUser._id.toString());
+
+    await session.commitTransaction();
+    session.endSession();
+
+    return res.status(200).json({
+      success: true,
+      data: userToDelete,
+    });
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
     throw { statusCode: 400, message: "user-delete-failed" };
   }
-
-  return res.status(200).json({
-    success: true,
-    data: userToDelete,
-  });
 };
 
 const tokenService = async (req, res) => {
@@ -380,6 +463,7 @@ const tokenService = async (req, res) => {
       success: true,
       token: token.generate(findUser, tokenDuration),
       refreshToken: refreshToken.generate(findUser, refreshTokenDuration),
+      firebaseAuthToken: await generateFirebaseToken(findUser._id.toString()),
     });
   } catch (err) {
     throw { statusCode: 401, message: "unauthorized" };
@@ -390,7 +474,7 @@ const tokenService = async (req, res) => {
 const signOut = async (req, res) => {
   const id = req.user._id;
   const findOneUser = await User.findById(id).exec();
-
+  await admin.auth().revokeRefreshTokens(id.toString());
   return res.status(200).json({
     success: true,
     data: findOneUser,
@@ -569,7 +653,38 @@ const handleDeletedUserRestoration = async (user, updateData, res) => {
   }
 };
 
+const generateFirebaseToken = async (uid) => {
+  try {
+    return await admin.auth().createCustomToken(uid);
+  } catch (error) {
+    log(error);
+    throw new Error("user-not-created");
+  }
+};
+
+const createUserInFirebase = async (uid, email, password, username) => {
+  try {
+    await admin.auth().createUser({
+      uid,
+      email,
+      password,
+      displayName: username,
+    });
+
+    await admin.auth().setCustomUserClaims(uid, {
+      is_deleted: false,
+      is_banned: false,
+    })
+  } catch (error) {
+    log(error);
+    throw new Error("user-not-created");
+  }
+};
+
 const sendSuccessResponseWithTokens = async (user, res, statusCode = 200) => {
+
+
+
   return await res.status(statusCode).json({
     success: true,
     data: {
@@ -577,6 +692,7 @@ const sendSuccessResponseWithTokens = async (user, res, statusCode = 200) => {
       tokens: {
         token: token.generate(user, tokenDuration),
         refreshToken: refreshToken.generate(user, refreshTokenDuration),
+        firebaseAuthToken: await generateFirebaseToken(user._id.toString()),
       },
     },
   });

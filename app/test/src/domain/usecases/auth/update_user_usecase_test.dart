@@ -1,5 +1,5 @@
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/src/domain/usecases/auth/update_user.usecase.dart';

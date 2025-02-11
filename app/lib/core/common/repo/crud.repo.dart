@@ -1,4 +1,4 @@
-import 'package:buzzup/core/models/location.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
 abstract interface class CrudRepo<T> {

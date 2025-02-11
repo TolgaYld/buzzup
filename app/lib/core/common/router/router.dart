@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:buzzup/core/common/env/environment.dart';
-import 'package:buzzup/core/common/provider/auth.provider.dart';
-import 'package:buzzup/core/common/provider/grps_status.provider.dart';
+import 'package:buzzup/core/common/provider/auth/auth.provider.dart';
+import 'package:buzzup/core/common/provider/gps_status/gps_status.provider.dart';
 import 'package:buzzup/core/common/widgets/splash.page.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
 import 'package:buzzup/src/application/gps_status/workflow/state/gps_status.state.dart';
@@ -44,8 +44,12 @@ final navigationManagerProvider = Provider<GoRouter>((ref) {
 
 class RouterNotifier extends ChangeNotifier {
   RouterNotifier(this._ref) {
-    _ref.listen<AuthState>(authProvider, (_, __) => notifyListeners());
-    _ref.listen<GpsStatusState>(gpsStatusNotifierProvider, (_, __) => notifyListeners());
+    _ref.listen<AuthState>(authProvider, (previous, next) {
+      if (previous != next) notifyListeners();
+    });
+    _ref.listen<GpsStatusState>(gpsStatusNotifierProvider, (previous, next) {
+      if (previous != next) notifyListeners();
+    });
   }
   final Ref _ref;
 
@@ -56,9 +60,10 @@ class RouterNotifier extends ChangeNotifier {
       if (state.path != RoutePath.locationServiceDisabled.path) {
         return RoutePath.locationServiceDisabled.path;
       }
+      return null;
     }
 
-    if (authState is SignedOutState) {
+    if (authState is SignedOutState && state.matchedLocation != RoutePath.signIn.path) {
       return RoutePath.signIn.path;
     }
     return null;

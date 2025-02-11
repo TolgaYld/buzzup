@@ -26,21 +26,21 @@ class ReportMapper extends ClassMapperBase<Report> {
   final String id = 'Report';
 
   static String _$id(Report v) => v.id;
-  static const Field<Report, String> _f$id = Field('id', _$id, key: '_id');
+  static const Field<Report, String> _f$id = Field('id', _$id, key: r'_id');
   static bool _$isDone(Report v) => v.isDone;
   static const Field<Report, bool> _f$isDone =
-      Field('isDone', _$isDone, key: 'is_done');
+      Field('isDone', _$isDone, key: r'is_done');
   static User _$createdBy(Report v) => v.createdBy;
   static const Field<Report, User> _f$createdBy =
-      Field('createdBy', _$createdBy, key: 'created_by');
+      Field('createdBy', _$createdBy, key: r'created_by');
   static DateTime _$createdAt(Report v) => v.createdAt;
   static const Field<Report, DateTime> _f$createdAt =
-      Field('createdAt', _$createdAt, key: 'created_at');
+      Field('createdAt', _$createdAt, key: r'created_at');
   static String _$reason(Report v) => v.reason;
   static const Field<Report, String> _f$reason = Field('reason', _$reason);
   static User? _$reportedUser(Report v) => v.reportedUser;
   static const Field<Report, User> _f$reportedUser =
-      Field('reportedUser', _$reportedUser, key: 'reported_user', opt: true);
+      Field('reportedUser', _$reportedUser, key: r'reported_user', opt: true);
   static Post? _$post(Report v) => v.post;
   static const Field<Report, Post> _f$post = Field('post', _$post, opt: true);
   static Comment? _$comment(Report v) => v.comment;

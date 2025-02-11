@@ -1,5 +1,4 @@
-import 'package:buzzup/core/models/token.dart';
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
 abstract interface class AuthRepo {

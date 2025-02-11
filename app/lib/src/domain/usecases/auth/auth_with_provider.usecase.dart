@@ -1,4 +1,4 @@
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/usecases/usecases.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';

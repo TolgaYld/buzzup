@@ -1,4 +1,5 @@
 type Token {
     token: String!
     refreshToken: String!
+    firebaseAuthToken: String!
 }

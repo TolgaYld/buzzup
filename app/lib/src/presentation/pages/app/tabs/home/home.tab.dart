@@ -1,4 +1,4 @@
-import 'package:buzzup/core/common/provider/auth.provider.dart';
+import 'package:buzzup/core/common/provider/auth/auth.provider.dart';
 import 'package:buzzup/src/application/auth/workflow/events/auth.event.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

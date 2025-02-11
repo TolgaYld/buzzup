@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:buzzup/core/common/constants.dart';
+import 'package:buzzup/core/common/constants/constants.dart';
 import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
 import 'package:buzzup/core/dependency_provider/auth.provider.dart';
-import 'package:buzzup/core/models/token.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/jwt_helper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';

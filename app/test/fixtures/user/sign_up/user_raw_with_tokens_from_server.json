@@ -12,6 +12,7 @@
             "points": 0,
             "device_id": null,
             "device_type": null,
+            "user_type": "USER",
             "location": {
                 "coordinates": [
                     3.69,

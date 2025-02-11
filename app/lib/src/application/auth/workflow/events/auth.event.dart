@@ -1,4 +1,4 @@
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 
 sealed class AuthEvent {
   const AuthEvent();

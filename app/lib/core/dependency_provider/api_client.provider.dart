@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:buzzup/core/common/constants.dart';
+import 'package:buzzup/core/common/constants/constants.dart';
 import 'package:buzzup/core/common/env/environment.dart';
 import 'package:buzzup/core/dependency_provider/custom_auth_link.provider.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';

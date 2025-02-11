@@ -1,4 +1,4 @@
-mixin GqlQuerys {
+mixin GqlAuthQuerys {
   static const String checkEmailExistsQuery = '''
 query Query(\$email: String!) {
   checkIfEmailExists(email: \$email)
@@ -25,7 +25,7 @@ query Query {
   refreshToken {
     token
     refreshToken
-
+    firebaseAuthToken
   }
 }
 ''';

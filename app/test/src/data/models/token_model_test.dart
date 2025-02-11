@@ -29,8 +29,7 @@ void main() {
   });
 
   group('toJson', () {
-    test('should return a valid [DataMap (Map<String,dynamic>)] from model',
-        () {
+    test('should return a valid [DataMap (Map<String,dynamic>)] from model', () {
       final result = tTokenModel.toJson();
 
       expect(result, tJson);

@@ -1,5 +1,5 @@
 import 'package:buzzup/core/common/repo/crud.repo.dart';
-import 'package:buzzup/core/models/content.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
 abstract interface class PostRepo implements CrudRepo<Post> {

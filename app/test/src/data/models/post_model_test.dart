@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/content.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
@@ -16,7 +16,7 @@ void main() {
   final tJson = jsonDecode(fixture('post/post.json')) as DataMap;
 
   group('fromJson', () {
-    test('should return a valid [PostModel] from json', () {
+    test('should return a valid [Post] from json', () {
       final result = PostMapper.fromMap(tJson);
 
       expect(result, isA<Post>());

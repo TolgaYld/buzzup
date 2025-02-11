@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
@@ -16,7 +16,7 @@ void main() {
   final tJson = jsonDecode(fixture('user/user.json')) as DataMap;
 
   group('fromJson', () {
-    test('should return a valid [UserModel] from json', () {
+    test('should return a valid [User] from json', () {
       final result = UserMapper.fromMap(tJson);
 
       expect(result, isA<User>());
@@ -33,8 +33,7 @@ void main() {
   });
 
   group('toJson', () {
-    test('should return a valid [DataMap (Map<String,dynamic>)] from model',
-        () {
+    test('should return a valid [DataMap (Map<String,dynamic>)] from model', () {
       final result = tUserModel.toJson();
 
       expect(result, tJson);

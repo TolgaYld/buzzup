@@ -1,4 +1,4 @@
-mixin GqlMutation {
+mixin GqlAuthMutation {
   static const String signUpMutation = '''
 mutation SignUpUser(\$data: SignUpUserInput!) {
   signUpUser(data: \$data) {
@@ -26,6 +26,7 @@ mutation SignUpUser(\$data: SignUpUserInput!) {
     tokens {
      token
      refreshToken
+     firebaseAuthToken
     }
   }
 }
@@ -58,6 +59,7 @@ mutation SignInUser(\$data: SignInUserInput!) {
    tokens {
       token
       refreshToken
+      firebaseAuthToken
     }
   }
 }
@@ -90,6 +92,7 @@ mutation AuthUserWithProvider(\$data: AuthUserWithProviderInput) {
     tokens {
       token
       refreshToken
+      firebaseAuthToken
     }
   }
 }
@@ -109,6 +112,7 @@ mutation UpdateUserPassword(\$data: String!) {
     tokens {
       token
       refreshToken
+      firebaseAuthToken
     }
   }
 }

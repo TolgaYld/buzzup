@@ -1,4 +1,4 @@
-import 'package:buzzup/core/common/constants.dart';
+import 'package:buzzup/core/common/constants/constants.dart';
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/src/data/datasources/theme_mode/theme_mode.local.datasrc.dart';
 import 'package:flutter_test/flutter_test.dart';

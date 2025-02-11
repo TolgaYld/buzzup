@@ -1,4 +1,4 @@
-import 'package:buzzup/core/common/constants.dart';
+import 'package:buzzup/core/common/constants/constants.dart';
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

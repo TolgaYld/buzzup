@@ -1,4 +1,4 @@
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 
 part 'auth.state.mapper.dart';

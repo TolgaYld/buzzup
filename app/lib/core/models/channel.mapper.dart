@@ -24,24 +24,24 @@ class ChannelMapper extends ClassMapperBase<Channel> {
   final String id = 'Channel';
 
   static String _$id(Channel v) => v.id;
-  static const Field<Channel, String> _f$id = Field('id', _$id, key: '_id');
+  static const Field<Channel, String> _f$id = Field('id', _$id, key: r'_id');
   static String _$name(Channel v) => v.name;
   static const Field<Channel, String> _f$name = Field('name', _$name);
   static bool _$isActive(Channel v) => v.isActive;
   static const Field<Channel, bool> _f$isActive =
-      Field('isActive', _$isActive, key: 'is_active');
+      Field('isActive', _$isActive, key: r'is_active');
   static bool _$isDeleted(Channel v) => v.isDeleted;
   static const Field<Channel, bool> _f$isDeleted =
-      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+      Field('isDeleted', _$isDeleted, key: r'is_deleted');
   static DateTime _$createdAt(Channel v) => v.createdAt;
   static const Field<Channel, DateTime> _f$createdAt =
-      Field('createdAt', _$createdAt, key: 'created_at');
+      Field('createdAt', _$createdAt, key: r'created_at');
   static List<User>? _$subscriptions(Channel v) => v.subscriptions;
   static const Field<Channel, List<User>> _f$subscriptions =
       Field('subscriptions', _$subscriptions, opt: true);
   static User? _$createdBy(Channel v) => v.createdBy;
   static const Field<Channel, User> _f$createdBy =
-      Field('createdBy', _$createdBy, key: 'created_by', opt: true);
+      Field('createdBy', _$createdBy, key: r'created_by', opt: true);
   static List<Post>? _$posts(Channel v) => v.posts;
   static const Field<Channel, List<Post>> _f$posts =
       Field('posts', _$posts, opt: true);

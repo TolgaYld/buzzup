@@ -1,4 +1,4 @@
-import 'package:buzzup/core/common/constants.dart';
+import 'package:buzzup/core/common/constants/constants.dart';
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 

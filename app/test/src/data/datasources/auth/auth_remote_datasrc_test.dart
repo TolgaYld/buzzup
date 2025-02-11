@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:buzzup/core/errors/exception.dart';
-import 'package:buzzup/core/models/token.dart';
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/utils/graphql/auth/gql_auth_mutations.dart';
+import 'package:buzzup/core/utils/graphql/auth/gql_auth_querys.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
-import 'package:buzzup/core/utils/graphql/auth/gql_mutations.dart';
-import 'package:buzzup/core/utils/graphql/auth/gql_querys.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.remote.datasrc.dart';
 import 'package:mockito/annotations.dart';
@@ -15,13 +15,15 @@ import 'package:mockito/mockito.dart';
 import '../../../../fixtures/reader.dart';
 import 'auth_remote_datasrc_test.mocks.dart';
 
-@GenerateMocks([GraphQLClient])
+@GenerateMocks([GraphQLClient, firebase.FirebaseAuth])
 void main() {
   late MockGraphQLClient client;
+  late MockFirebaseAuth firebaseAuth;
   late AuthRemoteDatasrc datasrc;
   setUp(() {
     client = MockGraphQLClient();
-    datasrc = AuthRemoteDatasrcImpl(client);
+    firebaseAuth = MockFirebaseAuth();
+    datasrc = AuthRemoteDatasrcImpl(graphQLClient: client, firebaseAuth: firebaseAuth);
   });
 
   final tUserModel = User.empty();
@@ -33,7 +35,7 @@ void main() {
     test('should return [User] when call to remote source is successful', () async {
       if (tUserModel.location case final location?) {
         final options = MutationOptions(
-          document: gql(GqlMutation.signUpMutation),
+          document: gql(GqlAuthMutation.signUpMutation),
           variables: {
             'username': tUserModel.username,
             'email': tUserModel.email,
@@ -71,7 +73,7 @@ void main() {
         'unsuccessful', () async {
       if (tUserModel.location case final location?) {
         final options = MutationOptions(
-          document: gql(GqlMutation.signUpMutation),
+          document: gql(GqlAuthMutation.signUpMutation),
           variables: {
             'username': tUserModel.username,
             'email': tUserModel.email,
@@ -114,7 +116,7 @@ void main() {
         'should return [User] when call to remote source is'
         ' successful', () async {
       final options = MutationOptions(
-        document: gql(GqlMutation.signInMutation),
+        document: gql(GqlAuthMutation.signInMutation),
         variables: {
           'emailOrUsername': tUserModel.username,
           'password': '',
@@ -145,7 +147,7 @@ void main() {
         'should throw an [ApiException] when call to remote source is '
         'unsuccessful', () async {
       final options = MutationOptions(
-        document: gql(GqlMutation.signInMutation),
+        document: gql(GqlAuthMutation.signInMutation),
         variables: {
           'emailOrUsername': tUserModel.username,
           'password': '',
@@ -183,7 +185,7 @@ void main() {
         ' successful', () async {
       if (tUserModel.location case final location?) {
         final options = MutationOptions(
-          document: gql(GqlMutation.authWithProviderMutation),
+          document: gql(GqlAuthMutation.authWithProviderMutation),
           variables: {
             'coordinates': location.coordinates,
             'email': tUserModel.email,
@@ -226,7 +228,7 @@ void main() {
         'unsuccessful', () async {
       if (tUserModel.location case final location?) {
         final options = MutationOptions(
-          document: gql(GqlMutation.authWithProviderMutation),
+          document: gql(GqlAuthMutation.authWithProviderMutation),
           variables: {
             'coordinates': location.coordinates,
             'email': tUserModel.email,
@@ -269,7 +271,7 @@ void main() {
         'should send [User] reset password e-mail when call to remote source is'
         ' successful', () async {
       final options = MutationOptions(
-        document: gql(GqlMutation.forgotPasswordMutation),
+        document: gql(GqlAuthMutation.forgotPasswordMutation),
         variables: {
           'email': tUserModel.email,
         },
@@ -295,7 +297,7 @@ void main() {
         'should throw an [ApiException] when call to remote source is '
         'unsuccessful', () async {
       final options = MutationOptions(
-        document: gql(GqlMutation.forgotPasswordMutation),
+        document: gql(GqlAuthMutation.forgotPasswordMutation),
         variables: {
           'email': tUserModel.email,
         },
@@ -329,7 +331,7 @@ void main() {
         'should execute a successful call to datasource and return '
         '[TokenModel]', () async {
       final options = MutationOptions(
-        document: gql(GqlMutation.updatePasswordMutation),
+        document: gql(GqlAuthMutation.updatePasswordMutation),
         variables: const {
           'password': '',
           'repeat_password': '',
@@ -359,7 +361,7 @@ void main() {
         'should throw an [ApiException] when call to remote source is '
         'unsuccessful', () async {
       final options = MutationOptions(
-        document: gql(GqlMutation.updatePasswordMutation),
+        document: gql(GqlAuthMutation.updatePasswordMutation),
         variables: const {
           'password': '',
           'repeat_password': '',
@@ -397,7 +399,7 @@ void main() {
     test('should execute a successful call to remote source', () async {
       if (tUserModel.location case final location?) {
         final options = MutationOptions(
-          document: gql(GqlMutation.updateUserMutation),
+          document: gql(GqlAuthMutation.updateUserMutation),
           variables: {
             'coordinates': location.copyWith(coordinates: [9.36, 9.36]).coordinates,
             'username': tUserModel.username,
@@ -425,7 +427,6 @@ void main() {
         );
 
         verify(client.mutate(options)).called(1);
-
         verifyNoMoreInteractions(client);
       }
     });
@@ -435,7 +436,7 @@ void main() {
         'unsuccessful', () async {
       if (tUserModel.location case final location?) {
         final options = MutationOptions(
-          document: gql(GqlMutation.updateUserMutation),
+          document: gql(GqlAuthMutation.updateUserMutation),
           variables: {
             'coordinates': location.copyWith(coordinates: [9.36, 9.36]).coordinates,
             'username': tUserModel.username,
@@ -473,7 +474,7 @@ void main() {
         'should return boolean when call to remote source is'
         ' successful', () async {
       final options = QueryOptions(
-        document: gql(GqlQuerys.checkEmailExistsQuery),
+        document: gql(GqlAuthQuerys.checkEmailExistsQuery),
         variables: {
           'email': tUserModel.email,
         },
@@ -501,7 +502,7 @@ void main() {
         'should throw an [ApiException] when call to remote source is '
         'unsuccessful', () async {
       final options = QueryOptions(
-        document: gql(GqlQuerys.checkEmailExistsQuery),
+        document: gql(GqlAuthQuerys.checkEmailExistsQuery),
         variables: {
           'email': tUserModel.email,
         },
@@ -535,7 +536,7 @@ void main() {
         'should return boolean when call to remote source is'
         ' successful', () async {
       final options = QueryOptions(
-        document: gql(GqlQuerys.checkUsernameExistsQuery),
+        document: gql(GqlAuthQuerys.checkUsernameExistsQuery),
         variables: {
           'username': tUserModel.username,
         },
@@ -563,7 +564,7 @@ void main() {
         'should throw an [ApiException] when call to remote source is '
         'unsuccessful', () async {
       final options = QueryOptions(
-        document: gql(GqlQuerys.checkUsernameExistsQuery),
+        document: gql(GqlAuthQuerys.checkUsernameExistsQuery),
         variables: {
           'username': tUserModel.username,
         },

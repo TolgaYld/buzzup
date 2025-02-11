@@ -6,8 +6,7 @@
 import 'dart:async' as _i3;
 
 import 'package:buzzup/core/errors/failure.dart' as _i5;
-import 'package:buzzup/core/models/token.dart' as _i8;
-import 'package:buzzup/core/models/user.dart' as _i6;
+import 'package:buzzup/core/models/all_models.dart' as _i6;
 import 'package:buzzup/core/utils/either.dart' as _i4;
 import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -251,19 +250,19 @@ class MockAuthRepo extends _i1.Mock implements _i2.AuthRepo {
       ) as _i3.Future<_i4.Either<_i5.Failure, void>>);
 
   @override
-  _i3.Future<_i4.Either<_i5.Failure, _i8.Token>> refreshToken() =>
+  _i3.Future<_i4.Either<_i5.Failure, _i6.Token>> refreshToken() =>
       (super.noSuchMethod(
         Invocation.method(
           #refreshToken,
           [],
         ),
-        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i8.Token>>.value(
-            _i7.dummyValue<_i4.Either<_i5.Failure, _i8.Token>>(
+        returnValue: _i3.Future<_i4.Either<_i5.Failure, _i6.Token>>.value(
+            _i7.dummyValue<_i4.Either<_i5.Failure, _i6.Token>>(
           this,
           Invocation.method(
             #refreshToken,
             [],
           ),
         )),
-      ) as _i3.Future<_i4.Either<_i5.Failure, _i8.Token>>);
+      ) as _i3.Future<_i4.Either<_i5.Failure, _i6.Token>>);
 }

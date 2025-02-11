@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/report.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
@@ -16,7 +16,7 @@ void main() {
   final tJson = jsonDecode(fixture('report/report.json')) as DataMap;
 
   group('fromJson', () {
-    test('should return a valid [ReportModel] from json', () {
+    test('should return a valid [Report] from json', () {
       final result = ReportMapper.fromMap(tJson);
 
       expect(result, isA<Report>());
@@ -33,8 +33,7 @@ void main() {
   });
 
   group('toJson', () {
-    test('should return a valid [DataMap (Map<String,dynamic>)] from model',
-        () {
+    test('should return a valid [DataMap (Map<String,dynamic>)] from model', () {
       final result = tReportModel.toJson();
 
       expect(result, tJson);

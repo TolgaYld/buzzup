@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "888447539660",
+    "project_id": "vib3z-develop",
+    "storage_bucket": "vib3z-develop.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:888447539660:android:f399a31d67eadffefaa569",
+        "android_client_info": {
+          "package_name": "com.buzzup.buzzup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCO_O8BzYYGmiGr_RLyjZVeRjRgk5bw3eg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

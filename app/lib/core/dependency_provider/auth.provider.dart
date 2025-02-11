@@ -1,3 +1,4 @@
+import 'package:buzzup/core/common/provider/auth/auth.provider.dart';
 import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
 import 'package:buzzup/src/domain/usecases/auth/refresh_token.usecase.dart';
 import 'package:buzzup/src/domain/usecases/auth/sign_out.usecase.dart';
@@ -18,7 +19,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // Datasources Providers
 final authRemoteDatasourceProvider = FutureProvider.autoDispose<AuthRemoteDatasrc>((ref) async {
   final graphqlClient = await ref.watch(graphQLClientProvider.future);
-  return AuthRemoteDatasrcImpl(graphqlClient);
+  final firebaseAuth = ref.watch(firebaseAuthProvider);
+  return AuthRemoteDatasrcImpl(graphQLClient: graphqlClient, firebaseAuth: firebaseAuth);
 });
 
 final authLocalDatasourceProvider = Provider.autoDispose<AuthLocalDatasrc>((ref) {

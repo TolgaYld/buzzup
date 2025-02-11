@@ -5,7 +5,7 @@ import 'package:buzzup/core/design/spacing.dart';
 import 'package:buzzup/core/hooks/use_l10n.hook.dart';
 import 'package:buzzup/core/hooks/use_theme.hook.dart';
 import 'package:buzzup/core/utils/core_utils.dart';
-import 'package:buzzup/core/common/provider/auth.provider.dart';
+import 'package:buzzup/core/common/provider/auth/auth.provider.dart';
 import 'package:buzzup/src/application/auth/provider/auth_mode.provider.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth.state.dart';
 import 'package:buzzup/src/application/auth/workflow/state/auth_mode.state.dart';

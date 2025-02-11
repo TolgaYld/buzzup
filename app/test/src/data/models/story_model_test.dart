@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/content.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
@@ -16,7 +16,7 @@ void main() {
   final tJson = jsonDecode(fixture('story/story.json')) as DataMap;
 
   group('fromJson', () {
-    test('should return a valid [StoryModel] from json', () {
+    test('should return a valid [Story] from json', () {
       final result = StoryMapper.fromMap(tJson);
 
       expect(result, isA<Story>());

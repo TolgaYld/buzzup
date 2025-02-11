@@ -18,6 +18,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     ref.listen<AsyncValue<AuthStatus>>(
       userIsAuthProvider,
       (previous, next) async {
+        if (previous == next) return;
         if (next.value == AuthStatus.authenticated) {
           state = SignedInState(null);
         } else {

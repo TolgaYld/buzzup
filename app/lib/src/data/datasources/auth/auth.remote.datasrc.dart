@@ -1,8 +1,8 @@
 import 'package:buzzup/core/errors/exception.dart';
-import 'package:buzzup/core/models/token.dart';
-import 'package:buzzup/core/models/user.dart';
-import 'package:buzzup/core/utils/graphql/auth/gql_mutations.dart';
-import 'package:buzzup/core/utils/graphql/auth/gql_querys.dart';
+import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/utils/graphql/auth/gql_auth_mutations.dart';
+import 'package:buzzup/core/utils/graphql/auth/gql_auth_querys.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 abstract interface class AuthRemoteDatasrc {
@@ -46,9 +46,14 @@ abstract interface class AuthRemoteDatasrc {
 }
 
 class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
-  const AuthRemoteDatasrcImpl(this._client);
+  const AuthRemoteDatasrcImpl({
+    required GraphQLClient graphQLClient,
+    required firebase.FirebaseAuth firebaseAuth,
+  })  : _graphQLClient = graphQLClient,
+        _firebaseAuth = firebaseAuth;
 
-  final GraphQLClient _client;
+  final GraphQLClient _graphQLClient;
+  final firebase.FirebaseAuth _firebaseAuth;
   @override
   Future<User> authWithProvider({
     required String provider,
@@ -57,9 +62,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     required List<double> coordinates,
   }) async {
     try {
-      final response = await _client.mutate(
+      final response = await _graphQLClient.mutate(
         MutationOptions(
-          document: gql(GqlMutation.authWithProviderMutation),
+          document: gql(GqlAuthMutation.authWithProviderMutation),
           variables: {
             'provider': provider,
             'provider_id': providerId,
@@ -70,7 +75,16 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
       );
 
       if (response.data case final d? when response.hasException == false) {
-        return UserMapper.fromMap(d['authUserWithProvider']['user']);
+        final userCreds = await _firebaseAuth.signInWithCustomToken(
+          d['authUserWithProvider']['tokens']['firebaseAuthToken'],
+        );
+        if (userCreds.user != null) {
+          return UserMapper.fromMap(d['authUserWithProvider']['user']);
+        } else {
+          throw ApiException(
+            message: 'An error occurred',
+          );
+        }
       } else {
         if (response.exception case final exc?) {
           throw ApiException(
@@ -95,9 +109,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   @override
   Future<void> forgotPassword(String email) async {
     try {
-      final response = await _client.mutate(
+      final response = await _graphQLClient.mutate(
         MutationOptions(
-          document: gql(GqlMutation.forgotPasswordMutation),
+          document: gql(GqlAuthMutation.forgotPasswordMutation),
           variables: {
             'email': email,
           },
@@ -106,10 +120,6 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
       if (response.exception case final exc?) {
         throw ApiException(
           message: exc.graphqlErrors.first.message,
-        );
-      } else {
-        throw ApiException(
-          message: 'An error occurred',
         );
       }
     } on ApiException {
@@ -129,9 +139,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     required List<double> coordinates,
   }) async {
     try {
-      final response = await _client.mutate(
+      final response = await _graphQLClient.mutate(
         MutationOptions(
-          document: gql(GqlMutation.signInMutation),
+          document: gql(GqlAuthMutation.signInMutation),
           variables: {
             "data": {
               'emailOrUsername': emailOrUsername,
@@ -142,19 +152,31 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
         ),
       );
       if (response.data case final d? when response.hasException == false) {
+        print(d['signInUser']['user']);
         final user = UserMapper.fromMap(d['signInUser']['user']);
-        final tokens = TokenMapper.fromMap(d['signInUser']['tokens']);
-        return user.copyWith(tokens: tokens);
+        final userCreds = await _firebaseAuth.signInWithCustomToken(
+          d['signInUser']['tokens']['firebaseAuthToken'],
+        );
+        if (userCreds.user != null) {
+          final tokens = TokenMapper.fromMap(d['signInUser']['tokens']);
+          return user.copyWith(tokens: tokens);
+        } else {
+          throw ApiException(
+            message: 'An error occurred',
+          );
+        }
       } else {
         if (response.exception case final exc?) {
           throw ApiException(message: exc.graphqlErrors.first.message);
         } else {
+          print(response.exception);
           throw ApiException(message: 'An error occurred');
         }
       }
     } on ApiException {
       rethrow;
     } catch (e) {
+      print(e);
       throw ApiException(
         message: e.toString(),
         isUnknownException: true,
@@ -171,9 +193,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     required List<double> coordinates,
   }) async {
     try {
-      final response = await _client.mutate(
+      final response = await _graphQLClient.mutate(
         MutationOptions(
-          document: gql(GqlMutation.signUpMutation),
+          document: gql(GqlAuthMutation.signUpMutation),
           variables: {
             "data": {
               'username': username,
@@ -187,8 +209,17 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
       );
       if (response.data case final d? when response.hasException == false) {
         final user = UserMapper.fromMap(d['signUpUser']['user']);
-        final tokens = TokenMapper.fromMap(d['signUpUser']['tokens']);
-        return user.copyWith(tokens: tokens);
+        final userCreds = await _firebaseAuth.signInWithCustomToken(
+          d['signUpUser']['tokens']['firebaseAuthToken'],
+        );
+        if (userCreds.user != null) {
+          final tokens = TokenMapper.fromMap(d['signUpUser']['tokens']);
+          return user.copyWith(tokens: tokens);
+        } else {
+          throw ApiException(
+            message: 'An error occurred',
+          );
+        }
       } else {
         if (response.exception case final exc?) {
           throw ApiException(
@@ -215,9 +246,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
     required String repeatPassword,
   }) async {
     try {
-      final response = await _client.mutate(
+      final response = await _graphQLClient.mutate(
         MutationOptions(
-          document: gql(GqlMutation.updatePasswordMutation),
+          document: gql(GqlAuthMutation.updatePasswordMutation),
           variables: {
             'password': password,
             'repeat_password': repeatPassword,
@@ -251,9 +282,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   Future<void> updateUser(User user) async {
     try {
       if (user.location case final location?) {
-        final response = await _client.mutate(
+        final response = await _graphQLClient.mutate(
           MutationOptions(
-            document: gql(GqlMutation.updateUserMutation),
+            document: gql(GqlAuthMutation.updateUserMutation),
             variables: {
               'coordinates': location.coordinates,
               'username': user.username,
@@ -264,10 +295,6 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
         if (response.exception case final exc? when response.hasException) {
           throw ApiException(
             message: exc.graphqlErrors.first.message,
-          );
-        } else {
-          throw ApiException(
-            message: 'An error occurred',
           );
         }
       } else {
@@ -288,9 +315,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   @override
   Future<bool> checkIfEmailExists(String email) async {
     try {
-      final response = await _client.query(
+      final response = await _graphQLClient.query(
         QueryOptions(
-          document: gql(GqlQuerys.checkEmailExistsQuery),
+          document: gql(GqlAuthQuerys.checkEmailExistsQuery),
           variables: {
             'email': email,
           },
@@ -323,9 +350,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   @override
   Future<bool> checkIfUsernameExists(String username) async {
     try {
-      final response = await _client.query(
+      final response = await _graphQLClient.query(
         QueryOptions(
-          document: gql(GqlQuerys.checkUsernameExistsQuery),
+          document: gql(GqlAuthQuerys.checkUsernameExistsQuery),
           variables: {
             'username': username,
           },
@@ -358,9 +385,9 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   @override
   Future<Token> refreshToken() async {
     try {
-      final response = await _client.query(
+      final response = await _graphQLClient.query(
         QueryOptions(
-          document: gql(GqlQuerys.refreshToken),
+          document: gql(GqlAuthQuerys.refreshToken),
           fetchPolicy: FetchPolicy.noCache,
         ),
       );
@@ -387,18 +414,14 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   @override
   Future<void> signOut() async {
     try {
-      final response = await _client.query(
+      final response = await _graphQLClient.query(
         QueryOptions(
-          document: gql(GqlQuerys.signOut),
+          document: gql(GqlAuthQuerys.signOut),
         ),
       );
       if (response.exception case final exc?) {
         throw ApiException(
           message: exc.graphqlErrors.first.message,
-        );
-      } else {
-        throw ApiException(
-          message: 'An error occurred',
         );
       }
     } on ApiException {

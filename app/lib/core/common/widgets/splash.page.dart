@@ -1,5 +1,5 @@
 import 'package:buzzup/core/common/gen/assets.gen.dart';
-import 'package:buzzup/core/common/provider/auth.provider.dart';
+import 'package:buzzup/core/common/provider/auth/auth.provider.dart';
 import 'package:buzzup/core/common/router/router.dart';
 import 'package:buzzup/core/common/widgets/loading_indicator.dart';
 import 'package:buzzup/core/design/spacing.dart';

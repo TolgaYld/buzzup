@@ -24,19 +24,19 @@ class CommentMapper extends ClassMapperBase<Comment> {
   final String id = 'Comment';
 
   static String _$id(Comment v) => v.id;
-  static const Field<Comment, String> _f$id = Field('id', _$id, key: '_id');
+  static const Field<Comment, String> _f$id = Field('id', _$id, key: r'_id');
   static bool _$isActive(Comment v) => v.isActive;
   static const Field<Comment, bool> _f$isActive =
-      Field('isActive', _$isActive, key: 'is_active');
+      Field('isActive', _$isActive, key: r'is_active');
   static bool _$isDeleted(Comment v) => v.isDeleted;
   static const Field<Comment, bool> _f$isDeleted =
-      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+      Field('isDeleted', _$isDeleted, key: r'is_deleted');
   static User _$createdBy(Comment v) => v.createdBy;
   static const Field<Comment, User> _f$createdBy =
-      Field('createdBy', _$createdBy, key: 'created_by');
+      Field('createdBy', _$createdBy, key: r'created_by');
   static DateTime _$createdAt(Comment v) => v.createdAt;
   static const Field<Comment, DateTime> _f$createdAt =
-      Field('createdAt', _$createdAt, key: 'created_at');
+      Field('createdAt', _$createdAt, key: r'created_at');
   static ContentVisibility _$visibility(Comment v) => v.visibility;
   static const Field<Comment, ContentVisibility> _f$visibility =
       Field('visibility', _$visibility);

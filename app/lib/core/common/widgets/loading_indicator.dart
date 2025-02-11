@@ -1,3 +1,4 @@
+import 'package:buzzup/core/hooks/use_theme.hook.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -7,6 +8,7 @@ class LoadingIndicator extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = useTheme();
     final controller = useAnimationController(
       duration: const Duration(seconds: 2),
     );
@@ -43,7 +45,11 @@ class LoadingIndicator extends HookConsumerWidget {
           angle: rotation.value * 2 * 3.14159265359,
           child: Transform.scale(
             scale: scale.value,
-            child: const Icon(Icons.sync, size: 30),
+            child: Icon(
+              Icons.sync,
+              size: 30,
+              color: Colors.white,
+            ),
           ),
         );
       },

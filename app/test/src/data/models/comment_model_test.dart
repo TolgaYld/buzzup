@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/comment.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:flutter_test/flutter_test.dart';
 import '../../../fixtures/reader.dart';
@@ -15,7 +15,7 @@ void main() {
   final tJson = jsonDecode(fixture('comment/comment.json')) as DataMap;
 
   group('fromMap', () {
-    test('should return a valid [CommentModel] from json', () {
+    test('should return a valid [Comment] from json', () {
       final result = CommentMapper.fromMap(tJson);
 
       expect(result, isA<Comment>());
@@ -32,8 +32,7 @@ void main() {
   });
 
   group('toJson', () {
-    test('should return a valid [DataMap (Map<String,dynamic>)] from model',
-        () {
+    test('should return a valid [DataMap (Map<String,dynamic>)] from model', () {
       final result = tCommentModel.toJson();
 
       expect(result, tJson);

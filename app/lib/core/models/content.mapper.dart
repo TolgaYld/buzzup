@@ -40,22 +40,22 @@ class ContentMapper extends ClassMapperBase<Content> {
       Field('visibility', _$visibility);
   static bool _$isActive(Content v) => v.isActive;
   static const Field<Content, bool> _f$isActive =
-      Field('isActive', _$isActive, key: 'is_active');
+      Field('isActive', _$isActive, key: r'is_active');
   static bool _$isDeleted(Content v) => v.isDeleted;
   static const Field<Content, bool> _f$isDeleted =
-      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+      Field('isDeleted', _$isDeleted, key: r'is_deleted');
   static DateTime _$createdAt(Content v) => v.createdAt;
   static const Field<Content, DateTime> _f$createdAt =
-      Field('createdAt', _$createdAt, key: 'created_at');
+      Field('createdAt', _$createdAt, key: r'created_at');
   static User _$createdBy(Content v) => v.createdBy;
   static const Field<Content, User> _f$createdBy =
-      Field('createdBy', _$createdBy, key: 'created_by');
+      Field('createdBy', _$createdBy, key: r'created_by');
   static DateTime? _$updatedAt(Content v) => v.updatedAt;
   static const Field<Content, DateTime> _f$updatedAt =
-      Field('updatedAt', _$updatedAt, key: 'updated_at', opt: true);
+      Field('updatedAt', _$updatedAt, key: r'updated_at', opt: true);
   static User? _$updatedBy(Content v) => v.updatedBy;
   static const Field<Content, User> _f$updatedBy =
-      Field('updatedBy', _$updatedBy, key: 'updated_by', opt: true);
+      Field('updatedBy', _$updatedBy, key: r'updated_by', opt: true);
   static List<User>? _$likes(Content v) => v.likes;
   static const Field<Content, List<User>> _f$likes =
       Field('likes', _$likes, opt: true);
@@ -76,7 +76,7 @@ class ContentMapper extends ClassMapperBase<Content> {
       Field('comments', _$comments, opt: true);
   static List<User>? _$linkedUsers(Content v) => v.linkedUsers;
   static const Field<Content, List<User>> _f$linkedUsers =
-      Field('linkedUsers', _$linkedUsers, key: 'linked_users', opt: true);
+      Field('linkedUsers', _$linkedUsers, key: r'linked_users', opt: true);
 
   @override
   final MappableFields<Content> fields = const {
@@ -186,22 +186,22 @@ class PostMapper extends ClassMapperBase<Post> {
       Field('visibility', _$visibility);
   static bool _$isActive(Post v) => v.isActive;
   static const Field<Post, bool> _f$isActive =
-      Field('isActive', _$isActive, key: 'is_active');
+      Field('isActive', _$isActive, key: r'is_active');
   static bool _$isDeleted(Post v) => v.isDeleted;
   static const Field<Post, bool> _f$isDeleted =
-      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+      Field('isDeleted', _$isDeleted, key: r'is_deleted');
   static DateTime _$createdAt(Post v) => v.createdAt;
   static const Field<Post, DateTime> _f$createdAt =
-      Field('createdAt', _$createdAt, key: 'created_at');
+      Field('createdAt', _$createdAt, key: r'created_at');
   static User _$createdBy(Post v) => v.createdBy;
   static const Field<Post, User> _f$createdBy =
-      Field('createdBy', _$createdBy, key: 'created_by');
+      Field('createdBy', _$createdBy, key: r'created_by');
   static DateTime? _$updatedAt(Post v) => v.updatedAt;
   static const Field<Post, DateTime> _f$updatedAt =
-      Field('updatedAt', _$updatedAt, key: 'updated_at', opt: true);
+      Field('updatedAt', _$updatedAt, key: r'updated_at', opt: true);
   static User? _$updatedBy(Post v) => v.updatedBy;
   static const Field<Post, User> _f$updatedBy =
-      Field('updatedBy', _$updatedBy, key: 'updated_by', opt: true);
+      Field('updatedBy', _$updatedBy, key: r'updated_by', opt: true);
   static List<User>? _$likes(Post v) => v.likes;
   static const Field<Post, List<User>> _f$likes =
       Field('likes', _$likes, opt: true);
@@ -220,10 +220,10 @@ class PostMapper extends ClassMapperBase<Post> {
       Field('comments', _$comments, opt: true);
   static DateTime? _$endDate(Post v) => v.endDate;
   static const Field<Post, DateTime> _f$endDate =
-      Field('endDate', _$endDate, key: 'end_date', opt: true);
+      Field('endDate', _$endDate, key: r'end_date', opt: true);
   static List<User>? _$linkedUsers(Post v) => v.linkedUsers;
   static const Field<Post, List<User>> _f$linkedUsers =
-      Field('linkedUsers', _$linkedUsers, key: 'linked_users');
+      Field('linkedUsers', _$linkedUsers, key: r'linked_users');
 
   @override
   final MappableFields<Post> fields = const {
@@ -495,22 +495,22 @@ class StoryMapper extends ClassMapperBase<Story> {
       Field('visibility', _$visibility);
   static bool _$isActive(Story v) => v.isActive;
   static const Field<Story, bool> _f$isActive =
-      Field('isActive', _$isActive, key: 'is_active');
+      Field('isActive', _$isActive, key: r'is_active');
   static bool _$isDeleted(Story v) => v.isDeleted;
   static const Field<Story, bool> _f$isDeleted =
-      Field('isDeleted', _$isDeleted, key: 'is_deleted');
+      Field('isDeleted', _$isDeleted, key: r'is_deleted');
   static DateTime _$createdAt(Story v) => v.createdAt;
   static const Field<Story, DateTime> _f$createdAt =
-      Field('createdAt', _$createdAt, key: 'created_at');
+      Field('createdAt', _$createdAt, key: r'created_at');
   static User _$createdBy(Story v) => v.createdBy;
   static const Field<Story, User> _f$createdBy =
-      Field('createdBy', _$createdBy, key: 'created_by');
+      Field('createdBy', _$createdBy, key: r'created_by');
   static DateTime? _$updatedAt(Story v) => v.updatedAt;
   static const Field<Story, DateTime> _f$updatedAt =
-      Field('updatedAt', _$updatedAt, key: 'updated_at', opt: true);
+      Field('updatedAt', _$updatedAt, key: r'updated_at', opt: true);
   static User? _$updatedBy(Story v) => v.updatedBy;
   static const Field<Story, User> _f$updatedBy =
-      Field('updatedBy', _$updatedBy, key: 'updated_by', opt: true);
+      Field('updatedBy', _$updatedBy, key: r'updated_by', opt: true);
   static List<User>? _$likes(Story v) => v.likes;
   static const Field<Story, List<User>> _f$likes =
       Field('likes', _$likes, opt: true);
@@ -529,7 +529,7 @@ class StoryMapper extends ClassMapperBase<Story> {
       Field('comments', _$comments, opt: true);
   static List<User>? _$linkedUsers(Story v) => v.linkedUsers;
   static const Field<Story, List<User>> _f$linkedUsers =
-      Field('linkedUsers', _$linkedUsers, key: 'linked_users');
+      Field('linkedUsers', _$linkedUsers, key: r'linked_users');
 
   @override
   final MappableFields<Story> fields = const {

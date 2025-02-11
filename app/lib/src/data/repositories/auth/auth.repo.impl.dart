@@ -1,7 +1,6 @@
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/token.dart';
-import 'package:buzzup/core/models/user.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart';
@@ -41,7 +40,7 @@ class AuthRepoImpl implements AuthRepo {
       } else {
         return Left(ApiFailure(message: 'No tokens found'));
       }
-      return Right(result.copyWith(tokens: null));
+      return Right(result);
     } on CacheException catch (e) {
       return Left(CacheFailure.fromException(e));
     } on ApiException catch (e) {
@@ -79,7 +78,7 @@ class AuthRepoImpl implements AuthRepo {
       } else {
         return Left(ApiFailure(message: 'No tokens found'));
       }
-      return Right(result.copyWith(tokens: null));
+      return Right(result);
     } on CacheException catch (e) {
       return Left(CacheFailure.fromException(e));
     } on ApiException catch (e) {
@@ -112,7 +111,7 @@ class AuthRepoImpl implements AuthRepo {
       } else {
         return Left(ApiFailure(message: 'No tokens found'));
       }
-      return Right(result.copyWith(tokens: null));
+      return Right(result);
     } on CacheException catch (e) {
       return Left(CacheFailure.fromException(e));
     } on ApiException catch (e) {

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/channel.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -16,7 +16,7 @@ void main() {
   final tJson = jsonDecode(fixture('channel/channel.json')) as DataMap;
 
   group('fromMap', () {
-    test('should return a valid [ChannelModel] from map', () {
+    test('should return a valid [Channel] from map', () {
       final result = ChannelMapper.fromMap(tJson);
 
       expect(result, isA<Channel>());
@@ -33,8 +33,7 @@ void main() {
   });
 
   group('toJson', () {
-    test('should return a valid [DataMap (Map<String,dynamic>)] from model',
-        () {
+    test('should return a valid [DataMap (Map<String,dynamic>)] from model', () {
       final result = tChannelModel.toMap();
 
       expect(result, tJson);

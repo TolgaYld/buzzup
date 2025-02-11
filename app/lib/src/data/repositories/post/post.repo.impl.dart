@@ -1,7 +1,6 @@
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/content.dart';
-import 'package:buzzup/core/models/location.dart';
+import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/data/datasources/post/post.remote.datasrc.dart';
