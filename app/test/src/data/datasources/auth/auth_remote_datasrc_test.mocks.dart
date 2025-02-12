@@ -214,6 +214,7 @@ class MockGraphQLClient extends _i1.Mock implements _i4.GraphQLClient {
     _i3.GraphQLCache? cache,
     _i2.DefaultPolicies? defaultPolicies,
     bool? alwaysRebroadcast,
+    Duration? queryRequestTimeout,
   }) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -224,6 +225,7 @@ class MockGraphQLClient extends _i1.Mock implements _i4.GraphQLClient {
             #cache: cache,
             #defaultPolicies: defaultPolicies,
             #alwaysRebroadcast: alwaysRebroadcast,
+            #queryRequestTimeout: queryRequestTimeout,
           },
         ),
         returnValue: _FakeGraphQLClient_4(
@@ -236,6 +238,7 @@ class MockGraphQLClient extends _i1.Mock implements _i4.GraphQLClient {
               #cache: cache,
               #defaultPolicies: defaultPolicies,
               #alwaysRebroadcast: alwaysRebroadcast,
+              #queryRequestTimeout: queryRequestTimeout,
             },
           ),
         ),
