@@ -1,32 +1,32 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
 import '../../../fixtures/reader.dart';
 
 void main() {
-  final tReportModel = Report.empty();
+  final tReportModel = ReportModel.empty();
 
   test('should be a subclass of [Report] entity', () {
-    expect(tReportModel, isA<Report>());
+    expect(tReportModel, isA<ReportModel>());
   });
 
   final tJson = jsonDecode(fixture('report/report.json')) as DataMap;
 
   group('fromJson', () {
     test('should return a valid [Report] from json', () {
-      final result = ReportMapper.fromMap(tJson);
+      final result = ReportModelMapper.fromMap(tJson);
 
-      expect(result, isA<Report>());
+      expect(result, isA<ReportModel>());
       expect(result, tReportModel);
     });
 
     test('should throw an [Error] when json is invalid', () {
       final map = DataMap.from(tJson)..remove('_id');
 
-      const call = ReportMapper.fromMap;
+      const call = ReportModelMapper.fromMap;
 
       expect(() => call(map), throwsA(isA<Error>()));
     });

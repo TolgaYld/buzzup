@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/errors/exception.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/graphql/auth/gql_auth_mutations.dart';
 import 'package:buzzup/core/utils/graphql/auth/gql_auth_querys.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
@@ -26,7 +26,7 @@ void main() {
     datasrc = AuthRemoteDatasrcImpl(graphQLClient: client, firebaseAuth: firebaseAuth);
   });
 
-  final tUserModel = User.empty();
+  final tUserModel = UserModel.empty();
 
   group('signUp', () {
     final data = jsonDecode(
@@ -326,7 +326,7 @@ void main() {
       fixture('user/update_password/user_raw_with_tokens_from_server.json'),
     ) as DataMap;
 
-    final tTokenModel = Token.empty();
+    final tTokenModel = TokenModel.empty();
     test(
         'should execute a successful call to datasource and return '
         '[TokenModel]', () async {
@@ -397,7 +397,7 @@ void main() {
     ) as DataMap;
 
     test('should execute a successful call to remote source', () async {
-      if (tUserModel.location case final location?) {
+      if (tUserModel.location case final LocationModel location) {
         final options = MutationOptions(
           document: gql(GqlAuthMutation.updateUserMutation),
           variables: {
@@ -434,7 +434,7 @@ void main() {
     test(
         'should throw an [ApiException] when call to remote source is '
         'unsuccessful', () async {
-      if (tUserModel.location case final location?) {
+      if (tUserModel.location case final LocationModel location) {
         final options = MutationOptions(
           document: gql(GqlAuthMutation.updateUserMutation),
           variables: {

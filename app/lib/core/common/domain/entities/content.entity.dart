@@ -1,16 +1,15 @@
+import 'package:buzzup/core/common/domain/entities/channel.entity.dart';
+import 'package:buzzup/core/common/domain/entities/comment.entity.dart';
+import 'package:buzzup/core/common/domain/entities/location.entity.dart';
+import 'package:buzzup/core/common/domain/entities/user.entity.dart';
 import 'package:buzzup/core/enums/content_visibility.dart';
-import 'package:buzzup/core/models/channel.dart';
-import 'package:buzzup/core/models/comment.dart';
-import 'package:buzzup/core/models/location.dart';
-import 'package:buzzup/core/models/user.dart';
-import 'package:buzzup/core/utils/datetime_converter.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 
-part 'content.mapper.dart';
+part 'content.entity.mapper.dart';
 
 @MappableClass()
-sealed class Content with ContentMappable {
-  const Content({
+sealed class ContentEntity with ContentEntityMappable {
+  const ContentEntity({
     required this.id,
     required this.channels,
     required this.location,
@@ -31,36 +30,27 @@ sealed class Content with ContentMappable {
   });
 
   final String id;
-  final List<Channel>? channels;
-  final List<User>? likes;
-  final List<User>? dislikes;
+  final List<ChannelEntity> channels;
+  final List<UserEntity>? likes;
+  final List<UserEntity>? dislikes;
   final String? text;
   final List<String>? media;
   final String? city;
-  final Location location;
+  final LocationEntity location;
   final ContentVisibility visibility;
-  final List<Comment>? comments;
-  @MappableField(key: 'linked_users')
-  final List<User>? linkedUsers;
-
-  @MappableField(key: 'is_active')
+  final List<CommentEntity>? comments;
+  final List<UserEntity>? linkedUsers;
   final bool isActive;
-  @MappableField(key: 'is_deleted')
   final bool isDeleted;
-  @DateTimeConverter()
-  @MappableField(key: 'created_at')
   final DateTime createdAt;
-  @MappableField(key: 'created_by')
-  final User createdBy;
-  @MappableField(key: 'updated_at')
+  final UserEntity createdBy;
   final DateTime? updatedAt;
-  @MappableField(key: 'updated_by')
-  final User? updatedBy;
+  final UserEntity? updatedBy;
 }
 
 @MappableClass()
-class Post extends Content with PostMappable {
-  Post({
+class PostEntity extends ContentEntity with PostEntityMappable {
+  PostEntity({
     required super.id,
     required super.channels,
     required super.location,
@@ -80,25 +70,23 @@ class Post extends Content with PostMappable {
     this.endDate,
   });
 
-  factory Post.empty() => Post(
+  factory PostEntity.empty() => PostEntity(
         id: 'empty',
-        location: Location.empty(),
+        location: LocationEntity.empty(),
         visibility: ContentVisibility.anonymous,
-        channels: [Channel.empty()],
+        channels: [ChannelEntity.empty()],
         endDate: DateTime.parse('2024-02-10T14:38:36.936Z'),
         createdAt: DateTime.parse('2024-02-10T14:38:36.936Z'),
-        createdBy: User.empty(),
+        createdBy: UserEntity.empty(),
         isActive: true,
         isDeleted: false,
       );
-
-  @MappableField(key: 'end_date')
   final DateTime? endDate;
 }
 
 @MappableClass()
-class Story extends Content with StoryMappable {
-  Story({
+class StoryEntity extends ContentEntity with StoryEntityMappable {
+  StoryEntity({
     required super.id,
     required super.channels,
     required super.location,
@@ -117,13 +105,13 @@ class Story extends Content with StoryMappable {
     super.comments,
   });
 
-  factory Story.empty() => Story(
+  factory StoryEntity.empty() => StoryEntity(
         id: 'empty',
-        location: Location.empty(),
+        location: LocationEntity.empty(),
         visibility: ContentVisibility.public,
-        channels: [Channel.empty()],
+        channels: [ChannelEntity.empty()],
         createdAt: DateTime.parse('2024-02-10T14:38:36.936Z'),
-        createdBy: User.empty(),
+        createdBy: UserEntity.empty(),
         isActive: true,
         isDeleted: false,
       );

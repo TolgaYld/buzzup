@@ -1,6 +1,6 @@
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.remote.datasrc.dart';
@@ -28,7 +28,7 @@ void main() {
   });
 
   group('authWithProvider', () {
-    final tUser = User.empty().copyWith(tokens: Token.empty());
+    final tUser = UserModel.empty().copyWith(tokens: TokenModel.empty());
     final tApiException = ApiException(
       message: "Can't auth with provider",
     );
@@ -67,7 +67,7 @@ void main() {
         ),
       ).called(1);
 
-      expect(result, Right<dynamic, User>(tUser.copyWith(tokens: null)));
+      expect(result, Right<dynamic, UserModel>(tUser.copyWith(tokens: null)));
 
       verify(
         remoteDatasrc.authWithProvider(
@@ -235,7 +235,7 @@ void main() {
   });
 
   group('signIn', () {
-    final tUser = User.empty().copyWith(tokens: Token.empty());
+    final tUser = UserModel.empty().copyWith(tokens: TokenModel.empty());
     final tApiException = ApiException(
       message: "Can't auth with provider",
     );
@@ -265,7 +265,7 @@ void main() {
         coordinates: [3.69, 3.69],
       );
 
-      expect(result, Right<dynamic, User>(tUser.copyWith(tokens: null)));
+      expect(result, Right<dynamic, UserModel>(tUser.copyWith(tokens: null)));
 
       verify(
         remoteDatasrc.signIn(
@@ -381,7 +381,7 @@ void main() {
 
     final tCacheException = CacheException(message: "Can't cache tokens");
 
-    final tTokenModel = Token.empty();
+    final tTokenModel = TokenModel.empty();
     test('should return [void] when call to remote source is successful', () async {
       when(
         remoteDatasrc.updatePassword(
@@ -506,7 +506,7 @@ void main() {
   });
 
   group('signUp', () {
-    final tUser = User.empty().copyWith(tokens: Token.empty());
+    final tUser = UserModel.empty().copyWith(tokens: TokenModel.empty());
     final tApiException = ApiException(
       message: "Can't auth with provider",
     );
@@ -541,7 +541,7 @@ void main() {
           repeatPassword: 'aaaaaaaaaaaa',
         );
 
-        expect(result, Right<dynamic, User>(tUser.copyWith(tokens: null)));
+        expect(result, Right<dynamic, UserModel>(tUser.copyWith(tokens: null)));
 
         verify(
           remoteDatasrc.signUp(
@@ -671,7 +671,7 @@ void main() {
   });
 
   group('updateUser', () {
-    final tUser = User.empty();
+    final tUser = UserModel.empty();
     final tException = ApiException(
       message: "Can't update password",
     );

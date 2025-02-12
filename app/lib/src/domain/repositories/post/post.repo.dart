@@ -1,10 +1,10 @@
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/common/repo/crud.repo.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
-abstract interface class PostRepo implements CrudRepo<Post> {
+abstract interface class PostRepo implements CrudRepo<PostEntity> {
   const PostRepo();
 
-  ResultFuture<List<Post>> getPostsByUser(String userId);
-  ResultFuture<List<Post>> getMyPosts();
+  ResultFuture<List<PostEntity>> getPostsByUser(String userId);
+  ResultFuture<List<PostEntity>> getMyPosts();
 }

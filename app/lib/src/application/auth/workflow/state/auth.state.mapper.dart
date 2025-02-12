@@ -170,7 +170,7 @@ class SignedInStateMapper extends ClassMapperBase<SignedInState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SignedInStateMapper._());
       AuthStateMapper.ensureInitialized();
-      UserMapper.ensureInitialized();
+      UserEntityMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -178,8 +178,8 @@ class SignedInStateMapper extends ClassMapperBase<SignedInState> {
   @override
   final String id = 'SignedInState';
 
-  static User? _$user(SignedInState v) => v.user;
-  static const Field<SignedInState, User> _f$user = Field('user', _$user);
+  static UserEntity? _$user(SignedInState v) => v.user;
+  static const Field<SignedInState, UserEntity> _f$user = Field('user', _$user);
 
   @override
   final MappableFields<SignedInState> fields = const {
@@ -243,9 +243,9 @@ extension SignedInStateValueCopy<$R, $Out>
 
 abstract class SignedInStateCopyWith<$R, $In extends SignedInState, $Out>
     implements AuthStateCopyWith<$R, $In, $Out> {
-  UserCopyWith<$R, User, User>? get user;
+  UserEntityCopyWith<$R, UserEntity, UserEntity>? get user;
   @override
-  $R call({User? user});
+  $R call({UserEntity? user});
   SignedInStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -258,7 +258,7 @@ class _SignedInStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SignedInState> $mapper =
       SignedInStateMapper.ensureInitialized();
   @override
-  UserCopyWith<$R, User, User>? get user =>
+  UserEntityCopyWith<$R, UserEntity, UserEntity>? get user =>
       $value.user?.copyWith.$chain((v) => call(user: v));
   @override
   $R call({Object? user = $none}) =>
@@ -281,7 +281,7 @@ class SignedUpStateMapper extends ClassMapperBase<SignedUpState> {
     if (_instance == null) {
       MapperContainer.globals.use(_instance = SignedUpStateMapper._());
       AuthStateMapper.ensureInitialized();
-      UserMapper.ensureInitialized();
+      UserEntityMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -289,8 +289,8 @@ class SignedUpStateMapper extends ClassMapperBase<SignedUpState> {
   @override
   final String id = 'SignedUpState';
 
-  static User _$user(SignedUpState v) => v.user;
-  static const Field<SignedUpState, User> _f$user = Field('user', _$user);
+  static UserEntity _$user(SignedUpState v) => v.user;
+  static const Field<SignedUpState, UserEntity> _f$user = Field('user', _$user);
 
   @override
   final MappableFields<SignedUpState> fields = const {
@@ -354,9 +354,9 @@ extension SignedUpStateValueCopy<$R, $Out>
 
 abstract class SignedUpStateCopyWith<$R, $In extends SignedUpState, $Out>
     implements AuthStateCopyWith<$R, $In, $Out> {
-  UserCopyWith<$R, User, User> get user;
+  UserEntityCopyWith<$R, UserEntity, UserEntity> get user;
   @override
-  $R call({User? user});
+  $R call({UserEntity? user});
   SignedUpStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
 }
 
@@ -369,10 +369,10 @@ class _SignedUpStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<SignedUpState> $mapper =
       SignedUpStateMapper.ensureInitialized();
   @override
-  UserCopyWith<$R, User, User> get user =>
+  UserEntityCopyWith<$R, UserEntity, UserEntity> get user =>
       $value.user.copyWith.$chain((v) => call(user: v));
   @override
-  $R call({User? user}) =>
+  $R call({UserEntity? user}) =>
       $apply(FieldCopyWithData({if (user != null) #user: user}));
   @override
   SignedUpState $make(CopyWithData data) =>
@@ -494,7 +494,7 @@ class AuthenticatedWithProviderStateMapper
       MapperContainer.globals
           .use(_instance = AuthenticatedWithProviderStateMapper._());
       AuthStateMapper.ensureInitialized();
-      UserMapper.ensureInitialized();
+      UserEntityMapper.ensureInitialized();
     }
     return _instance!;
   }
@@ -502,8 +502,8 @@ class AuthenticatedWithProviderStateMapper
   @override
   final String id = 'AuthenticatedWithProviderState';
 
-  static User _$user(AuthenticatedWithProviderState v) => v.user;
-  static const Field<AuthenticatedWithProviderState, User> _f$user =
+  static UserEntity _$user(AuthenticatedWithProviderState v) => v.user;
+  static const Field<AuthenticatedWithProviderState, UserEntity> _f$user =
       Field('user', _$user);
 
   @override
@@ -575,9 +575,9 @@ abstract class AuthenticatedWithProviderStateCopyWith<
     $R,
     $In extends AuthenticatedWithProviderState,
     $Out> implements AuthStateCopyWith<$R, $In, $Out> {
-  UserCopyWith<$R, User, User> get user;
+  UserEntityCopyWith<$R, UserEntity, UserEntity> get user;
   @override
-  $R call({User? user});
+  $R call({UserEntity? user});
   AuthenticatedWithProviderStateCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -594,10 +594,10 @@ class _AuthenticatedWithProviderStateCopyWithImpl<$R, $Out>
   late final ClassMapperBase<AuthenticatedWithProviderState> $mapper =
       AuthenticatedWithProviderStateMapper.ensureInitialized();
   @override
-  UserCopyWith<$R, User, User> get user =>
+  UserEntityCopyWith<$R, UserEntity, UserEntity> get user =>
       $value.user.copyWith.$chain((v) => call(user: v));
   @override
-  $R call({User? user}) =>
+  $R call({UserEntity? user}) =>
       $apply(FieldCopyWithData({if (user != null) #user: user}));
   @override
   AuthenticatedWithProviderState $make(CopyWithData data) =>

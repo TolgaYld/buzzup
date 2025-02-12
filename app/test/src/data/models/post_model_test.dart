@@ -1,32 +1,32 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
 import '../../../fixtures/reader.dart';
 
 void main() {
-  final tPostModel = Post.empty();
+  final tPostModel = PostModel.empty();
 
   test('should be a subclass of [Post] entity', () {
-    expect(tPostModel, isA<Post>());
+    expect(tPostModel, isA<PostModel>());
   });
 
   final tJson = jsonDecode(fixture('post/post.json')) as DataMap;
 
   group('fromJson', () {
     test('should return a valid [Post] from json', () {
-      final result = PostMapper.fromMap(tJson);
+      final result = PostModelMapper.fromMap(tJson);
 
-      expect(result, isA<Post>());
+      expect(result, isA<PostModel>());
       expect(result, tPostModel);
     });
 
     test('should throw an [Error] when json is invalid', () {
       final map = DataMap.from(tJson)..remove('_id');
 
-      const call = PostMapper.fromMap;
+      const call = PostModelMapper.fromMap;
 
       expect(() => call(map), throwsA(isA<Error>()));
     });

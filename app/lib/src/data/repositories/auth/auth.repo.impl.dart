@@ -1,6 +1,7 @@
+import 'package:buzzup/core/common/data/models/all_models.dart';
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/data/datasources/auth/auth.local.datasrc.dart';
@@ -18,7 +19,7 @@ class AuthRepoImpl implements AuthRepo {
   final AuthLocalDatasrc _localDatasrc;
 
   @override
-  ResultFuture<User> authWithProvider({
+  ResultFuture<UserEntity> authWithProvider({
     required String provider,
     required String providerId,
     required String email,
@@ -59,7 +60,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  ResultFuture<User> signIn({
+  ResultFuture<UserEntity> signIn({
     required String emailOrUsername,
     required String password,
     required List<double> coordinates,
@@ -78,7 +79,7 @@ class AuthRepoImpl implements AuthRepo {
       } else {
         return Left(ApiFailure(message: 'No tokens found'));
       }
-      return Right(result);
+      return Right(result.toEntity());
     } on CacheException catch (e) {
       return Left(CacheFailure.fromException(e));
     } on ApiException catch (e) {
@@ -87,7 +88,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  ResultFuture<User> signUp({
+  ResultFuture<UserEntity> signUp({
     required String username,
     required String email,
     required String password,
@@ -111,7 +112,7 @@ class AuthRepoImpl implements AuthRepo {
       } else {
         return Left(ApiFailure(message: 'No tokens found'));
       }
-      return Right(result);
+      return Right(result.toEntity());
     } on CacheException catch (e) {
       return Left(CacheFailure.fromException(e));
     } on ApiException catch (e) {
@@ -144,9 +145,9 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  ResultFuture<void> updateUser(User updateUser) async {
+  ResultFuture<void> updateUser(UserEntity updateUser) async {
     try {
-      await _remoteDatasrc.updateUser(updateUser);
+      await _remoteDatasrc.updateUser(UserModel.fromEntity(updateUser));
       return const Right(null);
     } on ApiException catch (e) {
       return Left(ApiFailure.fromException(e));
@@ -176,7 +177,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  ResultFuture<Token> refreshToken() async {
+  ResultFuture<TokenEntity> refreshToken() async {
     try {
       final result = await _remoteDatasrc.refreshToken();
 
@@ -184,7 +185,7 @@ class AuthRepoImpl implements AuthRepo {
         token: result.token,
         refreshToken: result.refreshToken,
       );
-      return Right(result);
+      return Right(result.toEntity());
     } on ApiException catch (e) {
       await _localDatasrc.deleteTokens();
       return Left(ApiFailure.fromException(e));

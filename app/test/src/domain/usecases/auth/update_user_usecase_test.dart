@@ -1,5 +1,5 @@
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/src/domain/usecases/auth/update_user.usecase.dart';
@@ -16,7 +16,7 @@ void main() {
     usecase = UpdateUserUsecase(repo);
   });
   group('UpdateUserUsecase', () {
-    final tUser = User.empty();
+    final tUser = UserEntity.empty();
     final tFailure = ApiFailure(message: "Couldn't Update User");
     test('should call [AuthRepo] and update [User]', () async {
       when(
@@ -38,9 +38,7 @@ void main() {
 
     test('should call [AuthRepo] and return a [ApiFailure]', () async {
       when(
-        repo.updateUser(
-          any,
-        ),
+        repo.updateUser(any),
       ).thenAnswer((_) async => Left(tFailure));
 
       final result = await usecase(tUser);

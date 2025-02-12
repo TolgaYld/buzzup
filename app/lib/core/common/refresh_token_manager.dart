@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:buzzup/core/common/constants/constants.dart';
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
 import 'package:buzzup/core/dependency_provider/auth.provider.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/jwt_helper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -48,7 +48,7 @@ class RefreshTokenManager {
       final result = await refreshTokenUseCase();
       if (JwtHelper.isExpired(getRefreshToken)) {
         _authStatusStreamController.add(AuthStatus.unauthenticated);
-      } else if (result case Right(value: Token(:final token))) {
+      } else if (result case Right(value: TokenEntity(:final token))) {
         _startTokenTimer(token);
         _authStatusStreamController.add(AuthStatus.authenticated);
       } else if (result is Left) {

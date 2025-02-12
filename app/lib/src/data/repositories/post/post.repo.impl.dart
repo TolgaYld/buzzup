@@ -1,6 +1,7 @@
+import 'package:buzzup/core/common/data/models/all_models.dart';
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/errors/exception.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:buzzup/src/data/datasources/post/post.remote.datasrc.dart';
@@ -12,9 +13,9 @@ class PostRepoImpl implements PostRepo {
   final PostRemoteDatasrc _remoteDatasrc;
 
   @override
-  ResultFuture<void> create(Post post) async {
+  ResultFuture<void> create(PostEntity post) async {
     try {
-      await _remoteDatasrc.createPost(post);
+      await _remoteDatasrc.createPost(PostModel.fromEntity(post));
       return Right(null);
     } on ApiException catch (e) {
       return Left(ApiFailure.fromException(e));
@@ -32,7 +33,7 @@ class PostRepoImpl implements PostRepo {
   }
 
   @override
-  ResultFuture<List<Post>> getAll(Location? location) async {
+  ResultFuture<List<PostEntity>> getAll(LocationEntity? location) async {
     try {
       final result = await _remoteDatasrc.getAll();
       return Right(result);
@@ -42,7 +43,7 @@ class PostRepoImpl implements PostRepo {
   }
 
   @override
-  ResultFuture<Post> getById(String id) async {
+  ResultFuture<PostEntity> getById(String id) async {
     try {
       final result = await _remoteDatasrc.getById(id);
       return Right(result);
@@ -52,7 +53,7 @@ class PostRepoImpl implements PostRepo {
   }
 
   @override
-  ResultFuture<List<Post>> getMyPosts() async {
+  ResultFuture<List<PostEntity>> getMyPosts() async {
     try {
       final result = await _remoteDatasrc.getMyPosts();
       return Right(result);
@@ -62,7 +63,7 @@ class PostRepoImpl implements PostRepo {
   }
 
   @override
-  ResultFuture<List<Post>> getPostsByUser(String userId) async {
+  ResultFuture<List<PostEntity>> getPostsByUser(String userId) async {
     try {
       final result = await _remoteDatasrc.getPostsByUser(userId);
       return Right(result);
@@ -72,9 +73,9 @@ class PostRepoImpl implements PostRepo {
   }
 
   @override
-  ResultFuture<void> update(Post post) async {
+  ResultFuture<void> update(PostEntity post) async {
     try {
-      await _remoteDatasrc.updatePost(post);
+      await _remoteDatasrc.updatePost(PostModel.fromEntity(post));
       return Right(null);
     } on ApiException catch (e) {
       return Left(ApiFailure.fromException(e));

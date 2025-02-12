@@ -1,4 +1,4 @@
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:dart_mappable/dart_mappable.dart';
 
 part 'auth.state.mapper.dart';
@@ -17,14 +17,14 @@ class AuthInitialState extends AuthState with AuthInitialStateMappable {
 class SignedInState extends AuthState with SignedInStateMappable {
   const SignedInState(this.user);
 
-  final User? user;
+  final UserEntity? user;
 }
 
 @MappableClass()
 class SignedUpState extends AuthState with SignedUpStateMappable {
   const SignedUpState(this.user);
 
-  final User user;
+  final UserEntity user;
 }
 
 @MappableClass()
@@ -36,7 +36,7 @@ class SignedOutState extends AuthState with SignedOutStateMappable {
 class AuthenticatedWithProviderState extends AuthState with AuthenticatedWithProviderStateMappable {
   const AuthenticatedWithProviderState(this.user);
 
-  final User user;
+  final UserEntity user;
 }
 
 @MappableClass()

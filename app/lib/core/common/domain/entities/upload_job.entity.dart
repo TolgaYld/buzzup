@@ -1,12 +1,11 @@
 import 'package:buzzup/core/enums/upload_status.dart';
 import 'package:dart_mappable/dart_mappable.dart';
-import 'package:uuid/uuid.dart';
 
-part 'upload_job.mapper.dart';
+part 'upload_job.entity.mapper.dart';
 
 @MappableClass()
-class UploadJob with UploadJobMappable {
-  UploadJob({
+class UploadJobEntity with UploadJobEntityMappable {
+  UploadJobEntity({
     required this.uid,
     required this.userUid,
     required this.itemUid,
@@ -20,24 +19,6 @@ class UploadJob with UploadJobMappable {
     this.errorMessage,
   });
 
-  factory UploadJob.initial({
-    required String id,
-    required String userUid,
-    required int totalFiles,
-  }) {
-    return UploadJob(
-      uid: id,
-      userUid: userUid,
-      itemUid: const Uuid().v4(),
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      status: UploadStatus.pending,
-      progress: 0,
-      totalFiles: totalFiles,
-      completedFiles: 0,
-      fileIds: [],
-    );
-  }
   final String uid;
   final String userUid;
   final String itemUid;

@@ -1,10 +1,10 @@
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
 abstract interface class AuthRepo {
   const AuthRepo();
 
-  ResultFuture<User> signUp({
+  ResultFuture<UserEntity> signUp({
     required String username,
     required String email,
     required String password,
@@ -12,20 +12,20 @@ abstract interface class AuthRepo {
     required List<double> coordinates,
   });
 
-  ResultFuture<User> authWithProvider({
+  ResultFuture<UserEntity> authWithProvider({
     required String provider,
     required String providerId,
     required String email,
     required List<double> coordinates,
   });
 
-  ResultFuture<User> signIn({
+  ResultFuture<UserEntity> signIn({
     required String emailOrUsername,
     required String password,
     required List<double> coordinates,
   });
 
-  ResultFuture<void> updateUser(User updateUser);
+  ResultFuture<void> updateUser(UserEntity updateUser);
 
   ResultFuture<void> updatePassword({
     required String password,
@@ -40,5 +40,5 @@ abstract interface class AuthRepo {
 
   ResultFuture<void> signOut();
 
-  ResultFuture<Token> refreshToken();
+  ResultFuture<TokenEntity> refreshToken();
 }

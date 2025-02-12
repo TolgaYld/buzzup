@@ -1,5 +1,5 @@
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/errors/exception.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/common/constants/constants.dart';
@@ -18,7 +18,7 @@ void main() {
     datasrc = AuthLocalDatasrcImpl(secureStorage);
   });
 
-  final tTokenModel = Token.empty();
+  final tTokenModel = TokenModel.empty();
 
   group('setToken', () {
     test('should chache the Tokens when call to local source is successful', () async {

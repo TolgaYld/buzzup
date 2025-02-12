@@ -1,5 +1,5 @@
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/src/domain/repositories/auth/auth.repo.dart';
@@ -20,7 +20,7 @@ void main() {
   });
 
   group('SignUpUsecase', () {
-    final tUser = User.empty();
+    final tUser = UserEntity.empty();
 
     test('should call the [AuthRepo] and return a [User]', () async {
       when(
@@ -46,7 +46,7 @@ void main() {
           ),
         );
 
-        expect(result, Right<dynamic, User>(tUser));
+        expect(result, Right<dynamic, UserEntity>(tUser));
 
         verify(
           repo.signUp(

@@ -1,5 +1,5 @@
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/errors/failure.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/either.dart';
 import 'package:buzzup/src/domain/usecases/auth/sign_in.usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -17,7 +17,7 @@ void main() {
   });
 
   group('SignInUsecase', () {
-    final tUser = User.empty();
+    final tUser = UserEntity.empty();
     final tParams = SignInUsecase.emptyParams;
     final tFailure = ApiFailure(message: "Couldn't Sign In");
     test('should call [AuthRepo] and return a valid [User]', () async {
@@ -35,7 +35,7 @@ void main() {
         tParams,
       );
 
-      expect(result, Right<dynamic, User>(tUser));
+      expect(result, Right<dynamic, UserEntity>(tUser));
       verify(
         repo.signIn(
           emailOrUsername: tParams.emailOrUsername,

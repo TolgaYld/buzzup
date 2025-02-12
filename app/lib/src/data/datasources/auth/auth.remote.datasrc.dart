@@ -1,12 +1,12 @@
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/errors/exception.dart';
-import 'package:buzzup/core/models/all_models.dart';
 import 'package:buzzup/core/utils/graphql/auth/gql_auth_mutations.dart';
 import 'package:buzzup/core/utils/graphql/auth/gql_auth_querys.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase;
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 abstract interface class AuthRemoteDatasrc {
-  Future<User> authWithProvider({
+  Future<UserModel> authWithProvider({
     required String provider,
     required String providerId,
     required String email,
@@ -15,13 +15,13 @@ abstract interface class AuthRemoteDatasrc {
 
   Future<void> forgotPassword(String email);
 
-  Future<User> signIn({
+  Future<UserModel> signIn({
     required String emailOrUsername,
     required String password,
     required List<double> coordinates,
   });
 
-  Future<User> signUp({
+  Future<UserModel> signUp({
     required String username,
     required String email,
     required String password,
@@ -29,12 +29,12 @@ abstract interface class AuthRemoteDatasrc {
     required List<double> coordinates,
   });
 
-  Future<Token> updatePassword({
+  Future<TokenModel> updatePassword({
     required String password,
     required String repeatPassword,
   });
 
-  Future<void> updateUser(User user);
+  Future<void> updateUser(UserModel user);
 
   Future<bool> checkIfEmailExists(String email);
 
@@ -42,7 +42,7 @@ abstract interface class AuthRemoteDatasrc {
 
   Future<void> signOut();
 
-  Future<Token> refreshToken();
+  Future<TokenModel> refreshToken();
 }
 
 class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
@@ -55,7 +55,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   final GraphQLClient _graphQLClient;
   final firebase.FirebaseAuth _firebaseAuth;
   @override
-  Future<User> authWithProvider({
+  Future<UserModel> authWithProvider({
     required String provider,
     required String providerId,
     required String email,
@@ -79,7 +79,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
           d['authUserWithProvider']['tokens']['firebaseAuthToken'],
         );
         if (userCreds.user != null) {
-          return UserMapper.fromMap(d['authUserWithProvider']['user']);
+          return UserModelMapper.fromMap(d['authUserWithProvider']['user']);
         } else {
           throw ApiException(
             message: 'An error occurred',
@@ -133,7 +133,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   }
 
   @override
-  Future<User> signIn({
+  Future<UserModel> signIn({
     required String emailOrUsername,
     required String password,
     required List<double> coordinates,
@@ -153,12 +153,12 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
       );
       if (response.data case final d? when response.hasException == false) {
         print(d['signInUser']['user']);
-        final user = UserMapper.fromMap(d['signInUser']['user']);
+        final user = UserModelMapper.fromMap(d['signInUser']['user']);
         final userCreds = await _firebaseAuth.signInWithCustomToken(
           d['signInUser']['tokens']['firebaseAuthToken'],
         );
         if (userCreds.user != null) {
-          final tokens = TokenMapper.fromMap(d['signInUser']['tokens']);
+          final tokens = TokenModelMapper.fromMap(d['signInUser']['tokens']);
           return user.copyWith(tokens: tokens);
         } else {
           throw ApiException(
@@ -185,7 +185,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   }
 
   @override
-  Future<User> signUp({
+  Future<UserModel> signUp({
     required String username,
     required String email,
     required String password,
@@ -208,12 +208,12 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
         ),
       );
       if (response.data case final d? when response.hasException == false) {
-        final user = UserMapper.fromMap(d['signUpUser']['user']);
+        final user = UserModelMapper.fromMap(d['signUpUser']['user']);
         final userCreds = await _firebaseAuth.signInWithCustomToken(
           d['signUpUser']['tokens']['firebaseAuthToken'],
         );
         if (userCreds.user != null) {
-          final tokens = TokenMapper.fromMap(d['signUpUser']['tokens']);
+          final tokens = TokenModelMapper.fromMap(d['signUpUser']['tokens']);
           return user.copyWith(tokens: tokens);
         } else {
           throw ApiException(
@@ -241,7 +241,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   }
 
   @override
-  Future<Token> updatePassword({
+  Future<TokenModel> updatePassword({
     required String password,
     required String repeatPassword,
   }) async {
@@ -256,7 +256,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
         ),
       );
       if (response.data case final d? when response.hasException == false) {
-        return TokenMapper.fromMap(d['updateUserPassword']['tokens']);
+        return TokenModelMapper.fromMap(d['updateUserPassword']['tokens']);
       } else {
         if (response.exception case final exc?) {
           throw ApiException(
@@ -279,7 +279,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   }
 
   @override
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(UserModel user) async {
     try {
       if (user.location case final location?) {
         final response = await _graphQLClient.mutate(
@@ -383,7 +383,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
   }
 
   @override
-  Future<Token> refreshToken() async {
+  Future<TokenModel> refreshToken() async {
     try {
       final response = await _graphQLClient.query(
         QueryOptions(
@@ -393,7 +393,7 @@ class AuthRemoteDatasrcImpl implements AuthRemoteDatasrc {
       );
 
       if (response.data case final d? when response.hasException == false) {
-        return TokenMapper.fromMap(d['refreshToken']);
+        return TokenModelMapper.fromMap(d['refreshToken']);
       } else {
         if (response.exception case final exc?) {
           throw ApiException(message: exc.graphqlErrors.first.message);

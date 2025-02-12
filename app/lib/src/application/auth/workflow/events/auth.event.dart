@@ -1,4 +1,4 @@
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 
 sealed class AuthEvent {
   const AuthEvent();
@@ -63,7 +63,7 @@ class UpdatePasswordEvent extends AuthEvent {
 class UpdateUserEvent extends AuthEvent {
   const UpdateUserEvent(this.user);
 
-  final User user;
+  final UserEntity user;
 }
 
 class ForgotPasswordEvent extends AuthEvent {

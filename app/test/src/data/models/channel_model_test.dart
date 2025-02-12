@@ -1,32 +1,32 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../../fixtures/reader.dart';
 
 void main() {
-  final tChannelModel = Channel.empty();
+  final tChannelModel = ChannelModel.empty();
 
   test('should be a subclass of [Channel] entity', () {
-    expect(tChannelModel, isA<Channel>());
+    expect(tChannelModel, isA<ChannelModel>());
   });
 
   final tJson = jsonDecode(fixture('channel/channel.json')) as DataMap;
 
   group('fromMap', () {
     test('should return a valid [Channel] from map', () {
-      final result = ChannelMapper.fromMap(tJson);
+      final result = ChannelModelMapper.fromMap(tJson);
 
-      expect(result, isA<Channel>());
+      expect(result, isA<ChannelModel>());
       expect(result, tChannelModel);
     });
 
     test('should throw an [Error] when json is invalid', () {
       final map = DataMap.from(tJson)..remove('_id');
 
-      const call = ChannelMapper.fromMap;
+      const call = ChannelModelMapper.fromMap;
 
       expect(() => call(map), throwsA(isA<Error>()));
     });

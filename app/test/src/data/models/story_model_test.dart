@@ -1,32 +1,32 @@
 import 'dart:convert';
 
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:buzzup/core/utils/typedefs.dart';
 
 import '../../../fixtures/reader.dart';
 
 void main() {
-  final tStoryModel = Story.empty();
+  final tStoryModel = StoryModel.empty();
 
   test('should be a subclass of [Story] entity', () {
-    expect(tStoryModel, isA<Story>());
+    expect(tStoryModel, isA<StoryModel>());
   });
 
   final tJson = jsonDecode(fixture('story/story.json')) as DataMap;
 
   group('fromJson', () {
     test('should return a valid [Story] from json', () {
-      final result = StoryMapper.fromMap(tJson);
+      final result = StoryModelMapper.fromMap(tJson);
 
-      expect(result, isA<Story>());
+      expect(result, isA<StoryModel>());
       expect(result, tStoryModel);
     });
 
     test('should throw an [Error] when json is invalid', () {
       final map = DataMap.from(tJson)..remove('_id');
 
-      const call = StoryMapper.fromMap;
+      const call = StoryModelMapper.fromMap;
 
       expect(() => call(map), throwsA(isA<Error>()));
     });

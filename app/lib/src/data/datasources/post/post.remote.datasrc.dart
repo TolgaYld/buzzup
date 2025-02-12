@@ -1,4 +1,4 @@
-import 'package:buzzup/core/models/all_models.dart';
+import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
@@ -6,13 +6,13 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 abstract interface class PostRemoteDatasrc {
   const PostRemoteDatasrc();
 
-  Future<void> createPost(Post post);
-  Future<void> updatePost(Post post);
+  Future<void> createPost(PostModel post);
+  Future<void> updatePost(PostModel post);
   Future<void> deletePost(String id);
-  Future<List<Post>> getAll();
-  Future<Post> getById(String id);
-  Future<List<Post>> getMyPosts();
-  Future<List<Post>> getPostsByUser(String userId);
+  Future<List<PostModel>> getAll();
+  Future<PostModel> getById(String id);
+  Future<List<PostModel>> getMyPosts();
+  Future<List<PostModel>> getPostsByUser(String userId);
 }
 
 class PostRemoteDatasrcImpl implements PostRemoteDatasrc {
@@ -26,7 +26,7 @@ class PostRemoteDatasrcImpl implements PostRemoteDatasrc {
   final FirebaseStorage _storage;
 
   @override
-  Future<void> createPost(Post post) async {}
+  Future<void> createPost(PostModel post) async {}
 
   @override
   Future<void> deletePost(String id) {
@@ -35,31 +35,31 @@ class PostRemoteDatasrcImpl implements PostRemoteDatasrc {
   }
 
   @override
-  Future<List<Post>> getAll() {
+  Future<List<PostModel>> getAll() {
     // TODO: implement getAll
     throw UnimplementedError();
   }
 
   @override
-  Future<Post> getById(String id) {
+  Future<PostModel> getById(String id) {
     // TODO: implement getById
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Post>> getMyPosts() {
+  Future<List<PostModel>> getMyPosts() {
     // TODO: implement getMyPosts
     throw UnimplementedError();
   }
 
   @override
-  Future<List<Post>> getPostsByUser(String userId) {
+  Future<List<PostModel>> getPostsByUser(String userId) {
     // TODO: implement getPostsByUser
     throw UnimplementedError();
   }
 
   @override
-  Future<void> updatePost(Post post) {
+  Future<void> updatePost(PostModel post) {
     // TODO: implement updatePost
     throw UnimplementedError();
   }
