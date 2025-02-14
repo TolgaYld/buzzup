@@ -7,5 +7,5 @@ class GetPostUsecase extends UsecaseWithParams<PostEntity, String> {
   const GetPostUsecase(this._repo);
   final PostRepo _repo;
   @override
-  ResultFuture<PostEntity> call(String params) async => await _repo.getById(params);
+  ResultFuture<PostEntity?> call(String params) async => await _repo.getById(params);
 }

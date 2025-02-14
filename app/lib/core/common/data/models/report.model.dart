@@ -1,3 +1,4 @@
+import 'package:buzzup/core/common/base_interfaces/id_holder.dart';
 import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:dart_mappable/dart_mappable.dart';
@@ -6,7 +7,7 @@ import 'package:buzzup/core/utils/datetime_converter.dart';
 part 'report.model.mapper.dart';
 
 @MappableClass()
-class ReportModel extends ReportEntity with ReportModelMappable {
+class ReportModel extends ReportEntity with ReportModelMappable implements IdHolder {
   ReportModel({
     @MappableField(key: '_id') required super.id,
     @MappableField(key: 'is_done') required super.isDone,

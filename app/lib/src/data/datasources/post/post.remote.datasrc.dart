@@ -1,6 +1,4 @@
 import 'package:buzzup/core/common/data/models/all_models.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
 abstract interface class PostRemoteDatasrc {
@@ -16,17 +14,13 @@ abstract interface class PostRemoteDatasrc {
 }
 
 class PostRemoteDatasrcImpl implements PostRemoteDatasrc {
-  const PostRemoteDatasrcImpl({
-    required GraphQLClient client,
-    required CollectionReference collectionReference,
-    required FirebaseStorage storage,
-  })  : _client = client,
-        _storage = storage;
+  const PostRemoteDatasrcImpl(this._client);
   final GraphQLClient _client;
-  final FirebaseStorage _storage;
 
   @override
-  Future<void> createPost(PostModel post) async {}
+  Future<void> createPost(PostModel post) async {
+    throw UnimplementedError();
+  }
 
   @override
   Future<void> deletePost(String id) {

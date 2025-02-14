@@ -29,8 +29,16 @@ class UploadStatusMapper extends EnumMapper<UploadStatus> {
         return UploadStatus.pending;
       case 'uploading':
         return UploadStatus.uploading;
-      case 'processing':
-        return UploadStatus.processing;
+      case 'uploaded':
+        return UploadStatus.uploaded;
+      case 'transformation':
+        return UploadStatus.transformation;
+      case 'transformed':
+        return UploadStatus.transformed;
+      case 'reuplaoding':
+        return UploadStatus.reuploading;
+      case 'reuploaded':
+        return UploadStatus.reuploaded;
       case 'done':
         return UploadStatus.done;
       case 'error':
@@ -47,8 +55,16 @@ class UploadStatusMapper extends EnumMapper<UploadStatus> {
         return 'pending';
       case UploadStatus.uploading:
         return 'uploading';
-      case UploadStatus.processing:
-        return 'processing';
+      case UploadStatus.uploaded:
+        return 'uploaded';
+      case UploadStatus.transformation:
+        return 'transformation';
+      case UploadStatus.transformed:
+        return 'transformed';
+      case UploadStatus.reuploading:
+        return 'reuplaoding';
+      case UploadStatus.reuploaded:
+        return 'reuploaded';
       case UploadStatus.done:
         return 'done';
       case UploadStatus.error:
@@ -58,8 +74,8 @@ class UploadStatusMapper extends EnumMapper<UploadStatus> {
 }
 
 extension UploadStatusMapperExtension on UploadStatus {
-  String toValue() {
+  dynamic toValue() {
     UploadStatusMapper.ensureInitialized();
-    return MapperContainer.globals.toValue<UploadStatus>(this) as String;
+    return MapperContainer.globals.toValue<UploadStatus>(this);
   }
 }

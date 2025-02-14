@@ -1,3 +1,4 @@
+import 'package:buzzup/core/common/base_interfaces/id_holder.dart';
 import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:dart_mappable/dart_mappable.dart';
@@ -7,7 +8,7 @@ import 'package:buzzup/core/utils/datetime_converter.dart';
 part 'comment.model.mapper.dart';
 
 @MappableClass()
-class CommentModel extends CommentEntity with CommentModelMappable {
+class CommentModel extends CommentEntity with CommentModelMappable implements IdHolder {
   CommentModel({
     @MappableField(key: '_id') required super.id,
     @MappableField(key: 'is_active') required super.isActive,

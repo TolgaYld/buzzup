@@ -1,3 +1,4 @@
+import 'package:buzzup/core/common/base_interfaces/id_holder.dart';
 import 'package:buzzup/core/common/data/models/all_models.dart';
 import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/utils/datetime_converter.dart';
@@ -6,7 +7,7 @@ import 'package:dart_mappable/dart_mappable.dart';
 part "channel.model.mapper.dart";
 
 @MappableClass()
-class ChannelModel extends ChannelEntity with ChannelModelMappable {
+class ChannelModel extends ChannelEntity with ChannelModelMappable implements IdHolder {
   ChannelModel({
     @MappableField(key: '_id') required super.id,
     required super.name,

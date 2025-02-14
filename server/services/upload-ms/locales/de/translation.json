@@ -1,8 +1,0 @@
-{
-    "channel-not-created": "Channel konnte nicht erstellt werden",
-    "channels-not-found": "Channels wurden nicht gefunden",
-    "channel-not-found": "Channel wurde nicht gefunden",
-    "channel-update-failed": "Update fehlgeschlagen",
-    "channel-delete-failed": "Channel konnte nicht gelöscht werden",
-    "unauthorized": "Unautorisierter Zugriff"
-}

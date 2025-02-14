@@ -1,3 +1,4 @@
+import 'package:buzzup/core/common/base_interfaces/id_holder.dart';
 import 'package:buzzup/core/common/data/models/channel.model.dart';
 import 'package:buzzup/core/common/data/models/comment.model.dart';
 import 'package:buzzup/core/common/data/models/content/post.model.dart';
@@ -13,7 +14,7 @@ import 'package:buzzup/core/utils/datetime_converter.dart';
 part 'user.model.mapper.dart';
 
 @MappableClass()
-class UserModel extends UserEntity with UserModelMappable {
+class UserModel extends UserEntity with UserModelMappable implements IdHolder {
   UserModel({
     @MappableField(key: '_id') required super.id,
     required super.username,

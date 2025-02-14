@@ -152,8 +152,7 @@ const createUser = async (req, res) => {
     if (user == null) {
       throw { statusCode: 400, message: "user-not-created" };
     }
-    log("user created in firebase");
-    await createUserInFirebase(user._id.toString(), email, password, username);
+    await createUserInFirebase(user._id.toString(), email, password, username, user.user_type);
 
     // // send confirmation email
     // await sendConfirmationEmail(
@@ -213,7 +212,7 @@ const signInUser = async (req, res) => {
 };
 
 const authUserWithProvider = async (req, res) => {
-  const { email, provider, provider_id, coordinates } = req.body.data;
+  const { email, provider, provider_id, coordinates, } = req.body.data;
 
   if (!validator.isEmail(email)) {
     throw { statusCode: 400, message: "invalid-email" };
@@ -232,24 +231,28 @@ const authUserWithProvider = async (req, res) => {
 
       const uid = new ShortUniqueId({ length: 12 });
 
+      const randomUsername = `user${uid}`;
+
       const createdUser = await User.create({
         email,
-        username: `user${uid}`,
+        username: randomUsername,
         password: hashedPassword,
         provider,
         provider_id,
         location: { coordinates },
       }, { session });
 
-      if (createdUser == null) {
+      const user = createdUser[0];
+
+      if (user == null) {
         throw { statusCode: 400, message: "user-not-created" };
       }
 
-      await createUserInFirebase(createdUser._id.toString(), email, randomPassword, createdUser.username);
+      await createUserInFirebase(user._id, email, randomPassword, randomUsername, user.user_type);
 
       await session.commitTransaction();
       session.endSession();
-      return sendSuccessResponseWithTokens(createdUser, res, 201);
+      return sendSuccessResponseWithTokens(user, res, 201);
     }
 
     if (findUser.is_banned) {
@@ -417,7 +420,7 @@ const deleteUserFromDb = async (req, res) => {
     if (deletedUser == null) {
       throw { statusCode: 400, message: "user-delete-failed" };
     }
-    await admin.auth().deleteUser(deletedUser._id.toString());
+    await deleteUserInFirebase(deletedUser._id.toString());
 
     await session.commitTransaction();
     session.endSession();
@@ -662,7 +665,7 @@ const generateFirebaseToken = async (uid) => {
   }
 };
 
-const createUserInFirebase = async (uid, email, password, username) => {
+const createUserInFirebase = async (uid, email, password, username, user_type) => {
   try {
     await admin.auth().createUser({
       uid,
@@ -674,6 +677,7 @@ const createUserInFirebase = async (uid, email, password, username) => {
     await admin.auth().setCustomUserClaims(uid, {
       is_deleted: false,
       is_banned: false,
+      user_type,
     })
   } catch (error) {
     log(error);
@@ -681,10 +685,16 @@ const createUserInFirebase = async (uid, email, password, username) => {
   }
 };
 
+const deleteUserInFirebase = async (uid) => {
+  try {
+    await admin.auth().deleteUser(uid);
+  } catch (error) {
+    log(error);
+    throw new Error("user-not-deleted");
+  }
+};
+
 const sendSuccessResponseWithTokens = async (user, res, statusCode = 200) => {
-
-
-
   return await res.status(statusCode).json({
     success: true,
     data: {

@@ -1,7 +1,3 @@
-import 'package:buzzup/core/common/constants/firebase_keys.dart';
-import 'package:buzzup/core/common/data/models/all_models.dart';
-import 'package:buzzup/core/common/provider/firestore/firestore.provider.dart';
-import 'package:buzzup/core/common/provider/storage/storage.provider.dart';
 import 'package:buzzup/core/dependency_provider/api_client.provider.dart';
 import 'package:buzzup/src/data/datasources/post/post.remote.datasrc.dart';
 import 'package:buzzup/src/data/repositories/post/post.repo.impl.dart';
@@ -17,18 +13,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 final postRemoteDatasourceProvider = FutureProvider<PostRemoteDatasrc>((ref) async {
   final client = await ref.watch(graphQLClientProvider.future);
-  final storage = ref.watch(storageProvider);
-  final firestore = ref.watch(firestoreProvider);
-  final collectionReference = firestore.collection(FirebaseKeys.uploadJobs).withConverter<UploadJobModel>(
-        fromFirestore: (snap, _) => UploadJobModelMapper.fromMap(
-          switch (snap.data()) {
-            final data? => data,
-            _ => throw Exception("Data not found"),
-          },
-        ),
-        toFirestore: (value, _) => value.toMap(),
-      );
-  return PostRemoteDatasrcImpl(client: client, storage: storage, collectionReference: collectionReference);
+  return PostRemoteDatasrcImpl(client);
 });
 
 final postRepoProvider = FutureProvider<PostRepo>((ref) async {

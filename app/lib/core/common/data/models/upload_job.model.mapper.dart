@@ -22,14 +22,17 @@ class UploadJobModelMapper extends ClassMapperBase<UploadJobModel> {
   @override
   final String id = 'UploadJobModel';
 
-  static String _$uid(UploadJobModel v) => v.uid;
-  static const Field<UploadJobModel, String> _f$uid = Field('uid', _$uid);
-  static String _$userUid(UploadJobModel v) => v.userUid;
-  static const Field<UploadJobModel, String> _f$userUid =
-      Field('userUid', _$userUid);
-  static String _$itemUid(UploadJobModel v) => v.itemUid;
-  static const Field<UploadJobModel, String> _f$itemUid =
-      Field('itemUid', _$itemUid);
+  static String _$id(UploadJobModel v) => v.id;
+  static const Field<UploadJobModel, String> _f$id = Field('id', _$id);
+  static String _$userId(UploadJobModel v) => v.userId;
+  static const Field<UploadJobModel, String> _f$userId =
+      Field('userId', _$userId);
+  static List<String> _$fileIds(UploadJobModel v) => v.fileIds;
+  static const Field<UploadJobModel, List<String>> _f$fileIds =
+      Field('fileIds', _$fileIds);
+  static List<String> _$fileUris(UploadJobModel v) => v.fileUris;
+  static const Field<UploadJobModel, List<String>> _f$fileUris =
+      Field('fileUris', _$fileUris);
   static DateTime _$createdAt(UploadJobModel v) => v.createdAt;
   static const Field<UploadJobModel, DateTime> _f$createdAt =
       Field('createdAt', _$createdAt);
@@ -48,40 +51,37 @@ class UploadJobModelMapper extends ClassMapperBase<UploadJobModel> {
   static int _$completedFiles(UploadJobModel v) => v.completedFiles;
   static const Field<UploadJobModel, int> _f$completedFiles =
       Field('completedFiles', _$completedFiles);
-  static List<String> _$fileIds(UploadJobModel v) => v.fileIds;
-  static const Field<UploadJobModel, List<String>> _f$fileIds =
-      Field('fileIds', _$fileIds);
   static String? _$errorMessage(UploadJobModel v) => v.errorMessage;
   static const Field<UploadJobModel, String> _f$errorMessage =
       Field('errorMessage', _$errorMessage, opt: true);
 
   @override
   final MappableFields<UploadJobModel> fields = const {
-    #uid: _f$uid,
-    #userUid: _f$userUid,
-    #itemUid: _f$itemUid,
+    #id: _f$id,
+    #userId: _f$userId,
+    #fileIds: _f$fileIds,
+    #fileUris: _f$fileUris,
     #createdAt: _f$createdAt,
     #updatedAt: _f$updatedAt,
     #status: _f$status,
     #progress: _f$progress,
     #totalFiles: _f$totalFiles,
     #completedFiles: _f$completedFiles,
-    #fileIds: _f$fileIds,
     #errorMessage: _f$errorMessage,
   };
 
   static UploadJobModel _instantiate(DecodingData data) {
     return UploadJobModel(
-        uid: data.dec(_f$uid),
-        userUid: data.dec(_f$userUid),
-        itemUid: data.dec(_f$itemUid),
+        id: data.dec(_f$id),
+        userId: data.dec(_f$userId),
+        fileIds: data.dec(_f$fileIds),
+        fileUris: data.dec(_f$fileUris),
         createdAt: data.dec(_f$createdAt),
         updatedAt: data.dec(_f$updatedAt),
         status: data.dec(_f$status),
         progress: data.dec(_f$progress),
         totalFiles: data.dec(_f$totalFiles),
         completedFiles: data.dec(_f$completedFiles),
-        fileIds: data.dec(_f$fileIds),
         errorMessage: data.dec(_f$errorMessage));
   }
 
@@ -141,17 +141,19 @@ abstract class UploadJobModelCopyWith<$R, $In extends UploadJobModel, $Out>
   @override
   ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get fileIds;
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get fileUris;
+  @override
   $R call(
-      {String? uid,
-      String? userUid,
-      String? itemUid,
+      {String? id,
+      String? userId,
+      List<String>? fileIds,
+      List<String>? fileUris,
       DateTime? createdAt,
       DateTime? updatedAt,
       UploadStatus? status,
       double? progress,
       int? totalFiles,
       int? completedFiles,
-      List<String>? fileIds,
       String? errorMessage});
   UploadJobModelCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
@@ -170,43 +172,47 @@ class _UploadJobModelCopyWithImpl<$R, $Out>
       ListCopyWith($value.fileIds, (v, t) => ObjectCopyWith(v, $identity, t),
           (v) => call(fileIds: v));
   @override
+  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>> get fileUris =>
+      ListCopyWith($value.fileUris, (v, t) => ObjectCopyWith(v, $identity, t),
+          (v) => call(fileUris: v));
+  @override
   $R call(
-          {String? uid,
-          String? userUid,
-          String? itemUid,
+          {String? id,
+          String? userId,
+          List<String>? fileIds,
+          List<String>? fileUris,
           DateTime? createdAt,
           DateTime? updatedAt,
           UploadStatus? status,
           double? progress,
           int? totalFiles,
           int? completedFiles,
-          List<String>? fileIds,
           Object? errorMessage = $none}) =>
       $apply(FieldCopyWithData({
-        if (uid != null) #uid: uid,
-        if (userUid != null) #userUid: userUid,
-        if (itemUid != null) #itemUid: itemUid,
+        if (id != null) #id: id,
+        if (userId != null) #userId: userId,
+        if (fileIds != null) #fileIds: fileIds,
+        if (fileUris != null) #fileUris: fileUris,
         if (createdAt != null) #createdAt: createdAt,
         if (updatedAt != null) #updatedAt: updatedAt,
         if (status != null) #status: status,
         if (progress != null) #progress: progress,
         if (totalFiles != null) #totalFiles: totalFiles,
         if (completedFiles != null) #completedFiles: completedFiles,
-        if (fileIds != null) #fileIds: fileIds,
         if (errorMessage != $none) #errorMessage: errorMessage
       }));
   @override
   UploadJobModel $make(CopyWithData data) => UploadJobModel(
-      uid: data.get(#uid, or: $value.uid),
-      userUid: data.get(#userUid, or: $value.userUid),
-      itemUid: data.get(#itemUid, or: $value.itemUid),
+      id: data.get(#id, or: $value.id),
+      userId: data.get(#userId, or: $value.userId),
+      fileIds: data.get(#fileIds, or: $value.fileIds),
+      fileUris: data.get(#fileUris, or: $value.fileUris),
       createdAt: data.get(#createdAt, or: $value.createdAt),
       updatedAt: data.get(#updatedAt, or: $value.updatedAt),
       status: data.get(#status, or: $value.status),
       progress: data.get(#progress, or: $value.progress),
       totalFiles: data.get(#totalFiles, or: $value.totalFiles),
       completedFiles: data.get(#completedFiles, or: $value.completedFiles),
-      fileIds: data.get(#fileIds, or: $value.fileIds),
       errorMessage: data.get(#errorMessage, or: $value.errorMessage));
 
   @override
