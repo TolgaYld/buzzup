@@ -11,6 +11,7 @@ class MediaItemEntity with MediaItemEntityMappable {
     this.file,
     required this.position,
     this.isNew = false,
+    this.isDeleted = false,
   });
 
   final String id;
@@ -18,6 +19,7 @@ class MediaItemEntity with MediaItemEntityMappable {
   final File? file;
   final int position;
   final bool isNew;
+  final bool isDeleted;
 
   bool get isUploaded => uri != null && file == null && isNew;
 }

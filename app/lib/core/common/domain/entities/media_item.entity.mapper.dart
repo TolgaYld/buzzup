@@ -34,6 +34,9 @@ class MediaItemEntityMapper extends ClassMapperBase<MediaItemEntity> {
   static bool _$isNew(MediaItemEntity v) => v.isNew;
   static const Field<MediaItemEntity, bool> _f$isNew =
       Field('isNew', _$isNew, opt: true, def: false);
+  static bool _$isDeleted(MediaItemEntity v) => v.isDeleted;
+  static const Field<MediaItemEntity, bool> _f$isDeleted =
+      Field('isDeleted', _$isDeleted, opt: true, def: false);
 
   @override
   final MappableFields<MediaItemEntity> fields = const {
@@ -42,6 +45,7 @@ class MediaItemEntityMapper extends ClassMapperBase<MediaItemEntity> {
     #file: _f$file,
     #position: _f$position,
     #isNew: _f$isNew,
+    #isDeleted: _f$isDeleted,
   };
 
   static MediaItemEntity _instantiate(DecodingData data) {
@@ -50,7 +54,8 @@ class MediaItemEntityMapper extends ClassMapperBase<MediaItemEntity> {
         uri: data.dec(_f$uri),
         file: data.dec(_f$file),
         position: data.dec(_f$position),
-        isNew: data.dec(_f$isNew));
+        isNew: data.dec(_f$isNew),
+        isDeleted: data.dec(_f$isDeleted));
   }
 
   @override
@@ -106,7 +111,13 @@ extension MediaItemEntityValueCopy<$R, $Out>
 
 abstract class MediaItemEntityCopyWith<$R, $In extends MediaItemEntity, $Out>
     implements ClassCopyWith<$R, $In, $Out> {
-  $R call({String? id, String? uri, File? file, int? position, bool? isNew});
+  $R call(
+      {String? id,
+      String? uri,
+      File? file,
+      int? position,
+      bool? isNew,
+      bool? isDeleted});
   MediaItemEntityCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(
       Then<$Out2, $R2> t);
 }
@@ -125,13 +136,15 @@ class _MediaItemEntityCopyWithImpl<$R, $Out>
           Object? uri = $none,
           Object? file = $none,
           int? position,
-          bool? isNew}) =>
+          bool? isNew,
+          bool? isDeleted}) =>
       $apply(FieldCopyWithData({
         if (id != null) #id: id,
         if (uri != $none) #uri: uri,
         if (file != $none) #file: file,
         if (position != null) #position: position,
-        if (isNew != null) #isNew: isNew
+        if (isNew != null) #isNew: isNew,
+        if (isDeleted != null) #isDeleted: isDeleted
       }));
   @override
   MediaItemEntity $make(CopyWithData data) => MediaItemEntity(
@@ -139,7 +152,8 @@ class _MediaItemEntityCopyWithImpl<$R, $Out>
       uri: data.get(#uri, or: $value.uri),
       file: data.get(#file, or: $value.file),
       position: data.get(#position, or: $value.position),
-      isNew: data.get(#isNew, or: $value.isNew));
+      isNew: data.get(#isNew, or: $value.isNew),
+      isDeleted: data.get(#isDeleted, or: $value.isDeleted));
 
   @override
   MediaItemEntityCopyWith<$R2, MediaItemEntity, $Out2> $chain<$R2, $Out2>(

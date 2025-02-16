@@ -13,6 +13,7 @@ class MediaItemModel extends MediaItemEntity with MediaItemModelMappable {
     required super.position,
     super.file,
     super.isNew,
+    super.isDeleted,
   });
 
   factory MediaItemModel.fromEntity(MediaItemEntity entity) {
@@ -22,6 +23,7 @@ class MediaItemModel extends MediaItemEntity with MediaItemModelMappable {
       position: entity.position,
       file: entity.file,
       isNew: entity.isNew,
+      isDeleted: entity.isDeleted,
     );
   }
 
@@ -32,6 +34,7 @@ class MediaItemModel extends MediaItemEntity with MediaItemModelMappable {
       position: position,
       file: file,
       isNew: isNew,
+      isDeleted: isDeleted,
     );
   }
 }
