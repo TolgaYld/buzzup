@@ -1,6 +1,7 @@
 import 'package:buzzup/core/common/domain/entities/channel.entity.dart';
 import 'package:buzzup/core/common/domain/entities/comment.entity.dart';
 import 'package:buzzup/core/common/domain/entities/location.entity.dart';
+import 'package:buzzup/core/common/domain/entities/media_item.entity.dart';
 import 'package:buzzup/core/common/domain/entities/user.entity.dart';
 import 'package:buzzup/core/enums/content_visibility.dart';
 import 'package:dart_mappable/dart_mappable.dart';
@@ -9,7 +10,7 @@ part 'content.entity.mapper.dart';
 
 @MappableClass()
 sealed class ContentEntity with ContentEntityMappable {
-  const ContentEntity({
+  ContentEntity({
     required this.id,
     required this.channels,
     required this.location,
@@ -23,18 +24,18 @@ sealed class ContentEntity with ContentEntityMappable {
     this.likes,
     this.dislikes,
     this.text,
-    this.media,
+    List<MediaItemEntity>? media,
     this.city,
     this.comments,
     this.linkedUsers,
-  });
+  }) : media = media?..sort((a, b) => a.position.compareTo(b.position));
 
   final String id;
   final List<ChannelEntity> channels;
   final List<UserEntity>? likes;
   final List<UserEntity>? dislikes;
   final String? text;
-  final List<String>? media;
+  final List<MediaItemEntity>? media;
   final String? city;
   final LocationEntity location;
   final ContentVisibility visibility;
@@ -64,11 +65,11 @@ class PostEntity extends ContentEntity with PostEntityMappable {
     super.likes,
     super.dislikes,
     super.text,
-    super.media,
+    List<MediaItemEntity>? media,
     super.city,
     super.comments,
     this.endDate,
-  });
+  }) : super(media: media?..sort((a, b) => a.position.compareTo(b.position)));
 
   factory PostEntity.empty() => PostEntity(
         id: 'empty',
@@ -100,10 +101,10 @@ class StoryEntity extends ContentEntity with StoryEntityMappable {
     super.likes,
     super.dislikes,
     super.text,
-    super.media,
+    List<MediaItemEntity>? media,
     super.city,
     super.comments,
-  });
+  }) : super(media: media?..sort((a, b) => a.position.compareTo(b.position)));
 
   factory StoryEntity.empty() => StoryEntity(
         id: 'empty',

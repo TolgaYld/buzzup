@@ -1,4 +1,5 @@
 import 'package:buzzup/core/common/data/models/all_models.dart';
+import 'package:buzzup/core/common/data/models/media_item.model.dart';
 import 'package:buzzup/core/common/domain/entities/all_entities.dart';
 import 'package:buzzup/core/enums/content_visibility.dart';
 import 'package:buzzup/core/utils/datetime_converter.dart';
@@ -27,7 +28,6 @@ class PostModel extends PostEntity with PostModelMappable {
     super.comments,
     @MappableField(key: 'end_date') super.endDate,
   });
-
   factory PostModel.empty() => PostModel(
         id: 'empty',
         location: LocationModel.empty(),
@@ -55,7 +55,10 @@ class PostModel extends PostEntity with PostModelMappable {
         likes: likes,
         dislikes: dislikes,
         text: text,
-        media: media,
+        media: switch (media) {
+          final media? => media..sort((a, b) => a.position.compareTo(b.position)),
+          _ => null,
+        },
         city: city,
         comments: comments,
       );
@@ -84,7 +87,10 @@ class PostModel extends PostEntity with PostModelMappable {
           _ => null,
         },
         text: entity.text,
-        media: entity.media,
+        media: switch (entity.media) {
+          final media? => media.map(MediaItemModel.fromEntity).toList()..sort((a, b) => a.position.compareTo(b.position)),
+          _ => null,
+        },
         city: entity.city,
         comments: switch (entity.comments) {
           final comments? => comments.map(CommentModel.fromEntity).toList(),

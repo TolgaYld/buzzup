@@ -18,6 +18,7 @@ class PostModelMapper extends ClassMapperBase<PostModel> {
       LocationEntityMapper.ensureInitialized();
       ContentVisibilityMapper.ensureInitialized();
       UserEntityMapper.ensureInitialized();
+      MediaItemEntityMapper.ensureInitialized();
       CommentEntityMapper.ensureInitialized();
     }
     return _instance!;
@@ -64,8 +65,8 @@ class PostModelMapper extends ClassMapperBase<PostModel> {
   static String? _$text(PostModel v) => v.text;
   static const Field<PostModel, String> _f$text =
       Field('text', _$text, opt: true);
-  static List<String>? _$media(PostModel v) => v.media;
-  static const Field<PostModel, List<String>> _f$media =
+  static List<MediaItemEntity>? _$media(PostModel v) => v.media;
+  static const Field<PostModel, List<MediaItemEntity>> _f$media =
       Field('media', _$media, opt: true);
   static String? _$city(PostModel v) => v.city;
   static const Field<PostModel, String> _f$city =
@@ -189,7 +190,8 @@ abstract class PostModelCopyWith<$R, $In extends PostModel, $Out>
   ListCopyWith<$R, UserEntity, UserEntityCopyWith<$R, UserEntity, UserEntity>>?
       get dislikes;
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get media;
+  ListCopyWith<$R, MediaItemEntity,
+      MediaItemEntityCopyWith<$R, MediaItemEntity, MediaItemEntity>>? get media;
   @override
   ListCopyWith<$R, CommentEntity,
       CommentEntityCopyWith<$R, CommentEntity, CommentEntity>>? get comments;
@@ -208,7 +210,7 @@ abstract class PostModelCopyWith<$R, $In extends PostModel, $Out>
       List<UserEntity>? likes,
       List<UserEntity>? dislikes,
       String? text,
-      List<String>? media,
+      List<MediaItemEntity>? media,
       String? city,
       List<CommentEntity>? comments,
       DateTime? endDate});
@@ -250,10 +252,11 @@ class _PostModelCopyWithImpl<$R, $Out>
               (v) => call(dislikes: v))
           : null;
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get media =>
-      $value.media != null
-          ? ListCopyWith($value.media!,
-              (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(media: v))
+  ListCopyWith<$R, MediaItemEntity,
+          MediaItemEntityCopyWith<$R, MediaItemEntity, MediaItemEntity>>?
+      get media => $value.media != null
+          ? ListCopyWith($value.media!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(media: v))
           : null;
   @override
   ListCopyWith<$R, CommentEntity,

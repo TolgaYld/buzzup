@@ -5,3 +5,5 @@ export 'location.entity.dart';
 export 'report.entity.dart';
 export 'user.entity.dart';
 export 'token.entity.dart';
+export 'upload_job.entity.dart';
+export 'media_item.entity.dart';

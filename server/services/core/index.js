@@ -23,6 +23,9 @@ const { log } = require("./src/modules/logModule");
 const authorizeUser = require("./src/utils/authorizeUser");
 const redis = require("./src/utils/redis");
 
+// FIREBASE
+const firebaseAdmin = require("./src/config/firebaseAdmin");
+
 // ENVIRONMENT VARIABLES
 
 const {
@@ -57,6 +60,7 @@ module.exports = {
     getUserId,
     catchErrors,
     authorizeUser,
+    firebaseAdmin,
     redis,
     SECRET_KEY,
     SECRET_KEY_REFRESH,

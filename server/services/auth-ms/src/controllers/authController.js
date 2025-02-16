@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { User, Post, Comment, Report, log, SECRET_KEY, SECRET_KEY_REFRESH, redis } = require("@TolgaYld/core-buzzup");
+const { User, Post, Comment, Report, log, SECRET_KEY, SECRET_KEY_REFRESH, redis, firebaseAdmin } = require("@TolgaYld/core-buzzup");
 const { token, refreshToken } = require("../helpers/token");
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
@@ -7,7 +7,6 @@ const validator = require("validator");
 const generateRandomPassword = require('../helpers/pwdHandler');
 const { sendConfirmationEmail, sendResetEmail } = require("../helpers/mailHandler");
 const jwt = require("jsonwebtoken");
-const admin = require("../config/firebaseAdmin");
 
 const saltValue = 12;
 const tokenDuration = process.env.NODE_ENV.toString() === "production" ? "15m" : "1m";
@@ -260,7 +259,7 @@ const authUserWithProvider = async (req, res) => {
     }
 
     if (findUser.is_deleted) {
-      await admin.auth().setCustomUserClaims(findUser._id.toString(), {
+      await firebaseAdmin.auth().setCustomUserClaims(findUser._id.toString(), {
         is_deleted: false,
         is_banned: false,
       });
@@ -308,7 +307,7 @@ const updateUser = async (req, res) => {
     }
 
     if (req.body.data.is_deleted || req.body.data.is_banned) {
-      await admin.auth().setCustomUserClaims(updatedUser._id.toString(), {
+      await firebaseAdmin.auth().setCustomUserClaims(updatedUser._id.toString(), {
         is_deleted: req.body.data.is_deleted,
         is_banned: req.body.data.is_banned,
       });
@@ -357,7 +356,7 @@ const updateUserPassword = async (req, res) => {
     throw { statusCode: 400, message: "user-password-update-failed" };
   }
 
-  await admin.auth().updateUser(findUser._id.toString(), { password });
+  await firebaseAdmin.auth().updateUser(findUser._id.toString(), { password });
 
   return await sendSuccessResponseWithTokens(updatedUser, res);
 };
@@ -383,7 +382,7 @@ const deleteUser = async (req, res) => {
       throw { statusCode: 400, message: "user-update-failed" };
     }
 
-    await admin.auth().setCustomUserClaims(deletedUser._id.toString(), {
+    await firebaseAdmin.auth().setCustomUserClaims(deletedUser._id.toString(), {
       is_deleted: true,
       is_banned: false,
     });
@@ -477,7 +476,7 @@ const tokenService = async (req, res) => {
 const signOut = async (req, res) => {
   const id = req.user._id;
   const findOneUser = await User.findById(id).exec();
-  await admin.auth().revokeRefreshTokens(id.toString());
+  await firebaseAdmin.auth().revokeRefreshTokens(id.toString());
   return res.status(200).json({
     success: true,
     data: findOneUser,
@@ -658,7 +657,7 @@ const handleDeletedUserRestoration = async (user, updateData, res) => {
 
 const generateFirebaseToken = async (uid) => {
   try {
-    return await admin.auth().createCustomToken(uid);
+    return await firebaseAdmin.auth().createCustomToken(uid);
   } catch (error) {
     log(error);
     throw new Error("user-not-created");
@@ -667,14 +666,14 @@ const generateFirebaseToken = async (uid) => {
 
 const createUserInFirebase = async (uid, email, password, username, user_type) => {
   try {
-    await admin.auth().createUser({
+    await firebaseAdmin.auth().createUser({
       uid,
       email,
       password,
       displayName: username,
     });
 
-    await admin.auth().setCustomUserClaims(uid, {
+    await firebaseAdmin.auth().setCustomUserClaims(uid, {
       is_deleted: false,
       is_banned: false,
       user_type,
@@ -687,7 +686,7 @@ const createUserInFirebase = async (uid, email, password, username, user_type) =
 
 const deleteUserInFirebase = async (uid) => {
   try {
-    await admin.auth().deleteUser(uid);
+    await firebaseAdmin.auth().deleteUser(uid);
   } catch (error) {
     log(error);
     throw new Error("user-not-deleted");

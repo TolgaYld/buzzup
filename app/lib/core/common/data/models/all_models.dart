@@ -7,3 +7,4 @@ export 'upload_job.model.dart';
 export 'user.model.dart';
 export 'content/post.model.dart';
 export 'content/story.model.dart';
+export 'media_item.model.dart';

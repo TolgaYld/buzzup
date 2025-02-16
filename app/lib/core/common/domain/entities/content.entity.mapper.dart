@@ -19,6 +19,7 @@ class ContentEntityMapper extends ClassMapperBase<ContentEntity> {
       LocationEntityMapper.ensureInitialized();
       ContentVisibilityMapper.ensureInitialized();
       UserEntityMapper.ensureInitialized();
+      MediaItemEntityMapper.ensureInitialized();
       CommentEntityMapper.ensureInitialized();
     }
     return _instance!;
@@ -65,8 +66,8 @@ class ContentEntityMapper extends ClassMapperBase<ContentEntity> {
   static String? _$text(ContentEntity v) => v.text;
   static const Field<ContentEntity, String> _f$text =
       Field('text', _$text, opt: true);
-  static List<String>? _$media(ContentEntity v) => v.media;
-  static const Field<ContentEntity, List<String>> _f$media =
+  static List<MediaItemEntity>? _$media(ContentEntity v) => v.media;
+  static const Field<ContentEntity, List<MediaItemEntity>> _f$media =
       Field('media', _$media, opt: true);
   static String? _$city(ContentEntity v) => v.city;
   static const Field<ContentEntity, String> _f$city =
@@ -133,7 +134,8 @@ abstract class ContentEntityCopyWith<$R, $In extends ContentEntity, $Out>
       get likes;
   ListCopyWith<$R, UserEntity, UserEntityCopyWith<$R, UserEntity, UserEntity>>?
       get dislikes;
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>?>? get media;
+  ListCopyWith<$R, MediaItemEntity,
+      MediaItemEntityCopyWith<$R, MediaItemEntity, MediaItemEntity>>? get media;
   ListCopyWith<$R, CommentEntity,
       CommentEntityCopyWith<$R, CommentEntity, CommentEntity>>? get comments;
   $R call(
@@ -150,7 +152,7 @@ abstract class ContentEntityCopyWith<$R, $In extends ContentEntity, $Out>
       List<UserEntity>? likes,
       List<UserEntity>? dislikes,
       String? text,
-      List<String>? media,
+      List<MediaItemEntity>? media,
       String? city,
       List<CommentEntity>? comments});
   ContentEntityCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -168,6 +170,7 @@ class PostEntityMapper extends ClassMapperBase<PostEntity> {
       LocationEntityMapper.ensureInitialized();
       ContentVisibilityMapper.ensureInitialized();
       UserEntityMapper.ensureInitialized();
+      MediaItemEntityMapper.ensureInitialized();
       CommentEntityMapper.ensureInitialized();
     }
     return _instance!;
@@ -214,8 +217,8 @@ class PostEntityMapper extends ClassMapperBase<PostEntity> {
   static String? _$text(PostEntity v) => v.text;
   static const Field<PostEntity, String> _f$text =
       Field('text', _$text, opt: true);
-  static List<String>? _$media(PostEntity v) => v.media;
-  static const Field<PostEntity, List<String>> _f$media =
+  static List<MediaItemEntity>? _$media(PostEntity v) => v.media;
+  static const Field<PostEntity, List<MediaItemEntity>> _f$media =
       Field('media', _$media, opt: true);
   static String? _$city(PostEntity v) => v.city;
   static const Field<PostEntity, String> _f$city =
@@ -339,8 +342,8 @@ abstract class PostEntityCopyWith<$R, $In extends PostEntity, $Out>
   @override
   ListCopyWith<$R, UserEntity, UserEntityCopyWith<$R, UserEntity, UserEntity>>?
       get dislikes;
-  @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get media;
+  ListCopyWith<$R, MediaItemEntity,
+      MediaItemEntityCopyWith<$R, MediaItemEntity, MediaItemEntity>>? get media;
   @override
   ListCopyWith<$R, CommentEntity,
       CommentEntityCopyWith<$R, CommentEntity, CommentEntity>>? get comments;
@@ -359,7 +362,7 @@ abstract class PostEntityCopyWith<$R, $In extends PostEntity, $Out>
       List<UserEntity>? likes,
       List<UserEntity>? dislikes,
       String? text,
-      List<String>? media,
+      List<MediaItemEntity>? media,
       String? city,
       List<CommentEntity>? comments,
       DateTime? endDate});
@@ -401,10 +404,11 @@ class _PostEntityCopyWithImpl<$R, $Out>
               (v) => call(dislikes: v))
           : null;
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get media =>
-      $value.media != null
-          ? ListCopyWith($value.media!,
-              (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(media: v))
+  ListCopyWith<$R, MediaItemEntity,
+          MediaItemEntityCopyWith<$R, MediaItemEntity, MediaItemEntity>>?
+      get media => $value.media != null
+          ? ListCopyWith($value.media!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(media: v))
           : null;
   @override
   ListCopyWith<$R, CommentEntity,
@@ -489,6 +493,7 @@ class StoryEntityMapper extends ClassMapperBase<StoryEntity> {
       LocationEntityMapper.ensureInitialized();
       ContentVisibilityMapper.ensureInitialized();
       UserEntityMapper.ensureInitialized();
+      MediaItemEntityMapper.ensureInitialized();
       CommentEntityMapper.ensureInitialized();
     }
     return _instance!;
@@ -535,8 +540,8 @@ class StoryEntityMapper extends ClassMapperBase<StoryEntity> {
   static String? _$text(StoryEntity v) => v.text;
   static const Field<StoryEntity, String> _f$text =
       Field('text', _$text, opt: true);
-  static List<String>? _$media(StoryEntity v) => v.media;
-  static const Field<StoryEntity, List<String>> _f$media =
+  static List<MediaItemEntity>? _$media(StoryEntity v) => v.media;
+  static const Field<StoryEntity, List<MediaItemEntity>> _f$media =
       Field('media', _$media, opt: true);
   static String? _$city(StoryEntity v) => v.city;
   static const Field<StoryEntity, String> _f$city =
@@ -655,8 +660,8 @@ abstract class StoryEntityCopyWith<$R, $In extends StoryEntity, $Out>
   @override
   ListCopyWith<$R, UserEntity, UserEntityCopyWith<$R, UserEntity, UserEntity>>?
       get dislikes;
-  @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get media;
+  ListCopyWith<$R, MediaItemEntity,
+      MediaItemEntityCopyWith<$R, MediaItemEntity, MediaItemEntity>>? get media;
   @override
   ListCopyWith<$R, CommentEntity,
       CommentEntityCopyWith<$R, CommentEntity, CommentEntity>>? get comments;
@@ -675,7 +680,7 @@ abstract class StoryEntityCopyWith<$R, $In extends StoryEntity, $Out>
       List<UserEntity>? likes,
       List<UserEntity>? dislikes,
       String? text,
-      List<String>? media,
+      List<MediaItemEntity>? media,
       String? city,
       List<CommentEntity>? comments});
   StoryEntityCopyWith<$R2, $In, $Out2> $chain<$R2, $Out2>(Then<$Out2, $R2> t);
@@ -716,10 +721,11 @@ class _StoryEntityCopyWithImpl<$R, $Out>
               (v) => call(dislikes: v))
           : null;
   @override
-  ListCopyWith<$R, String, ObjectCopyWith<$R, String, String>>? get media =>
-      $value.media != null
-          ? ListCopyWith($value.media!,
-              (v, t) => ObjectCopyWith(v, $identity, t), (v) => call(media: v))
+  ListCopyWith<$R, MediaItemEntity,
+          MediaItemEntityCopyWith<$R, MediaItemEntity, MediaItemEntity>>?
+      get media => $value.media != null
+          ? ListCopyWith($value.media!, (v, t) => v.copyWith.$chain(t),
+              (v) => call(media: v))
           : null;
   @override
   ListCopyWith<$R, CommentEntity,

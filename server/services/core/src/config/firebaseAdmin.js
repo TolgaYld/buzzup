@@ -1,4 +1,4 @@
-const admin = require("firebase-admin");
+const firebaseAdmin = require("firebase-admin");
 
 let serviceAccount;
 
@@ -10,8 +10,8 @@ if (process.env.FIREBASE_JSON_BASE64) {
     throw new Error("No Firebase config found");
 }
 
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+firebaseAdmin.initializeApp({
+    credential: firebaseAdmin.credential.cert(serviceAccount),
 });
 
-module.exports = admin;
+module.exports = firebaseAdmin;
